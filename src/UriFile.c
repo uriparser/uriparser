@@ -142,10 +142,10 @@ static URI_INLINE int URI_FUNC(FilenameToUriString)(const URI_CHAR * filename,
 static URI_INLINE size_t URI_FUNC(UriStringToFilenameSkipCount)(const URI_CHAR * uriString, UriBool toUnix, UriBool *wnwa) {
 	const UriBool file_no_slashes =
 			URI_STRNCMP(uriString, _UT("file:"), URI_STRLEN(_UT("file:"))) == 0;
-	const UriBool file_one_slash =
-			URI_STRNCMP(uriString, _UT("file:/"), URI_STRLEN(_UT("file:/"))) == 0;
-	const UriBool file_two_slashes =
-			URI_STRNCMP(uriString, _UT("file://"), URI_STRLEN(_UT("file://"))) == 0;
+	const UriBool file_one_slash = file_no_slashes
+			&& URI_STRNCMP(uriString, _UT("file:/"), URI_STRLEN(_UT("file:/"))) == 0;
+	const UriBool file_two_slashes = file_one_slash
+			&& URI_STRNCMP(uriString, _UT("file://"), URI_STRLEN(_UT("file://"))) == 0;
 	const UriBool file_three_slashes = file_two_slashes
 			&& (URI_STRNCMP(uriString, _UT("file:///"), URI_STRLEN(_UT("file:///"))) == 0);
 
