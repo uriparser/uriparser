@@ -1538,6 +1538,23 @@ Rule                                | Example | hostSet | absPath | emptySeg
 		delete [] filenameBuffer;
 	}
 
+	void testUriToFilenameOnlyConversionHelper(const wchar_t * filename,
+			const wchar_t * uriString, bool forUnix) {
+		// URI string to filename
+		const size_t filenameBufferLen = wcslen(uriString) + 1;
+		wchar_t * filenameBuffer = new wchar_t[filenameBufferLen];
+		if (forUnix) {
+			uriUriStringToUnixFilenameW(uriString, filenameBuffer);
+		} else {
+			uriUriStringToWindowsFilenameW(uriString, filenameBuffer);
+		}
+#ifdef HAVE_WPRINTF
+		// wprintf(L"2 [%ls][%ls]\n", filenameBuffer, filename);
+#endif
+		TEST_ASSERT(!wcscmp(filenameBuffer, filename));
+		delete [] filenameBuffer;
+	}
+
 	void testFilenameUriConversion() {
 		const bool FOR_UNIX = true;
 		const bool FOR_WINDOWS = false;
@@ -1554,6 +1571,10 @@ Rule                                | Example | hostSet | absPath | emptySeg
 		testFilenameUriConversionHelper(L"abc def", L"abc%20def", FOR_UNIX);
 
 		testFilenameUriConversionHelper(L"\\\\Server01\\user\\docs\\Letter.txt", L"file://Server01/user/docs/Letter.txt", FOR_WINDOWS);
+
+		testUriToFilenameOnlyConversionHelper(L"/home/user/somefolder/", L"file:/home/user/somefolder/", FOR_UNIX);
+		testUriToFilenameOnlyConversionHelper(L"E:\\Documents and Settings", L"file:/E:/Documents%20and%20Settings", FOR_WINDOWS);
+		testUriToFilenameOnlyConversionHelper(L"E:\\Documents and Settings", L"file:E:/Documents%20and%20Settings", FOR_WINDOWS);
 	}
 
 	void testCrash_FreeUriMembers_Bug20080116() {

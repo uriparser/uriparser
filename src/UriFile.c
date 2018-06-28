@@ -139,36 +139,69 @@ static URI_INLINE int URI_FUNC(FilenameToUriString)(const URI_CHAR * filename,
 	return URI_SUCCESS;
 }
 
+static URI_INLINE size_t URI_FUNC(UriStringToFilenameSkipCount)(const URI_CHAR * uriString, UriBool toUnix, UriBool *wnwa) {
+	const UriBool file_no_slashes =
+			URI_STRNCMP(uriString, _UT("file:"), URI_STRLEN(_UT("file:"))) == 0;
+	const UriBool file_one_slash =
+			URI_STRNCMP(uriString, _UT("file:/"), URI_STRLEN(_UT("file:/"))) == 0;
+	const UriBool file_two_slashes =
+			URI_STRNCMP(uriString, _UT("file://"), URI_STRLEN(_UT("file://"))) == 0;
+	const UriBool file_three_slashes = file_two_slashes
+			&& (URI_STRNCMP(uriString, _UT("file:///"), URI_STRLEN(_UT("file:///"))) == 0);
 
+	const size_t three_skip = file_three_slashes ?
+		toUnix ?
+			/* file:///bin/bash */
+			URI_STRLEN(_UT("file://"))
+		:
+			/* file:///E:/Documents%20and%20Settings */
+			URI_STRLEN(_UT("file:///"))
+		: 0;
+
+	const size_t two_skip = URI_STRLEN(_UT("file://"));
+
+	const size_t one_skip = toUnix ?
+		/* file:/home/user/somefolder/ */
+		URI_STRLEN(_UT("file:"))
+		/* file:/E:/Users/ */
+		: URI_STRLEN(_UT("file:/"));
+
+	const size_t zero_skip = URI_STRLEN(_UT("file:"));
+
+	*wnwa = (toUnix == URI_FALSE)
+				&& file_two_slashes
+				&& ! file_three_slashes;
+
+	if(file_three_slashes) {
+		return three_skip;
+	}
+
+	if(file_two_slashes) {
+		return two_skip;
+	}
+
+	if(file_one_slash) {
+		return one_skip;
+	}
+
+	if(file_no_slashes) {
+		return zero_skip;
+	}
+
+	return 0;
+}
 
 static URI_INLINE int URI_FUNC(UriStringToFilename)(const URI_CHAR * uriString,
 		URI_CHAR * filename, UriBool toUnix) {
 	if ((uriString == NULL) || (filename == NULL)) {
 		return URI_ERROR_NULL;
 	}
-
 	{
-		const UriBool file_two_slashes =
-				URI_STRNCMP(uriString, _UT("file://"), URI_STRLEN(_UT("file://"))) == 0;
-		const UriBool file_three_slashes = file_two_slashes
-				&& (URI_STRNCMP(uriString, _UT("file:///"), URI_STRLEN(_UT("file:///"))) == 0);
+		UriBool is_windows_network_with_authority;
+		size_t charsToSkip = URI_FUNC(UriStringToFilenameSkipCount)(
+			uriString, toUnix, &is_windows_network_with_authority);
 
-		const size_t charsToSkip = file_two_slashes
-				? file_three_slashes
-					? toUnix
-						/* file:///bin/bash */
-						? URI_STRLEN(_UT("file://"))
-						/* file:///E:/Documents%20and%20Settings */
-						: URI_STRLEN(_UT("file:///"))
-					/* file://Server01/Letter.txt */
-					: URI_STRLEN(_UT("file://"))
-				: 0;
 		const size_t charsToCopy = URI_STRLEN(uriString + charsToSkip) + 1;
-
-		const UriBool is_windows_network_with_authority =
-				(toUnix == URI_FALSE)
-				&& file_two_slashes
-				&& ! file_three_slashes;
 
 		URI_CHAR * const unescape_target = is_windows_network_with_authority
 				? (filename + 2)
