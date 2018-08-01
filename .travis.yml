@@ -4,19 +4,17 @@
 language: cpp
 dist: trusty
 
-env:
-  global:
-    - CFLAGS='-g -pipe'
-
 addons:
   apt:
     packages:
+      - cmake-data
+      - cmake
       - doxygen
       - graphviz
       - libcpptest-dev
 
 script:
-  - set -e
-  - ./autogen.sh
-  - ./configure
-  - make distcheck
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_BUILD_TYPE=Release
+  - cmake --build . --config Release
