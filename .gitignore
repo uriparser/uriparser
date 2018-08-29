@@ -19,3 +19,8 @@ Makefile.in
 /uriparser-*.tar.bz2
 /uriparser-*.zip
 /uriparse
+*.htm
+*.db
+*.filters
+*.opendb
+Backup/
