@@ -1,0 +1,41 @@
+#TODO: Change version
+version: '0.0.1.{build}'
+
+configuration:
+  - Release
+  - Debug
+
+platform:
+  - x86
+  - x64
+
+environment:
+  matrix:
+  - GENERATORS: "Visual Studio 15 2017"
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
+  - GENERATORS: "Visual Studio 14 2015" 
+  
+  - GENERATORS: "Visual Studio 12 2013"
+  
+  - GENERATORS: "Visual Studio 11 2012"
+   
+  - GENERATORS: "Visual Studio 10 2010"
+
+  - GENERATORS: "MSYS Makefiles"
+
+init:
+  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="x86" SET PATH=C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin;%PATH%;C:\MinGW\msys\1.0\bin
+  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="x64" SET PATH=C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%;C:\MinGW\msys\1.0\bin
+  
+install:
+
+before_build:
+  
+build_script:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - mkdir build
+  - cd build
+  - echo "cmake .. -G%GENERATORS% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\install "
+  - cmake .. -G"%GENERATORS%" -DCMAKE_INSTALL_PREFIX="%APPVEYOR_BUILD_FOLDER%\install" 
+  - cmake --build . --target install --config %CONFIGURATION%

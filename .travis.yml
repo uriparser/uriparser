@@ -16,7 +16,13 @@ addons:
       - libcpptest-dev
 
 script:
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/install
+  - cmake --build . --target install
+  - cd ..
+  - rm -fr build 
   - set -e
-  - ./autogen.sh
-  - ./configure
+  - bash autogen.sh
+  - bash configure
   - make distcheck
