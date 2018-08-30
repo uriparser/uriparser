@@ -203,3 +203,10 @@ install(FILES
 
 # Install the export set for use with the install-tree
 install(EXPORT UriParserTargets DESTINATION ${DEF_INSTALL_CMAKE_DIR})
+
+CONFIGURE_FILE(
+    "${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+    "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+ADD_CUSTOM_TARGET(uninstall
+    "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake")

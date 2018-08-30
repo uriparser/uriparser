@@ -24,3 +24,4 @@ Makefile.in
 *.filters
 *.opendb
 Backup/
+build*/
