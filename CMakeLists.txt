@@ -14,8 +14,7 @@ set(VERSION_PATCH "8")
 set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 option(BUILD_SHARED_LIBS  "Build shared libs." ON)
-option(BUILD_TESTS "Build demos." ON)
-option(BUILD_DEMOS  "Build demos." ON)
+option(BUILD_TESTS "Build demos." OFF)
 
 if (BUILD_SHARED_LIBS)
     if (CMAKE_COMPILER_IS_GNUCXX)
