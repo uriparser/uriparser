@@ -25,6 +25,7 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
     ENDIF(GIT)
 ENDIF()
 MESSAGE("Version: ${VERSION_STRING}\n")
+set(URIPARSER_VERSION ${VERSION_STRING})
 
 option(BUILD_SHARED_LIBS  "Build shared libs." ON)
 option(BUILD_TESTS "Build demos." OFF)
@@ -136,7 +137,7 @@ endif()
 add_library(uriparser ${URIPARSER_SRCS})
 set_target_properties(uriparser PROPERTIES SOVERSION ${VERSION_STRING})
 
-if(NOT WIN32)
+if(NOT MSVC)
   configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/liburiparser.pc.cmakein
     ${CMAKE_CURRENT_BINARY_DIR}/liburiparser.pc @ONLY)
   
@@ -144,6 +145,7 @@ if(NOT WIN32)
     DESTINATION
     "${INSTALL_PKGCONFIG_DIR}")
 endif()
+
 export(TARGETS uriparser
   FILE "${CMAKE_BINARY_DIR}/UriParserTargets.cmake")
 
@@ -158,8 +160,6 @@ install(FILES ${URIPARSER_INCS} DESTINATION "${INSTALL_INC_DIR}/uriparser")
 if(BUILD_TESTS)
   enable_testing()
 endif()
-
-set(URIPARSER_VERSION ${VERSION_STRING}) 
 
 # Make relative paths absolute (needed later on)
 foreach(p LIB BIN INCLUDE CMAKE)
