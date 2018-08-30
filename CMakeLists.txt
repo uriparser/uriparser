@@ -9,9 +9,28 @@ set(INSTALL_MAN_DIR "${CMAKE_INSTALL_PREFIX}/share/man" CACHE PATH "Installation
 set(INSTALL_PKGCONFIG_DIR "${CMAKE_INSTALL_PREFIX}/share/pkgconfig" CACHE PATH "Installation directory for pkgconfig (.pc) files")
 
 set(VERSION_MAJOR "0")
-set(VERSION_MINOR "7")
-set(VERSION_PATCH "8")
+set(VERSION_MINOR "8")
+set(VERSION_PATCH "6")
 set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+    FIND_PROGRAM(GIT git)
+    IF(GIT)
+        EXECUTE_PROCESS(
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            COMMAND ${GIT} describe --tags
+            OUTPUT_VARIABLE GIT_VERSION  OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+	if(NOT VERSION_STRING)
+            EXECUTE_PROCESS(
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                COMMAND ${GIT} rev-parse --short HEAD
+                OUTPUT_VARIABLE GIT_VERSION  OUTPUT_STRIP_TRAILING_WHITESPACE
+            )
+	endif()
+	SET(VERSION_STRING ${GIT_VERSION})
+    ENDIF(GIT)
+ENDIF()
+MESSAGE("Version: ${VERSION_STRING}\n")
 
 option(BUILD_SHARED_LIBS  "Build shared libs." ON)
 option(BUILD_TESTS "Build demos." OFF)
