@@ -44,6 +44,8 @@
  * NOTE: This header includes itself twice.
  */
 
+#include "uriparser_export.h"
+
 #if (defined(URI_PASS_ANSI) && !defined(URI_H_ANSI)) \
 	|| (defined(URI_PASS_UNICODE) && !defined(URI_H_UNICODE)) \
 	|| (!defined(URI_PASS_ANSI) && !defined(URI_PASS_UNICODE))
@@ -72,17 +74,6 @@
 #  define URI_H_UNICODE 1
 #  include "UriDefsUnicode.h"
 # endif
-
-#ifdef WIN32
-#ifdef DLL_EXPORT
-#define DLL_API __declspec(dllexport)
-#else
-#define DLL_API __declspec(dllimport)
-#endif
-#else
-#define DLL_API
-#endif
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -222,7 +213,7 @@ typedef struct URI_TYPE(QueryListStruct) {
  * @see uriToStringA
  * @since 0.3.0
  */
-DLL_API int URI_FUNC(ParseUriEx)(URI_TYPE(ParserState) * state,
+URIPARSER_EXPORT int URI_FUNC(ParseUriEx)(URI_TYPE(ParserState) * state,
 		const URI_CHAR * first, const URI_CHAR * afterLast);
 
 
@@ -238,7 +229,7 @@ DLL_API int URI_FUNC(ParseUriEx)(URI_TYPE(ParserState) * state,
  * @see uriToStringA
  * @since 0.3.0
  */
-DLL_API int URI_FUNC(ParseUri)(URI_TYPE(ParserState) * state,
+URIPARSER_EXPORT int URI_FUNC(ParseUri)(URI_TYPE(ParserState) * state,
 		const URI_CHAR * text);
 
 
@@ -252,7 +243,7 @@ DLL_API int URI_FUNC(ParseUri)(URI_TYPE(ParserState) * state,
  *
  * @since 0.3.0
  */
-DLL_API void URI_FUNC(FreeUriMembers)(URI_TYPE(Uri) * uri);
+URIPARSER_EXPORT void URI_FUNC(FreeUriMembers)(URI_TYPE(Uri) * uri);
 
 
 
@@ -275,7 +266,7 @@ DLL_API void URI_FUNC(FreeUriMembers)(URI_TYPE(Uri) * uri);
  * @see uriUnescapeInPlaceExA
  * @since 0.5.2
  */
-DLL_API URI_CHAR * URI_FUNC(EscapeEx)(const URI_CHAR * inFirst,
+URIPARSER_EXPORT URI_CHAR * URI_FUNC(EscapeEx)(const URI_CHAR * inFirst,
 		const URI_CHAR * inAfterLast, URI_CHAR * out,
 		UriBool spaceToPlus, UriBool normalizeBreaks);
 
@@ -299,7 +290,7 @@ DLL_API URI_CHAR * URI_FUNC(EscapeEx)(const URI_CHAR * inFirst,
  * @see uriUnescapeInPlaceA
  * @since 0.5.0
  */
-DLL_API URI_CHAR * URI_FUNC(Escape)(const URI_CHAR * in, URI_CHAR * out,
+URIPARSER_EXPORT URI_CHAR * URI_FUNC(Escape)(const URI_CHAR * in, URI_CHAR * out,
 		UriBool spaceToPlus, UriBool normalizeBreaks);
 
 
@@ -321,7 +312,7 @@ DLL_API URI_CHAR * URI_FUNC(Escape)(const URI_CHAR * in, URI_CHAR * out,
  * @see uriEscapeExA
  * @since 0.5.0
  */
-DLL_API const URI_CHAR * URI_FUNC(UnescapeInPlaceEx)(URI_CHAR * inout,
+URIPARSER_EXPORT const URI_CHAR * URI_FUNC(UnescapeInPlaceEx)(URI_CHAR * inout,
 		UriBool plusToSpace, UriBreakConversion breakConversion);
 
 
@@ -344,7 +335,7 @@ DLL_API const URI_CHAR * URI_FUNC(UnescapeInPlaceEx)(URI_CHAR * inout,
  * @see uriEscapeA
  * @since 0.3.0
  */
-DLL_API const URI_CHAR * URI_FUNC(UnescapeInPlace)(URI_CHAR * inout);
+URIPARSER_EXPORT const URI_CHAR * URI_FUNC(UnescapeInPlace)(URI_CHAR * inout);
 
 
 
@@ -361,7 +352,7 @@ DLL_API const URI_CHAR * URI_FUNC(UnescapeInPlace)(URI_CHAR * inout);
  * @see uriRemoveBaseUriA, uriAddBaseUriExA
  * @since 0.4.0
  */
-DLL_API int URI_FUNC(AddBaseUri)(URI_TYPE(Uri) * absoluteDest,
+URIPARSER_EXPORT int URI_FUNC(AddBaseUri)(URI_TYPE(Uri) * absoluteDest,
 		const URI_TYPE(Uri) * relativeSource,
 		const URI_TYPE(Uri) * absoluteBase);
 
@@ -381,7 +372,7 @@ DLL_API int URI_FUNC(AddBaseUri)(URI_TYPE(Uri) * absoluteDest,
  * @see uriRemoveBaseUriA, uriAddBaseUriA
  * @since 0.8.1
  */
-DLL_API int URI_FUNC(AddBaseUriEx)(URI_TYPE(Uri) * absoluteDest,
+URIPARSER_EXPORT int URI_FUNC(AddBaseUriEx)(URI_TYPE(Uri) * absoluteDest,
 		const URI_TYPE(Uri) * relativeSource,
 		const URI_TYPE(Uri) * absoluteBase,
 		UriResolutionOptions options);
@@ -406,7 +397,7 @@ DLL_API int URI_FUNC(AddBaseUriEx)(URI_TYPE(Uri) * absoluteDest,
  * @see uriAddBaseUriA, uriAddBaseUriExA
  * @since 0.5.2
  */
-DLL_API int URI_FUNC(RemoveBaseUri)(URI_TYPE(Uri) * dest,
+URIPARSER_EXPORT int URI_FUNC(RemoveBaseUri)(URI_TYPE(Uri) * dest,
 		const URI_TYPE(Uri) * absoluteSource,
 		const URI_TYPE(Uri) * absoluteBase,
 		UriBool domainRootMode);
@@ -424,7 +415,7 @@ DLL_API int URI_FUNC(RemoveBaseUri)(URI_TYPE(Uri) * dest,
  *
  * @since 0.4.0
  */
-DLL_API UriBool URI_FUNC(EqualsUri)(const URI_TYPE(Uri) * a, const URI_TYPE(Uri) * b);
+URIPARSER_EXPORT UriBool URI_FUNC(EqualsUri)(const URI_TYPE(Uri) * a, const URI_TYPE(Uri) * b);
 
 
 
@@ -440,7 +431,7 @@ DLL_API UriBool URI_FUNC(EqualsUri)(const URI_TYPE(Uri) * a, const URI_TYPE(Uri)
  * @see uriToStringA
  * @since 0.5.0
  */
-DLL_API int URI_FUNC(ToStringCharsRequired)(const URI_TYPE(Uri) * uri,
+URIPARSER_EXPORT int URI_FUNC(ToStringCharsRequired)(const URI_TYPE(Uri) * uri,
 		int * charsRequired);
 
 
@@ -458,7 +449,7 @@ DLL_API int URI_FUNC(ToStringCharsRequired)(const URI_TYPE(Uri) * uri,
  * @see uriToStringCharsRequiredA
  * @since 0.4.0
  */
-DLL_API int URI_FUNC(ToString)(URI_CHAR * dest, const URI_TYPE(Uri) * uri, int maxChars, int * charsWritten);
+URIPARSER_EXPORT int URI_FUNC(ToString)(URI_CHAR * dest, const URI_TYPE(Uri) * uri, int maxChars, int * charsWritten);
 
 
 
@@ -471,7 +462,7 @@ DLL_API int URI_FUNC(ToString)(URI_CHAR * dest, const URI_TYPE(Uri) * uri, int m
  * @see uriNormalizeSyntaxA
  * @since 0.5.0
  */
-DLL_API unsigned int URI_FUNC(NormalizeSyntaxMaskRequired)(const URI_TYPE(Uri) * uri);
+URIPARSER_EXPORT unsigned int URI_FUNC(NormalizeSyntaxMaskRequired)(const URI_TYPE(Uri) * uri);
 
 
 
@@ -490,7 +481,7 @@ DLL_API unsigned int URI_FUNC(NormalizeSyntaxMaskRequired)(const URI_TYPE(Uri) *
  * @see uriNormalizeSyntaxMaskRequiredA
  * @since 0.5.0
  */
-DLL_API int URI_FUNC(NormalizeSyntaxEx)(URI_TYPE(Uri) * uri, unsigned int mask);
+URIPARSER_EXPORT int URI_FUNC(NormalizeSyntaxEx)(URI_TYPE(Uri) * uri, unsigned int mask);
 
 
 
@@ -507,7 +498,7 @@ DLL_API int URI_FUNC(NormalizeSyntaxEx)(URI_TYPE(Uri) * uri, unsigned int mask);
  * @see uriNormalizeSyntaxMaskRequiredA
  * @since 0.5.0
  */
-DLL_API int URI_FUNC(NormalizeSyntax)(URI_TYPE(Uri) * uri);
+URIPARSER_EXPORT int URI_FUNC(NormalizeSyntax)(URI_TYPE(Uri) * uri);
 
 
 
@@ -529,7 +520,7 @@ DLL_API int URI_FUNC(NormalizeSyntax)(URI_TYPE(Uri) * uri);
  * @see uriWindowsFilenameToUriStringA
  * @since 0.5.2
  */
-DLL_API int URI_FUNC(UnixFilenameToUriString)(const URI_CHAR * filename,
+URIPARSER_EXPORT int URI_FUNC(UnixFilenameToUriString)(const URI_CHAR * filename,
 		URI_CHAR * uriString);
 
 
@@ -552,7 +543,7 @@ DLL_API int URI_FUNC(UnixFilenameToUriString)(const URI_CHAR * filename,
  * @see uriUnixFilenameToUriStringA
  * @since 0.5.2
  */
-DLL_API int URI_FUNC(WindowsFilenameToUriString)(const URI_CHAR * filename,
+URIPARSER_EXPORT int URI_FUNC(WindowsFilenameToUriString)(const URI_CHAR * filename,
 		URI_CHAR * uriString);
 
 
@@ -571,7 +562,7 @@ DLL_API int URI_FUNC(WindowsFilenameToUriString)(const URI_CHAR * filename,
  * @see uriUriStringToWindowsFilenameA
  * @since 0.5.2
  */
-DLL_API int URI_FUNC(UriStringToUnixFilename)(const URI_CHAR * uriString,
+URIPARSER_EXPORT int URI_FUNC(UriStringToUnixFilename)(const URI_CHAR * uriString,
 		URI_CHAR * filename);
 
 
@@ -590,7 +581,7 @@ DLL_API int URI_FUNC(UriStringToUnixFilename)(const URI_CHAR * uriString,
  * @see uriUriStringToUnixFilenameA
  * @since 0.5.2
  */
-DLL_API int URI_FUNC(UriStringToWindowsFilename)(const URI_CHAR * uriString,
+URIPARSER_EXPORT int URI_FUNC(UriStringToWindowsFilename)(const URI_CHAR * uriString,
 		URI_CHAR * filename);
 
 
@@ -609,7 +600,7 @@ DLL_API int URI_FUNC(UriStringToWindowsFilename)(const URI_CHAR * uriString,
  * @see uriComposeQueryA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(ComposeQueryCharsRequired)(const URI_TYPE(QueryList) * queryList,
+URIPARSER_EXPORT int URI_FUNC(ComposeQueryCharsRequired)(const URI_TYPE(QueryList) * queryList,
 		int * charsRequired);
 
 
@@ -629,7 +620,7 @@ DLL_API int URI_FUNC(ComposeQueryCharsRequired)(const URI_TYPE(QueryList) * quer
  * @see uriComposeQueryExA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(ComposeQueryCharsRequiredEx)(const URI_TYPE(QueryList) * queryList,
+URIPARSER_EXPORT int URI_FUNC(ComposeQueryCharsRequiredEx)(const URI_TYPE(QueryList) * queryList,
 		int * charsRequired, UriBool spaceToPlus, UriBool normalizeBreaks);
 
 
@@ -652,7 +643,7 @@ DLL_API int URI_FUNC(ComposeQueryCharsRequiredEx)(const URI_TYPE(QueryList) * qu
  * @see uriDissectQueryMallocA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(ComposeQuery)(URI_CHAR * dest,
+URIPARSER_EXPORT int URI_FUNC(ComposeQuery)(URI_CHAR * dest,
 		const URI_TYPE(QueryList) * queryList, int maxChars, int * charsWritten);
 
 
@@ -675,7 +666,7 @@ DLL_API int URI_FUNC(ComposeQuery)(URI_CHAR * dest,
  * @see uriDissectQueryMallocExA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(ComposeQueryEx)(URI_CHAR * dest,
+URIPARSER_EXPORT int URI_FUNC(ComposeQueryEx)(URI_CHAR * dest,
 		const URI_TYPE(QueryList) * queryList, int maxChars, int * charsWritten,
 		UriBool spaceToPlus, UriBool normalizeBreaks);
 
@@ -697,7 +688,7 @@ DLL_API int URI_FUNC(ComposeQueryEx)(URI_CHAR * dest,
  * @see uriDissectQueryMallocA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(ComposeQueryMalloc)(URI_CHAR ** dest,
+URIPARSER_EXPORT int URI_FUNC(ComposeQueryMalloc)(URI_CHAR ** dest,
 		const URI_TYPE(QueryList) * queryList);
 
 
@@ -718,7 +709,7 @@ DLL_API int URI_FUNC(ComposeQueryMalloc)(URI_CHAR ** dest,
  * @see uriDissectQueryMallocExA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(ComposeQueryMallocEx)(URI_CHAR ** dest,
+URIPARSER_EXPORT int URI_FUNC(ComposeQueryMallocEx)(URI_CHAR ** dest,
 		const URI_TYPE(QueryList) * queryList,
 		UriBool spaceToPlus, UriBool normalizeBreaks);
 
@@ -739,7 +730,7 @@ DLL_API int URI_FUNC(ComposeQueryMallocEx)(URI_CHAR ** dest,
  * @see uriFreeQueryListA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(DissectQueryMalloc)(URI_TYPE(QueryList) ** dest, int * itemCount,
+URIPARSER_EXPORT int URI_FUNC(DissectQueryMalloc)(URI_TYPE(QueryList) ** dest, int * itemCount,
 		const URI_CHAR * first, const URI_CHAR * afterLast);
 
 
@@ -760,7 +751,7 @@ DLL_API int URI_FUNC(DissectQueryMalloc)(URI_TYPE(QueryList) ** dest, int * item
  * @see uriFreeQueryListA
  * @since 0.7.0
  */
-DLL_API int URI_FUNC(DissectQueryMallocEx)(URI_TYPE(QueryList) ** dest, int * itemCount,
+URIPARSER_EXPORT int URI_FUNC(DissectQueryMallocEx)(URI_TYPE(QueryList) ** dest, int * itemCount,
 		const URI_CHAR * first, const URI_CHAR * afterLast,
 		UriBool plusToSpace, UriBreakConversion breakConversion);
 
@@ -774,7 +765,7 @@ DLL_API int URI_FUNC(DissectQueryMallocEx)(URI_TYPE(QueryList) ** dest, int * it
  *
  * @since 0.7.0
  */
-DLL_API void URI_FUNC(FreeQueryList)(URI_TYPE(QueryList) * queryList);
+URIPARSER_EXPORT void URI_FUNC(FreeQueryList)(URI_TYPE(QueryList) * queryList);
 
 
 

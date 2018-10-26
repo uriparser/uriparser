@@ -26,19 +26,6 @@ set(URIPARSER_VERSION ${VERSION_STRING})
 
 option(BUILD_TESTS "Build demos." OFF)
 
-if (BUILD_SHARED_LIBS)
-    if (CMAKE_COMPILER_IS_GNUCXX)
-       # Just setting CMAKE_POSITION_INDEPENDENT_CODE should be enough to set
-       # -fPIC for GCC but sometimes it still doesn't get set, so make sure it
-       # does.
-       add_definitions("-fPIC")
-    endif()
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-    if(WIN32)
-        add_definitions(-DDLL_EXPORT)
-    endif(WIN32)
-endif()
-
 IF(MSVC)
     # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
     OPTION(WIN32_USE_MP "Set to ON to build OpenSceneGraph with the /MP option (Visual Studio 2005 and above)." ON)
@@ -48,6 +35,8 @@ IF(MSVC)
     ENDIF(WIN32_USE_MP)
 ENDIF(MSVC)
 
+include(GNUInstallDirs OPTIONAL)
+include(GenerateExportHeader)
 include (CheckIncludeFile)
 include (CheckFunctionExists)
 
@@ -112,9 +101,20 @@ set(URIPARSER_INCS
 set(LIB_NAME uriparser)
 add_library(${LIB_NAME} ${URIPARSER_SRCS})
 set_target_properties(${LIB_NAME} PROPERTIES SOVERSION ${VERSION_STRING})
-target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR})
 
-include(GNUInstallDirs OPTIONAL)
+if (BUILD_SHARED_LIBS)
+    if (CMAKE_COMPILER_IS_GNUCXX)
+       # Just setting CMAKE_POSITION_INDEPENDENT_CODE should be enough to set
+       # -fPIC for GCC but sometimes it still doesn't get set, so make sure it
+       # does.
+       #add_definitions("-fPIC")
+       target_compile_definitions(${LIB_NAME} PUBLIC "-fPIC")
+    endif()
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)   
+endif()
+
+GENERATE_EXPORT_HEADER(${LIB_NAME})
 
 set(INSTALL_CMAKE_DIR CMake CACHE PATH
     "Installation directory for CMake files")
@@ -127,9 +127,14 @@ install(TARGETS ${LIB_NAME}
     EXPORT UriParserTargets
     RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
     ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" 
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     )
-install(FILES ${URIPARSER_INCS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/uriparser")
+install(FILES
+            ${URIPARSER_INCS}
+            ${CMAKE_CURRENT_BINARY_DIR}/uriparser_export.h
+        DESTINATION
+            "${CMAKE_INSTALL_INCLUDEDIR}/uriparser"
+        )
 
 # PkgConfig configure file
 if(NOT MSVC)
