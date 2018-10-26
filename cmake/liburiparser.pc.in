@@ -1,7 +1,7 @@
 prefix=@CMAKE_INSTALL_PREFIX@
-exec_prefix=@INSTALL_BIN_DIR@
-libdir=@INSTALL_LIB_DIR@
-includedir=@INSTALL_INC_DIR@
+exec_prefix=@CMAKE_INSTALL_FULL_BINDIR@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
 
 Name: liburiparser
 Description: URI parsing and handling library

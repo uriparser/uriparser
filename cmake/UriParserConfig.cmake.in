@@ -1,25 +1,56 @@
-# Compute paths
-get_filename_component(URIPARSER_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-set(URIPARSER_INCLUDE_DIR "@CONF_INCLUDE_DIRS@" PARENT_SCOPE)
+# Author: KangLin(kl222@126.com)
 
-if(NOT TARGET uriparser AND NOT URIPARSER_BINARY_DIR)
-  include("${URIPARSER_CMAKE_DIR}/UriParserTargets.cmake")
+# UriParser
+# --------
+#
+# Find UriParser
+#
+# Find the UriParser libraries (asound)
+#
+# ::
+#
+#   This module defines the following variables:
+#      UriParser_FOUND          - True if UriParser libraries are found
+#      UriParser_LIBRARIES      - Set when UriParser libraries is found
+#      UriParser_INCLUDE_DIRS   - where to find UriParser heard directory.
+#      UriParser_DEFINITIONS    - Set definitions
+#      UriParser_VERSION_STRING - the version of UriParser found (since CMake 2.8.8)
+
+set(UriParser_VERSION_STRING @BUILD_VERSION@)
+
+if(NOT MSVC)
+    find_package(PkgConfig)
+    if(PKG_CONFIG_FOUND)
+        pkg_check_modules(UriParser UriParser)
+        if(UriParser_FOUND)
+            return()
+        endif()
+    endif()
 endif()
 
-set(BUILD_SHARED_LIBS @BUILD_SHARED_LIBS@)
+# Compute and install package configuration and version files
+get_filename_component(_dir "${CMAKE_CURRENT_LIST_FILE}/.." PATH)
+get_filename_component(_prefix "${_dir}" ABSOLUTE)
 
-if(MSVC)
-  if(BUILD_SHARED_LIBS)
-    get_target_property(LIB_LIB_FILENAME @LIB_NAME@ IMPORTED_IMPLIB_@CONFIG_TYPE@)
-  else(BUILD_SHARED_LIBS)
-    get_target_property(LIB_LIB_FILENAME @LIB_NAME@ IMPORTED_LOCATION_@CONFIG_TYPE@)
-  endif(BUILD_SHARED_LIBS)
-else()
-  get_target_property(LIB_LIB_FILENAME @LIB_NAME@ IMPORTED_LOCATION_@CONFIG_TYPE@)
+find_path(UriParser_INCLUDE_DIR Uri.h
+	HINTS 
+        ${_prefix}
+    PATH_SUFFIXES
+        include/uriparser
+    )
+find_library(UriParser_LIBRARY uriparser
+	HINTS ${_prefix}
+    PATH_SUFFIXES lib
+    )
+
+find_package_handle_standard_args(UriParser
+    REQUIRED_VARS UriParser_INCLUDE_DIR
+                  UriParser_LIBRARY
+    VERSION_VAR   UriParser_VERSION_STRING)
+
+if(UriParser_FOUND)
+	SET(UriParser_INCLUDE_DIRS ${UriParser_INCLUDE_DIR})
+	SET(UriParser_LIBRARIES ${UriParser_LIBRARY})
 endif()
 
-set(URIPARSER_LIBRARY ${LIB_LIB_FILENAME} PARENT_SCOPE)
-#compatiblity
-set(URIPARSER_LIBRARIES ${LIB_LIB_FILENAME} PARENT_SCOPE)
-
-set(URIPARSER_FOUND TRUE)
+MARK_AS_ADVANCED(UriParser_INCLUDE_DIR UriParser_LIBRARY)
