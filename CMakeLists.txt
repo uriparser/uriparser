@@ -35,10 +35,11 @@ IF(MSVC)
     ENDIF(WIN32_USE_MP)
 ENDIF(MSVC)
 
+include(CMakePackageConfigHelpers)
 include(GNUInstallDirs OPTIONAL)
 include(GenerateExportHeader)
-include (CheckIncludeFile)
-include (CheckFunctionExists)
+include(CheckIncludeFile)
+include(CheckFunctionExists)
 
 check_include_file("wchar.h" HAVE_WCHAR_H)
 check_include_file("stdio.h" HAVE_STDIO_H)
@@ -146,14 +147,18 @@ if(NOT MSVC)
 endif()
 
 # Cmake configure files
-configure_file(cmake/UriParserConfig.cmake.in
-  "${CMAKE_BINARY_DIR}/UriParserConfig.cmake" @ONLY)
-configure_file(cmake/UriParserConfigVersion.cmake.in
-  "${CMAKE_BINARY_DIR}/UriParserConfigVersion.cmake" @ONLY)
+configure_package_config_file(cmake/UriParserConfig.cmake.in
+    "${CMAKE_BINARY_DIR}/UriParserConfig.cmake"
+    INSTALL_DESTINATION ${INSTALL_CMAKE_DIR})
+write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/UriParserConfigVersion.cmake"
+    VERSION ${URIPARSER_VERSION}
+    COMPATIBILITY AnyNewerVersion)
 install(FILES
-  "${CMAKE_BINARY_DIR}/UriParserConfig.cmake"
-  "${CMAKE_BINARY_DIR}/UriParserConfigVersion.cmake"
-  DESTINATION ${INSTALL_CMAKE_DIR} )
+    "${CMAKE_BINARY_DIR}/UriParserConfig.cmake"
+    "${CMAKE_BINARY_DIR}/UriParserConfigVersion.cmake"
+    DESTINATION ${INSTALL_CMAKE_DIR}
+  )
 
 # Install the export set for use with the install-tree
 # install(EXPORT UriParserTargets DESTINATION ${INSTALL_CMAKE_DIR})
