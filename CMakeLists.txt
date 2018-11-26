@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(UriParser C)
+project(UriParser)
 
 set(VERSION_STRING "0.9.0")
 IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
