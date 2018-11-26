@@ -34,7 +34,8 @@ pkginclude_HEADERS = \
 	include/uriparser/UriDefsAnsi.h \
 	include/uriparser/UriDefsConfig.h \
 	include/uriparser/UriDefsUnicode.h \
-	include/uriparser/UriIp4.h
+	include/uriparser/UriIp4.h \
+    include/uriparser/uriparser_export.h
 
 
 liburiparser_la_LDFLAGS = -version-info 1:23:0
