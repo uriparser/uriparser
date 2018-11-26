@@ -3,7 +3,7 @@ exec_prefix=@CMAKE_INSTALL_FULL_BINDIR@
 libdir=@CMAKE_INSTALL_FULL_LIBDIR@
 includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
 
-Name: liburiparser
+Name: uriparser
 Description: URI parsing and handling library
 
 Version: @VERSION@

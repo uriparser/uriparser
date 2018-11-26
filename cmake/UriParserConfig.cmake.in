@@ -33,13 +33,13 @@ get_filename_component(_dir "${CMAKE_CURRENT_LIST_FILE}/.." PATH)
 get_filename_component(_prefix "${_dir}" ABSOLUTE)
 
 find_path(UriParser_INCLUDE_DIR Uri.h
-	HINTS 
+    HINTS 
         ${_prefix}
     PATH_SUFFIXES
         include/uriparser
     )
 find_library(UriParser_LIBRARY uriparser
-	HINTS ${_prefix}
+    HINTS ${_prefix}
     PATH_SUFFIXES lib
     )
 
@@ -49,8 +49,8 @@ find_package_handle_standard_args(UriParser
     VERSION_VAR   UriParser_VERSION_STRING)
 
 if(UriParser_FOUND)
-	SET(UriParser_INCLUDE_DIRS ${UriParser_INCLUDE_DIR})
-	SET(UriParser_LIBRARIES ${UriParser_LIBRARY})
+    SET(UriParser_INCLUDE_DIRS ${UriParser_INCLUDE_DIR})
+    SET(UriParser_LIBRARIES ${UriParser_LIBRARY})
 endif()
 
 MARK_AS_ADVANCED(UriParser_INCLUDE_DIR UriParser_LIBRARY)

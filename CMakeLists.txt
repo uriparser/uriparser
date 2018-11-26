@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project(UriParser C)
 
-set(VERSION_STRING "0.8.6")
+set(VERSION_STRING "0.9.0")
 IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
     FIND_PROGRAM(GIT git)
     IF(GIT)
@@ -11,27 +11,28 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
             COMMAND ${GIT} describe --tags
             OUTPUT_VARIABLE GIT_VERSION  OUTPUT_STRIP_TRAILING_WHITESPACE
         )
-        if(NOT VERSION_STRING)
+        if(NOT GIT_VERSION)
                 EXECUTE_PROCESS(
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                     COMMAND ${GIT} rev-parse --short HEAD
                     OUTPUT_VARIABLE GIT_VERSION  OUTPUT_STRIP_TRAILING_WHITESPACE
                 )
         endif()
+        string(REPLACE "uriparser-" "" GIT_VERSION ${GIT_VERSION})
         SET(VERSION_STRING ${GIT_VERSION})
     ENDIF(GIT)
 ENDIF()
 MESSAGE("Version: ${VERSION_STRING}\n")
 set(URIPARSER_VERSION ${VERSION_STRING})
 
-option(BUILD_TESTS "Build demos." OFF)
+option(BUILD_TESTS "Build tests." OFF)
 
 IF(MSVC)
     # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
-    OPTION(WIN32_USE_MP "Set to ON to build OpenSceneGraph with the /MP option (Visual Studio 2005 and above)." ON)
+    OPTION(WIN32_USE_MP "Set to ON to build with the /MP option (Visual Studio 2005 and above)." ON)
     MARK_AS_ADVANCED(WIN32_USE_MP)
     IF(WIN32_USE_MP)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+        add_compile_options(/MP)
     ENDIF(WIN32_USE_MP)
 ENDIF(MSVC)
 
@@ -43,6 +44,22 @@ include(CheckFunctionExists)
 
 check_include_file("wchar.h" HAVE_WCHAR_H)
 check_include_file("stdio.h" HAVE_STDIO_H)
+check_include_file("assert.h" HAVE_ASSERT_H)
+check_include_file("config.h" HAVE_CONFIG_H)
+check_include_file("ctype.h" HAVE_CTYPE_H)
+check_include_file("errno.h" HAVE_ERRNO_H)
+check_include_file("limits.h" HAVE_LIMITS_H)
+check_include_file("stdlib.h" HAVE_STDLIB_H)
+check_include_file("string.h" HAVE_STRING_H)
+
+if(WIN32)
+    check_include_file("winsock2.h" HAVE_WINSOCK2_H)
+    check_include_file("ws2tcpip.h" HAVE_WS2TCPIP_H)
+else(WIN32)
+    check_include_file("sys/socket.h" HAVE_SOCKET_H)
+    check_include_file("arpa/inet.h" HAVE_INET_H)
+    check_include_file("netinet/in.h" HAVE_IN_H)
+endif(WIN32)
 
 check_function_exists(wprintf HAVE_WPRINTF)
 
