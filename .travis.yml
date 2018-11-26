@@ -22,7 +22,6 @@ script:
   - cmake --build . --target install
   - cd ..
   - rm -fr build 
-  - set -e
   - bash autogen.sh
   - bash configure
   - make distcheck
