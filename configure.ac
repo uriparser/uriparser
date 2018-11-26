@@ -1,13 +1,15 @@
 AC_PREREQ(2.61)
-AC_INIT([uriparser], [0.8.6])
+AC_INIT([uriparser], [0.9.0], [https://github.com/uriparser/uriparser/issues],
+		[uriparser], [https://uriparser.github.io/])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.10.1 foreign dist-zip dist-bzip2 no-dist-gzip subdir-objects])
 
 AC_CONFIG_MACRO_DIR([m4])
 
+AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
 AC_PROG_CXX
-AC_PROG_LIBTOOL
+LT_INIT
 AC_HEADER_STDC
 
 
@@ -20,43 +22,17 @@ esac
 AM_CONDITIONAL([WIN32], test "$WIN32" = "yes")
 
 
-## Check for wprintf
-AC_MSG_CHECKING(for wprintf)
-AC_LINK_IFELSE([AC_LANG_SOURCE([
-	#include <stdio.h>
-	#include <wchar.h>
-	int main() {
-	    wprintf((wchar_t *)0, 0);
-	    return 0;
-	}
-])],[
-	AC_DEFINE([HAVE_WPRINTF],, [Define if your C runtime provides the wprintf function.])
-	AC_MSG_RESULT(yes)
-],[
-	AC_MSG_RESULT(no)
-])
-
-
-## Option for URI_SIZEDOWN
-AC_ARG_ENABLE(sizedown, [
-==============================================================================
-Extra options:
-AS_HELP_STRING(
-	[--enable-sizedown], [save space whereever possible])
-AS_HELP_STRING(
-	[], [(resulting in slower code)])], [
-	URI_SIZE_DOWN_YESNO=${enableval}
-	if test ${enableval} = yes ; then
-		CPPFLAGS="${CPPFLAGS} -DURI_SIZEDOWN"
-	fi
-],[
-	URI_SIZE_DOWN_YESNO=no
-])
+## Check for functions
+AC_CHECK_FUNCS([wprintf])
+AC_CHECK_FUNCS([reallocarray])  # needs AC_USE_SYSTEM_EXTENSIONS (#define _GNU_SOURCE)
 
 
 ## Option --disable-test
-AC_ARG_ENABLE(test, [AS_HELP_STRING(
-	[--disable-test], [disable 'make check' and libcpptest dependency]
+AC_ARG_ENABLE(test, [
+==============================================================================
+Extra options:
+AS_HELP_STRING(
+	[--disable-test], [disable 'make check' and libgtest dependency]
 )], [
 	URI_TEST_YESNO=${enableval}
 ],[
@@ -65,12 +41,12 @@ AC_ARG_ENABLE(test, [AS_HELP_STRING(
 AM_CONDITIONAL([URI_TEST_ENABLED], [test "${URI_TEST_YESNO}" = "yes"])
 
 
-## Check for CppTest
+## Check for Googletest
 if test "${URI_TEST_YESNO}" = "yes"; then
-	PKG_CHECK_MODULES([CPPTEST], [
-		libcpptest >= 1.1.0
+	PKG_CHECK_MODULES([GTEST], [
+		gtest >= 1.8.1
 	], [], [
-		AC_MSG_ERROR([Please install libcpptest 1.1.0 or later.
+		AC_MSG_ERROR([Please install Googletest 1.8.1 or later.
 			Alternatively, you could pass --disable-test to the call to configure.
 			However, it is not recommended to disable the test suite.])
 	])
@@ -158,23 +134,19 @@ AC_CONFIG_FILES([
 	doc/Doxyfile
 ])
 AC_CONFIG_FILES([doc/release.sh], [chmod a+x doc/release.sh])
-AC_CONFIG_HEADERS([test/config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_OUTPUT
 
-cat <<CONFIG
+cat <<INFO
 ===========================================================================
 
 Configuration
   Prefix ............... ${prefix}
-  Size down ............ ${URI_SIZE_DOWN_YESNO}
   Code for char * ...... ${CHAR_YESNO}
   Code for wchar_t * ... ${WCHAR_T_YESNO}
   Test suite ........... ${URI_TEST_YESNO}
   Documentation ........ ${URI_DOC_YESNO}
 
-CONFIG
-
-cat <<"INFO"
 Continue with
   make
   make check
