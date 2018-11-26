@@ -105,6 +105,8 @@ set(URIPARSER_SRCS
   src/UriRecompose.c
   src/UriResolve.c
   src/UriShorten.c
+  src/UriMemory.c
+  src/UriMemory.h
   )
 
 set(URIPARSER_INCS

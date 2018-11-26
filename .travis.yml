@@ -6,16 +6,9 @@ dist: trusty
 
 addons:
   apt:
-    sources:
-    # Clang 7:
-      - llvm-toolchain-trusty-7
-      - ubuntu-toolchain-r-test
     packages:
-      - clang-7
       - doxygen
       - graphviz
-    # For building gtest:
-      - cmake
 
 install:
   - GTEST_VERSION=1.8.1
