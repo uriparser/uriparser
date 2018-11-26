@@ -61,6 +61,10 @@ else(WIN32)
     check_include_file("netinet/in.h" HAVE_IN_H)
 endif(WIN32)
 
+if(BUILD_TESTS)
+    check_include_file("gtest/gtest.h" HAVA_GTEST_H)
+endif(BUILD_TESTS)
+
 check_function_exists(wprintf HAVE_WPRINTF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
