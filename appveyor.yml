@@ -1,13 +1,13 @@
 #TODO: Change version
-version: '0.0.1.{build}'
+version: '0.9.0.{build}'
 
 configuration:
   - Release
   - Debug
 
 platform:
-  - x86
-  - x64
+  - 32
+  - 64
 
 environment:
   matrix:
@@ -25,17 +25,40 @@ environment:
   - GENERATORS: "MSYS Makefiles"
 
 init:
-  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="x86" SET PATH=C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin;%PATH%;C:\MinGW\msys\1.0\bin
-  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="x64" SET PATH=C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%;C:\MinGW\msys\1.0\bin
   
 install:
-
+  - for /f "delims=" %%i in ('git describe --tags') do (set BUILD_VERSION=%%i)
+  - if "%BUILD_VERSION%" == "" for /f "delims=" %%i in ('git rev-parse HEAD') do (set BUILD_VERSION=%%i) 
+  - echo BUILD_VERSION=%BUILD_VERSION%
+  
+  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="32" SET PATH=C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin;C:\msys64\usr\bin;%PATH%
+  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="64" SET PATH=C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin;C:\msys64\usr\bin;%PATH%
+  - if NOT "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="64" set GENERATORS=%GENERATORS% Win64
+  
 before_build:
   
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
-  - echo "cmake .. -G%GENERATORS% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\install "
+  - echo "cmake .. -G\"%GENERATORS%\" -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\install "
   - cmake .. -G"%GENERATORS%" -DCMAKE_INSTALL_PREFIX="%APPVEYOR_BUILD_FOLDER%\install" 
   - cmake --build . --target install --config %CONFIGURATION%
+
+artifacts:
+  - path: install
+    name: uriparser_$(GENERATORS)_$(platform)_$(CONFIGURATION)_$(BUILD_VERSION)
+    type: zip
+
+branches:
+  only:
+    - master
+
+deploy:
+  provider: GitHub
+  #token: https://github.com/settings/tokens encode token: https://ci.appveyor.com/tools/encrypt
+  auth_token:
+    secure:  #TODO: set your token
+  on:
+    appveyor_repo_tag: true        # deploy on tag push only
+    configuration: Release
