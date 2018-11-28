@@ -25,17 +25,6 @@ ENDIF()
 MESSAGE("Version: ${VERSION_STRING}\n")
 set(URIPARSER_VERSION ${VERSION_STRING})
 
-option(BUILD_TESTS "Build tests." OFF)
-
-IF(MSVC)
-    # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
-    OPTION(WIN32_USE_MP "Set to ON to build with the /MP option (Visual Studio 2005 and above)." ON)
-    MARK_AS_ADVANCED(WIN32_USE_MP)
-    IF(WIN32_USE_MP)
-        add_compile_options(/MP)
-    ENDIF(WIN32_USE_MP)
-ENDIF(MSVC)
-
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs OPTIONAL)
 include(GenerateExportHeader)
@@ -61,34 +50,9 @@ else(WIN32)
     check_include_file("netinet/in.h" HAVE_IN_H)
 endif(WIN32)
 
-if(BUILD_TESTS)
-    check_include_file("gtest/gtest.h" HAVA_GTEST_H)
-endif(BUILD_TESTS)
-
 check_function_exists(wprintf HAVE_WPRINTF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
-
-option(ENABLE_SIZEDOWN  "enable size down: -DURI_SIZEDOWN" ON)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DURI_SIZEDOWN")
-
-option(DISABLE_CHAR "disable char: -DURI_NO_ANSI" OFF)
-if(DISABLE_CHAR)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DURI_NO_ANSI")
-endif()
-
-option(DISABLE_WCHAR_T "disable wchar_t: -DURI_NO_UNICODE " OFF)
-if(DISABLE_WCHAR_T)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DURI_NO_UNICODE")
-endif()
-
-if(DISABLE_WCHAR_T AND DISABLE_CHAR)
-   message(FATAL_ERROR "DISABLE_WCHAR_T and DISABLE_CHAR are mutually exclusive")
-endif()
-
-if(NOT (DISABLE_WCHAR_T OR DISABLE_CHAR) AND BUILD_TESTS)
-    enable_testing()
-endif()
 
 set(URIPARSER_SRCS
   src/UriCommon.c
@@ -127,6 +91,27 @@ add_library(${LIB_NAME} ${URIPARSER_SRCS})
 set_target_properties(${LIB_NAME} PROPERTIES SOVERSION ${VERSION_STRING})
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR})
 
+option(DISABLE_CHAR "disable char: -DURI_NO_ANSI" OFF)
+option(DISABLE_WCHAR_T "disable wchar_t: -DURI_NO_UNICODE " OFF)
+if(DISABLE_WCHAR_T AND DISABLE_CHAR)
+   message(FATAL_ERROR "DISABLE_WCHAR_T and DISABLE_CHAR are mutually exclusive")
+endif()
+if(DISABLE_CHAR)
+    add_compile_options(-DURI_NO_ANSI)
+endif()
+if(DISABLE_WCHAR_T)
+    add_compile_options(-DURI_NO_UNICODE)
+endif()
+
+IF(MSVC)
+    # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
+    OPTION(WIN32_USE_MP "Set to ON to build with the /MP option (Visual Studio 2005 and above)." ON)
+    MARK_AS_ADVANCED(WIN32_USE_MP)
+    IF(WIN32_USE_MP)
+        add_compile_options(/MP)
+    ENDIF(WIN32_USE_MP)
+ENDIF(MSVC)
+
 if (BUILD_SHARED_LIBS)
     if (CMAKE_COMPILER_IS_GNUCXX)
        # Just setting CMAKE_POSITION_INDEPENDENT_CODE should be enough to set
@@ -158,15 +143,15 @@ install(FILES
             ${CMAKE_CURRENT_BINARY_DIR}/uriparser_export.h
         DESTINATION
             "${CMAKE_INSTALL_INCLUDEDIR}/uriparser"
-        )
+    )
 
 # PkgConfig configure file
 if(NOT MSVC)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/liburiparser.pc.in
         ${CMAKE_CURRENT_BINARY_DIR}/liburiparser.pc @ONLY)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/liburiparser.pc
-        DESTINATION
-        "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+            DESTINATION
+                "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 endif()
 
 # Cmake configure files
@@ -183,9 +168,6 @@ install(FILES
     DESTINATION ${INSTALL_CMAKE_DIR}
   )
 
-# Install the export set for use with the install-tree
-# install(EXPORT UriParserTargets DESTINATION ${INSTALL_CMAKE_DIR})
-
 # Unistall
 CONFIGURE_FILE(
     "${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
@@ -193,3 +175,23 @@ CONFIGURE_FILE(
     IMMEDIATE @ONLY)
 ADD_CUSTOM_TARGET(uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake")
+
+# Test
+option(BUILD_TESTS "Build tests." ON)
+if(BUILD_TESTS)
+    enable_testing()
+    find_package(GTest 1.8.1 REQUIRED NO_CMAKE_PATH)
+
+    check_function_exists(asprintf HAVE_ASPRINTF)
+    
+    SET(TEST_SOURCES
+        test/FourSuite.cpp 
+        test/MemoryManagerSuite.cpp 
+        test/VersionSuite.cpp 
+        test/test.cpp)
+    add_executable(testUriParser ${TEST_SOURCES})
+    target_link_libraries(testUriParser GTest::gtest ${LIB_NAME})
+    target_compile_definitions(testUriParser PUBLIC PACKAGE_VERSION="${GTest_VERSION}")
+
+    add_test(AlltestUriParser testUriParser)
+endif(BUILD_TESTS)

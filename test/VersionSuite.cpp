@@ -21,12 +21,13 @@
 #include <gtest/gtest.h>
 
 #ifndef _GNU_SOURCE
-# define _GNU_SOURCE  // for asprintf
+    #define _GNU_SOURCE  // for asprintf
 #endif
 #include <stdio.h>
 
-
+#ifndef PACKAGE_VERSION
 #include <config.h>  // for PACKAGE_VERSION
+#endif
 #include <uriparser/UriBase.h>
 
 

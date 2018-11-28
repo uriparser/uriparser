@@ -10,20 +10,32 @@ addons:
       - doxygen
       - graphviz
 
+cache:
+  directories:
+    - $HOME/download
+
+init:
+  - export CPU_NUM=`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
+  
 install:
-  - GTEST_VERSION=1.8.1
-    ; GTEST_PREFIX=~/.local/
-    ; wget https://github.com/google/googletest/archive/release-${GTEST_VERSION}.tar.gz
-    && tar xf release-${GTEST_VERSION}.tar.gz
-    && ( cd googletest-release-${GTEST_VERSION}/
-      && cmake -DCVF_VERSION=${GTEST_VERSION} -DCMAKE_INSTALL_PREFIX:PATH=${GTEST_PREFIX} .
-      && make
-      && make install )
-    && export PKG_CONFIG_PATH="$(find "${GTEST_PREFIX}" -type d -name pkgconfig)"
+  - | 
+    GTEST_VERSION=1.8.1 
+    GTEST_PREFIX=~/.local/ 
+    if [ ! -f $HOME/download/release-${GTEST_VERSION}.tar.gz ]; then 
+        mkdir -p $HOME/download
+        wget -O $HOME/download/release-${GTEST_VERSION}.tar.gz https://github.com/google/googletest/archive/release-${GTEST_VERSION}.tar.gz 
+    fi
+    tar xf $HOME/download/release-${GTEST_VERSION}.tar.gz -C .
+    cd googletest-release-${GTEST_VERSION}/ 
+    cmake -DCVF_VERSION=${GTEST_VERSION} -DCMAKE_INSTALL_PREFIX:PATH=${GTEST_PREFIX} . 
+    cmake --build . --target install 
+    export PKG_CONFIG_PATH="$(find "${GTEST_PREFIX}" -type d -name pkgconfig)" 
+    
   - sed 's,-I,-isystem ,g' -i "${PKG_CONFIG_PATH}"/gtest.pc  # suppress compile warnings
   
 script:
   - set -e
+  - cd $TRAVIS_BUILD_DIR
   - mkdir -p build
   - cd build
   - cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/install
@@ -35,7 +47,7 @@ script:
   - mkdir -p build
   - cd build
   - ../configure 
-  - make all
-  - make check
+  - make all -j
+  - make check -j${CPU_NUM}
   - cat test/uriparser_test.log
-  - make distcheck  # without AddressSanitizer
+  - make distcheck -j${CPU_NUM} # without AddressSanitizer

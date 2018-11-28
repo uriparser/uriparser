@@ -1,9 +1,12 @@
 #TODO: Change version
 version: '0.9.0.{build}'
 
+cache:
+  - c:\projects\uriparser\download
+    
 configuration:
-  - Release
   - Debug
+  - Release
 
 platform:
   - 32
@@ -11,43 +14,55 @@ platform:
 
 environment:
   matrix:
-  - GENERATORS: "Visual Studio 15 2017"
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - BUILD_TARGERT: windows_mingw
+    TOOLCHAIN_VERSION: 630
+    BUILD_TESTS: ON
+    TEST_AUTOMAKE: ON
+    
+  - BUILD_TARGERT: windows_mingw
+    TOOLCHAIN_VERSION: 530
+    BUILD_TESTS: ON
 
-  - GENERATORS: "Visual Studio 14 2015" 
+  - BUILD_TARGERT: android_arm
+    TOOLCHAIN_VERSION: 4.9
+    ANDROID_API: 18
   
-  - GENERATORS: "Visual Studio 12 2013"
-  
-  - GENERATORS: "Visual Studio 11 2012"
-   
-  - GENERATORS: "Visual Studio 10 2010"
+  - BUILD_TARGERT: android_x86
+    TOOLCHAIN_VERSION: 4.9
+    ANDROID_API: 28
+    
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    TOOLCHAIN_VERSION: 15
+    BUILD_TARGERT: windows_msvc
+    BUILD_TESTS: ON
 
-  - GENERATORS: "MSYS Makefiles"
+  - BUILD_TARGERT: windows_msvc
+    TOOLCHAIN_VERSION: 14
 
+  - BUILD_TARGERT: windows_msvc
+    TOOLCHAIN_VERSION: 12
+
+  - BUILD_TARGERT: windows_msvc
+    TOOLCHAIN_VERSION: 11
+
+  - BUILD_TARGERT: windows_msvc
+    TOOLCHAIN_VERSION: 9
+    
 init:
   
 install:
   - for /f "delims=" %%i in ('git describe --tags') do (set BUILD_VERSION=%%i)
   - if "%BUILD_VERSION%" == "" for /f "delims=" %%i in ('git rev-parse HEAD') do (set BUILD_VERSION=%%i) 
   - echo BUILD_VERSION=%BUILD_VERSION%
-  
-  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="32" SET PATH=C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin;C:\msys64\usr\bin;%PATH%
-  - if "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="64" SET PATH=C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin;C:\msys64\usr\bin;%PATH%
-  - if NOT "%GENERATORS%"=="MSYS Makefiles" if "%PLATFORM%"=="64" set GENERATORS=%GENERATORS% Win64
-  
+
 before_build:
   
 build_script:
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - mkdir build
-  - cd build
-  - echo "cmake .. -G\"%GENERATORS%\" -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\install "
-  - cmake .. -G"%GENERATORS%" -DCMAKE_INSTALL_PREFIX="%APPVEYOR_BUILD_FOLDER%\install" 
-  - cmake --build . --target install --config %CONFIGURATION%
+  - C:\msys64\usr\bin\bash.exe -e -l -c "bash /c/projects/uriparser/ci/build.sh /c/projects/uriparser"
 
 artifacts:
   - path: install
-    name: uriparser_$(GENERATORS)_$(platform)_$(CONFIGURATION)_$(BUILD_VERSION)
+    name: uriparser$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(platform)_$(CONFIGURATION)_$(BUILD_VERSION)
     type: zip
 
 branches:
