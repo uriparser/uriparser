@@ -16,7 +16,7 @@
 #      UriParser_DEFINITIONS    - Set definitions
 #      UriParser_VERSION_STRING - the version of UriParser found (since CMake 2.8.8)
 
-set(UriParser_VERSION_STRING @BUILD_VERSION@)
+set(UriParser_VERSION_STRING @URIPARSER_VERSION@)
 
 if(NOT MSVC)
     find_package(PkgConfig)
@@ -29,8 +29,8 @@ if(NOT MSVC)
 endif()
 
 # Compute and install package configuration and version files
-get_filename_component(_dir "${CMAKE_CURRENT_LIST_FILE}/.." PATH)
-get_filename_component(_prefix "${_dir}" ABSOLUTE)
+get_filename_component(_dir "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_prefix "${_dir}/.." ABSOLUTE)
 
 find_path(UriParser_INCLUDE_DIR Uri.h
     HINTS 
