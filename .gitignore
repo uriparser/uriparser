@@ -24,3 +24,6 @@ Makefile.in
 /uriparser-*.tar.bz2
 /uriparser-*.zip
 /uriparse
+cmake-build-*/
+build*/
+.idea/
