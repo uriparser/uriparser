@@ -36,6 +36,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <uriparser/Uri.h>
@@ -43,8 +44,10 @@
 #ifdef _WIN32
 # include <winsock2.h>
 # include <ws2tcpip.h>
-WINSOCK_API_LINKAGE const char WSAAPI inet_ntop(
-		int af, const void *src, char *dst, socklen_t size);
+# if _WIN32_WINNT < 0x0600
+WINSOCK_API_LINKAGE LPCSTR WSAAPI inet_ntop(
+		INT Family, PVOID pAddr, LPSTR pStringBuf, size_t StringBufSize);
+# endif
 #else
 # include <sys/socket.h>
 # include <arpa/inet.h>
