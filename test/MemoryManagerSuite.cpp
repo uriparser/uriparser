@@ -19,9 +19,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <cassert>
-#include <cerrno>
-#include <cstring>  // memcpy
+#include <assert.h>
+#include <errno.h>
+#include <string.h>  // memcpy
 #include <gtest/gtest.h>
 
 #include <uriparser/Uri.h>
