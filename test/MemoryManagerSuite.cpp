@@ -25,7 +25,11 @@
 #include <gtest/gtest.h>
 
 #include <uriparser/Uri.h>
+
+// For defaultMemoryManager
+extern "C" {
 #include "../src/UriMemory.h"
+}
 
 
 namespace {
