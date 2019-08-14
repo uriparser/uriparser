@@ -64,7 +64,7 @@ option(URIPARSER_BUILD_TESTS "Build test suite (requires GTest >=1.8.0)" ON)
 option(URIPARSER_BUILD_TOOLS "Build tools (e.g. CLI \"uriparse\")" ON)
 option(URIPARSER_BUILD_CHAR "Build code supporting data type 'char'" ON)
 option(URIPARSER_BUILD_WCHAR_T "Build code supporting data type 'wchar_t'" ON)
-option(URIPARSER_INSTALL "Enable installation of uriparser" ON)
+option(URIPARSER_ENABLE_INSTALL "Enable installation of uriparser" ON)
 set(URIPARSER_MSVC_RUNTIME "" CACHE STRING "Use of specific runtime library (/MT /MTd /MD /MDd) with MSVC")
 
 if(NOT URIPARSER_BUILD_CHAR AND NOT URIPARSER_BUILD_WCHAR_T)
@@ -87,6 +87,11 @@ if(MSVC AND URIPARSER_MSVC_RUNTIME)
     uriparser_apply_msvc_runtime_to(CMAKE_C_FLAGS_RELEASE)
 endif()
 
+macro(uriparser_install)
+    if(URIPARSER_ENABLE_INSTALL)
+        install(${ARGN})
+    endif()
+endmacro()
 
 #
 # Compiler checks
@@ -185,26 +190,24 @@ target_include_directories(uriparser
         ${CMAKE_CURRENT_BINARY_DIR}  # for config.h
 )
 
-if(URIPARSER_INSTALL)
-    install(
-        TARGETS
-            uriparser
-        EXPORT
-            uriparser
-        ARCHIVE
-            DESTINATION
-                ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY
-            DESTINATION
-                ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME
-            DESTINATION
-                ${CMAKE_INSTALL_BINDIR}
-        PUBLIC_HEADER
-            DESTINATION
-                ${CMAKE_INSTALL_INCLUDEDIR}/uriparser
-    )
-endif()
+uriparser_install(
+	TARGETS
+		uriparser
+	EXPORT
+		uriparser
+	ARCHIVE
+		DESTINATION
+			${CMAKE_INSTALL_LIBDIR}
+	LIBRARY
+		DESTINATION
+			${CMAKE_INSTALL_LIBDIR}
+	RUNTIME
+		DESTINATION
+			${CMAKE_INSTALL_BINDIR}
+	PUBLIC_HEADER
+		DESTINATION
+			${CMAKE_INSTALL_INCLUDEDIR}/uriparser
+)
 
 #
 # C command line tool
@@ -232,14 +235,12 @@ if(URIPARSER_BUILD_TOOLS)
         target_link_libraries(uriparse PUBLIC ws2_32)
     endif()
 
-    if(URIPARSER_INSTALL)
-        install(
-            TARGETS
-                uriparse
-            DESTINATION
-                ${CMAKE_INSTALL_BINDIR}
-        )
-    endif()
+    uriparser_install(
+        TARGETS
+            uriparse
+        DESTINATION
+            ${CMAKE_INSTALL_BINDIR}
+    )
 endif()
 
 #
@@ -337,23 +338,19 @@ if(URIPARSER_BUILD_DOCS)
         VERBATIM
     )
 
-    if(URIPARSER_INSTALL)
-        install(
-            DIRECTORY
-                ${CMAKE_CURRENT_BINARY_DIR}/doc/html
-            DESTINATION
-                ${CMAKE_INSTALL_DOCDIR}
-        )
-    endif()
+	uriparser_install(
+		DIRECTORY
+			${CMAKE_CURRENT_BINARY_DIR}/doc/html
+		DESTINATION
+			${CMAKE_INSTALL_DOCDIR}
+	)
     if(QHG_LOCATION)
-	    if(URIPARSER_INSTALL)
-            install(
-                FILES
-                    ${CMAKE_CURRENT_BINARY_DIR}/doc/uriparser-${PROJECT_VERSION}.qch
-                DESTINATION
-                    ${CMAKE_INSTALL_DOCDIR}
-            )
-        endif()
+		uriparser_install(
+			FILES
+				${CMAKE_CURRENT_BINARY_DIR}/doc/uriparser-${PROJECT_VERSION}.qch
+			DESTINATION
+				${CMAKE_INSTALL_DOCDIR}
+		)
     endif()
 endif()
 
@@ -377,37 +374,33 @@ export(
         cmake/uriparser-targets.cmake  # not going to be installed
 )
 
-if(URIPARSER_INSTALL)
-    install(
-        FILES
-            ${CMAKE_CURRENT_BINARY_DIR}/cmake/uriparser-config.cmake
-            ${CMAKE_CURRENT_BINARY_DIR}/cmake/uriparser-config-version.cmake
-        DESTINATION
-            ${CMAKE_INSTALL_LIBDIR}/cmake/uriparser-${PROJECT_VERSION}/
-    )
-    install(
-        EXPORT
-            uriparser
-        DESTINATION
-            ${CMAKE_INSTALL_LIBDIR}/cmake/uriparser-${PROJECT_VERSION}/
-        NAMESPACE
-            uriparser::
-    )
-endif()
+uriparser_install(
+	FILES
+		${CMAKE_CURRENT_BINARY_DIR}/cmake/uriparser-config.cmake
+		${CMAKE_CURRENT_BINARY_DIR}/cmake/uriparser-config-version.cmake
+	DESTINATION
+		${CMAKE_INSTALL_LIBDIR}/cmake/uriparser-${PROJECT_VERSION}/
+)
+uriparser_install(
+	EXPORT
+		uriparser
+	DESTINATION
+		${CMAKE_INSTALL_LIBDIR}/cmake/uriparser-${PROJECT_VERSION}/
+	NAMESPACE
+		uriparser::
+)
 
 #
 # pkg-config file
 #
 if(NOT MSVC)
     configure_file(liburiparser.pc.in liburiparser.pc @ONLY)
-    if(URIPARSER_INSTALL)
-        install(
-            FILES
-                ${CMAKE_CURRENT_BINARY_DIR}/liburiparser.pc
-            DESTINATION
-                ${CMAKE_INSTALL_LIBDIR}/pkgconfig/
-        )
-	endif()
+	uriparser_install(
+		FILES
+			${CMAKE_CURRENT_BINARY_DIR}/liburiparser.pc
+		DESTINATION
+			${CMAKE_INSTALL_LIBDIR}/pkgconfig/
+	)
 endif()
 
 #
