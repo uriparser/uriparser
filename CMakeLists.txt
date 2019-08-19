@@ -373,7 +373,6 @@ export(
     FILE
         cmake/uriparser-targets.cmake  # not going to be installed
 )
-
 uriparser_install(
     FILES
         ${CMAKE_CURRENT_BINARY_DIR}/cmake/uriparser-config.cmake
