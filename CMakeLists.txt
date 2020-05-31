@@ -38,7 +38,7 @@ cmake_minimum_required(VERSION 3.3)
 
 project(uriparser
     VERSION
-        0.9.4
+        0.9.5
     LANGUAGES
         C
 )
