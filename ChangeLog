@@ -2,6 +2,11 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
+20xx-xx-x -- x.x.x
+
+  * Fixed: MinGW: Fix name of static library (GitHub #90)
+      Thanks to SpaceIm for the patch and Sandro Mani for review!
+
 2020-05-31 -- 0.9.4
 
   * Fixed: testrunner: No longer crashes when compiled with NDEBUG (GitHub #67)
