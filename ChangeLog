@@ -6,6 +6,10 @@ NOTE: uriparser is looking for help with a few things:
 
   * Fixed: MinGW: Fix name of static library (GitHub #90)
       Thanks to SpaceIm for the patch and Sandro Mani for review!
+  * Improved: pkg-config: Use ${prefix} and ${exec_prefix} to ease
+      overriding variables using --define-variable=NAME=VALUE,
+      e.g. as done on OpenWRT (GitHub #91)
+      Thanks to Karel Kočí for the pull request!
 
 2020-05-31 -- 0.9.4
 
