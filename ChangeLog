@@ -6,6 +6,9 @@ NOTE: uriparser is looking for help with a few things:
 
   * Fixed: MinGW: Fix name of static library (GitHub #90)
       Thanks to SpaceIm for the patch and Sandro Mani for review!
+  * Fixed: Use correct inline marker "__forceinline" for Intel C++ Compiler
+      (GitHub #93)
+      Thanks to jensenrichardson for the patch!
   * Improved: pkg-config: Use ${prefix} and ${exec_prefix} to ease
       overriding variables using --define-variable=NAME=VALUE,
       e.g. as done on OpenWRT (GitHub #91)
