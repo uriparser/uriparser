@@ -4,6 +4,10 @@ NOTE: uriparser is looking for help with a few things:
 
 20xx-xx-x -- x.x.x
 
+  * Fixed: Fix a bug regarding section "5.2.4. Remove Dot Segments"
+      of RFC 3986 that affected both normalization and reference resolution
+      with regard to trailing slashes.
+      Thanks to Dan Pape for the report!
   * Fixed: MinGW: Fix name of static library (GitHub #90)
       Thanks to SpaceIm for the patch and Sandro Mani for review!
   * Fixed: Use correct inline marker "__forceinline" for Intel C++ Compiler

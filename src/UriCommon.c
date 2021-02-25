@@ -328,15 +328,26 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 							 * NEW: head <----------- next */
 							walker->next->reserved = NULL;
 						} else {
-							/* First and only segment -> update head
-							 * OLD: head -> walker -> NULL
-							 * NEW: head -----------> NULL */
-							uri->pathHead = NULL;
+							if (uri->absolutePath) {
+								/* First and only segment -> update head
+								 * OLD: head -> walker -> NULL
+								 * NEW: head -----------> NULL */
+								uri->pathHead = NULL;
 
-							/* Last segment -> update tail
-							 * OLD: tail -> walker
-							 * NEW: tail -> NULL */
-							uri->pathTail = NULL;
+								/* Last segment -> update tail
+								 * OLD: tail -> walker
+								 * NEW: tail -> NULL */
+								uri->pathTail = NULL;
+							} else {
+								/* Re-use segment for "" path segment to represent trailing slash,
+								 * then update head and tail */
+								if (pathOwned && (walker->text.first != walker->text.afterLast)) {
+									memory->free(memory, (URI_CHAR *)walker->text.first);
+								}
+								walker->text.first = URI_FUNC(SafeToPointTo);
+								walker->text.afterLast = URI_FUNC(SafeToPointTo);
+								freeWalker = URI_FALSE;
+							}
 						}
 
 						if (freeWalker) {
