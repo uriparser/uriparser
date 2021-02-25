@@ -1504,6 +1504,32 @@ TEST(UriSuite, TestNormalizeSyntaxPath) {
 			L"http://a/b/c/../../..",
 			L"http://a/",
 			URI_NORMALIZE_PATH));
+
+	// .. and these are related
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"http://a/..",
+			L"http://a/",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"/..",
+			L"/",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"http://a/..///",
+			L"http://a///",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"http://a/..///..",
+			L"http://a//",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"a/b/c/../../..",
+			L"",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"a/b/../../c/..",
+			L"",
+			URI_NORMALIZE_PATH));
 }
 
 TEST(UriSuite, TestNormalizeCrashBug20080224) {
