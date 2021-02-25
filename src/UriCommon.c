@@ -314,16 +314,23 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 						}
 					} else {
 						URI_TYPE(PathSegment) * const anotherNextBackup = walker->next;
-						/* First segment -> update head pointer
-						 * OLD: head -> walker -> (next|NULL)
-						 * NEW: head -----------> (next|NULL) */
-						uri->pathHead = walker->next;
+						/* First segment */
 						if (walker->next != NULL) {
+							/* First segment of multiple -> update head
+							 * OLD: head -> walker -> next
+							 * NEW: head -----------> next */
+							uri->pathHead = walker->next;
+
 							/* Update parent link as well
 							 * OLD: head <- walker <- next
 							 * NEW: head <----------- next */
 							walker->next->reserved = NULL;
 						} else {
+							/* First and only segment -> update head
+							 * OLD: head -> walker -> NULL
+							 * NEW: head -----------> NULL */
+							uri->pathHead = NULL;
+
 							/* Last segment -> update tail
 							 * OLD: tail -> walker
 							 * NEW: tail -> NULL */
