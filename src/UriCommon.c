@@ -314,6 +314,8 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 						}
 					} else {
 						URI_TYPE(PathSegment) * const anotherNextBackup = walker->next;
+						int freeWalker = URI_TRUE;
+
 						/* First segment */
 						if (walker->next != NULL) {
 							/* First segment of multiple -> update head
@@ -337,10 +339,12 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 							uri->pathTail = NULL;
 						}
 
-						if (pathOwned && (walker->text.first != walker->text.afterLast)) {
-							memory->free(memory, (URI_CHAR *)walker->text.first);
+						if (freeWalker) {
+							if (pathOwned && (walker->text.first != walker->text.afterLast)) {
+								memory->free(memory, (URI_CHAR *)walker->text.first);
+							}
+							memory->free(memory, walker);
 						}
-						memory->free(memory, walker);
 
 						walker = anotherNextBackup;
 					}
