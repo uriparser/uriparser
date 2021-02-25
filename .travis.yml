@@ -2,18 +2,21 @@
 # Licensed under the MIT license
 
 language: cpp
-dist: xenial
+dist: bionic
 
 addons:
   apt:
     sources:
-    # Clang 8:
-      - llvm-toolchain-xenial-8
+    # Clang:
+      - sourceline: "deb https://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main"
+        key_url: "https://apt.llvm.org/llvm-snapshot.gpg.key"
       - ubuntu-toolchain-r-test
     packages:
-      - clang-8
       - cmake
       - lzip
+    # Clang and llvm-symbolizer:
+      - clang-11
+      - llvm-11
     # Documentation:
       - doxygen
       - graphviz
@@ -59,8 +62,8 @@ script:
         -Wdeprecated
         -Werror=deprecated
 
-        -DCMAKE_C_COMPILER=clang-8
-        -DCMAKE_CXX_COMPILER=clang++-8
+        -DCMAKE_C_COMPILER=clang-11
+        -DCMAKE_CXX_COMPILER=clang++-11
         -DCMAKE_C_FLAGS="${CFLAGS}"
         -DCMAKE_CXX_FLAGS="${CXXFLAGS}"
         -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}"
