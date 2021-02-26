@@ -44,7 +44,8 @@ script:
 
         -O1
         -g
-        -fsanitize=address
+        -fsanitize=address,undefined,leak
+        -fno-sanitize-recover=all
         -fno-omit-frame-pointer
 
         -Wall
