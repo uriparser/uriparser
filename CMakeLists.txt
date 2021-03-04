@@ -117,34 +117,34 @@ configure_file(src/UriConfig.h.in config.h)
 # C library
 #
 set(API_HEADER_FILES
-    include/uriparser/UriBase.h
-    include/uriparser/UriDefsAnsi.h
-    include/uriparser/UriDefsConfig.h
-    include/uriparser/UriDefsUnicode.h
-    include/uriparser/Uri.h
-    include/uriparser/UriIp4.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriBase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriDefsAnsi.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriDefsConfig.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriDefsUnicode.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/Uri.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriIp4.h
 )
 set(LIBRARY_CODE_FILES
-    src/UriCommon.c
-    src/UriCommon.h
-    src/UriCompare.c
-    src/UriEscape.c
-    src/UriFile.c
-    src/UriIp4Base.c
-    src/UriIp4Base.h
-    src/UriIp4.c
-    src/UriMemory.c
-    src/UriMemory.h
-    src/UriNormalizeBase.c
-    src/UriNormalizeBase.h
-    src/UriNormalize.c
-    src/UriParseBase.c
-    src/UriParseBase.h
-    src/UriParse.c
-    src/UriQuery.c
-    src/UriRecompose.c
-    src/UriResolve.c
-    src/UriShorten.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCommon.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCommon.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCompare.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriEscape.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriFile.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriIp4Base.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriIp4Base.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriIp4.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriMemory.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriMemory.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalizeBase.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalizeBase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalize.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParseBase.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParseBase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParse.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriQuery.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriRecompose.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriResolve.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriShorten.c
 )
 
 add_library(uriparser
