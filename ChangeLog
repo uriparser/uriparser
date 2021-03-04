@@ -13,6 +13,8 @@ NOTE: uriparser is looking for help with a few things:
   * Fixed: Use correct inline marker "__forceinline" for Intel C++ Compiler
       (GitHub #93)
       Thanks to jensenrichardson for the patch!
+  * Fixed: Link against pthreads for (default) -DURIPARSER_BUILD_TESTS=ON
+      (GitHub #99)
   * Improved: pkg-config: Use ${prefix} and ${exec_prefix} to ease
       overriding variables using --define-variable=NAME=VALUE,
       e.g. as done on OpenWRT (GitHub #91)
