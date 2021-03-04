@@ -111,7 +111,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
 #
 check_symbol_exists(wprintf wchar.h HAVE_WPRINTF)
 check_function_exists(reallocarray HAVE_REALLOCARRAY)  # no luck with CheckSymbolExists
-configure_file(src/UriConfig.h.in config.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/UriConfig.h.in config.h)
 
 #
 # C library
@@ -263,10 +263,10 @@ if(URIPARSER_BUILD_TESTS)
     find_package(GTest 1.8.0 REQUIRED)
 
     add_executable(testrunner
-        test/FourSuite.cpp
-        test/MemoryManagerSuite.cpp
-        test/test.cpp
-        test/VersionSuite.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/FourSuite.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/VersionSuite.cpp
 
         # These library code files have non-public symbols that the test suite
         # needs to link to, so they appear here as well:
@@ -326,8 +326,8 @@ if(URIPARSER_BUILD_DOCS)
     else()
         set(GENERATE_QHP NO)
     endif()
-    configure_file(doc/Doxyfile.in doc/Doxyfile @ONLY)
-    configure_file(doc/release.sh.in doc/release.sh @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in doc/Doxyfile @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/release.sh.in doc/release.sh @ONLY)
 
     add_custom_target(doc
         ALL
@@ -361,7 +361,7 @@ endif()
 # CMake files for find_package(uriparser [..] CONFIG [..])
 #
 configure_package_config_file(
-        cmake/uriparser-config.cmake.in
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/uriparser-config.cmake.in
         cmake/uriparser-config.cmake
     INSTALL_DESTINATION
         ${CMAKE_INSTALL_LIBDIR}/cmake/uriparser-${PROJECT_VERSION}/
