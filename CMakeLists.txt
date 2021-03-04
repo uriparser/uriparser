@@ -293,6 +293,10 @@ if(URIPARSER_BUILD_TESTS)
         ${GTEST_BOTH_LIBRARIES}
     )
 
+    # NOTE: uriparser does not use pthreads itself but gtest does
+    find_package(Threads REQUIRED)
+    target_link_libraries(testrunner PRIVATE Threads::Threads)
+
     add_test(
         NAME
             test
