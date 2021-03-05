@@ -306,6 +306,11 @@ if(URIPARSER_BUILD_TESTS)
     find_package(Threads REQUIRED)
     target_link_libraries(testrunner PRIVATE Threads::Threads)
 
+    if(MSVC)
+        # Specify unwind semantics so that MSVC knowns how to handle exceptions
+        target_compile_options(testrunner PRIVATE /EHsc)
+    endif()
+
     add_test(
         NAME
             test
