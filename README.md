@@ -1,4 +1,4 @@
-[![Travis CI Build Status](https://travis-ci.org/uriparser/uriparser.svg?branch=master)](https://travis-ci.org/uriparser/uriparser)
+[![Build and test](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uriparseradmin/uriparser?svg=true)](https://ci.appveyor.com/project/uriparseradmin/uriparser)
 
 
