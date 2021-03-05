@@ -87,12 +87,14 @@ jobs:
               -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}"
               -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}"
               -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
+
+              -DURIPARSER_WARNINGS_AS_ERRORS=ON
             )
-            cmake "${cmake_args[@]}" -DCMAKE_INSTALL_INCLUDEDIR=include123 ..  # -Werror would fail checks!
+            cmake "${cmake_args[@]}" -DCMAKE_INSTALL_INCLUDEDIR=include123 ..
 
-            make VERBOSE=1 C_FLAGS="${CFLAGS} -fPIC -Werror" CXX_FLAGS="${CXXFLAGS} -Werror" all
+            make VERBOSE=1 all
 
-            make VERBOSE=1 C_FLAGS="${CFLAGS} -fPIC -Werror" CXX_FLAGS="${CXXFLAGS} -Werror" test ARGS=--verbose
+            make VERBOSE=1 test ARGS=--verbose
             cat Testing/Temporary/LastTest.log
 
             make install
