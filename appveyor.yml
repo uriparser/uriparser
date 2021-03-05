@@ -88,6 +88,7 @@ before_build:
       -DGTEST_ROOT=googletest-release-%GTEST_VERSION%/googletest
       -DURIPARSER_BUILD_DOCS=OFF
       -DURIPARSER_MSVC_RUNTIME=/MT
+      -DURIPARSER_WARNINGS_AS_ERRORS=ON
       ..
 
 build:

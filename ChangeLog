@@ -15,6 +15,10 @@ NOTE: uriparser is looking for help with a few things:
       Thanks to jensenrichardson for the patch!
   * Fixed: Link against pthreads for (default) -DURIPARSER_BUILD_TESTS=ON
       (GitHub #99)
+  * Fixed: Addressed MSVC compile warning about lack of /EHsc when compiling
+      the C++ test suite code (GitHub #102)
+  * Added: CMake option URIPARSER_WARNINGS_AS_ERRORS=(ON|OFF)
+      to turn compile warnings into errors, defaults to "OFF" (GitHub #102)
   * Improved: pkg-config: Use ${prefix} and ${exec_prefix} to ease
       overriding variables using --define-variable=NAME=VALUE,
       e.g. as done on OpenWRT (GitHub #91)
