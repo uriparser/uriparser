@@ -326,11 +326,20 @@ endif()
 #
 if(URIPARSER_BUILD_DOCS)
     find_package(Doxygen REQUIRED dot doxygen)
-    find_program(QHG_LOCATION
-        NAMES
-            qhelpgenerator
-            qhelpgenerator-qt5  # e.g. CentOS 7
-    )
+
+    set(QHG_LOCATION "" CACHE FILEPATH "Path to qhelpgenerator program (default: auto-detect)")
+    if(NOT QHG_LOCATION)
+        find_package(Qt5Help QUIET)
+        if(TARGET Qt5::qhelpgenerator)
+            get_target_property(QHG_LOCATION Qt5::qhelpgenerator LOCATION)
+            mark_as_advanced(Qt5Core_DIR)
+            mark_as_advanced(Qt5Gui_DIR)
+            mark_as_advanced(Qt5Help_DIR)
+            mark_as_advanced(Qt5Sql_DIR)
+            mark_as_advanced(Qt5Widgets_DIR)
+        endif()
+    endif()
+
     include(FindHTMLHelp)
 
     # Generate Doxyfile
