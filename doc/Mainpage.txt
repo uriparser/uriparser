@@ -10,7 +10,7 @@
  *   - <a href="#shortening">Creating References</a>
  *   - <a href="#filenames">Filenames and URIs</a>
  *   - <a href="#normalization">Normalizing URIs</a>
- *   - <a href="#querystrings">Working with query strings</a>
+ *   - <a href="#querystrings">Working with Query Strings</a>
  * - <a href="#chartypes">Narrow Strings and Wide Strings</a>
  * - <a href="#autoconf">Autoconf Check</a>
  *
@@ -226,7 +226,7 @@
  * @endcode
  *
  *
- * @section querystrings Working with query strings
+ * @section querystrings Working with Query Strings
  * <a href="http://tools.ietf.org/html/rfc3986" target="_blank">RFC 3986</a>
  * itself does not understand the query part of a URI as a list of key/value pairs.
  * But HTML 2.0 does and defines a media type <i>application/x-www-form-urlencoded</i>
