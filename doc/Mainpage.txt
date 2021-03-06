@@ -11,7 +11,7 @@
  *   - <a href="#filenames">Filenames and URIs</a>
  *   - <a href="#normalization">Normalizing URIs</a>
  *   - <a href="#querystrings">Working with query strings</a>
- * - <a href="#chartypes">Ansi and Unicode</a>
+ * - <a href="#chartypes">Narrow Strings and Wide Strings</a>
  * - <a href="#autoconf">Autoconf Check</a>
  *
  *
@@ -281,15 +281,15 @@
  * @endcode
  *
  *
- * @section chartypes Ansi and Unicode
+ * @section chartypes Narrow Strings and Wide Strings
  * uriparser comes with two versions of every structure and function:
- * one handling Ansi text (char *) and one working with Unicode text (wchar_t *),
+ * one handling narrow strings (<code>char *</code>) and one working with wide strings (<code>wchar_t *</code>),
  * for instance
- * - uriParseSingleUriA() for Ansi and
- * - uriParseSingleUriW() for Unicode.
+ * - uriParseSingleUriA() for <code>char *</code>
+ * - uriParseSingleUriW() for <code>wchar_t *</code>.
  *
- * This tutorial only shows the usage of the Ansi editions but
- * their Unicode counterparts work in the very same way.
+ * This tutorial only shows the usage of the narrow string editions but
+ * their wide string counterparts work in the very same way.
  *
  *
  * @section autoconf Autoconf Check

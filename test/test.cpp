@@ -311,7 +311,7 @@ TEST(UriSuite, TestUri) {
 		ASSERT_TRUE(0 == uriParseUriA(&stateA, "//user:pass@localhost/one/two/three"));
 		uriFreeUriMembersA(&uriA);
 
-		// ANSI and Unicode
+		// Both narrow and wide string version
 		ASSERT_TRUE(0 == uriParseUriA(&stateA, "http://www.example.com/"));
 		uriFreeUriMembersA(&uriA);
 		ASSERT_TRUE(0 == uriParseUriW(&stateW, L"http://www.example.com/"));
