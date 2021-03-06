@@ -15,6 +15,9 @@ NOTE: uriparser is looking for help with a few things:
       Thanks to jensenrichardson for the patch!
   * Fixed: Link against pthreads for (default) -DURIPARSER_BUILD_TESTS=ON
       (GitHub #99)
+  * Fixed: When integrated using CMake function add_subdirectory, installation
+      could fail due to lack of prefix ${CMAKE_CURRENT_SOURCE_DIR} (GitHub #98)
+      Thanks for the patch to Shehzan Mohammed!
   * Fixed: Addressed MSVC compile warning about lack of /EHsc when compiling
       the C++ test suite code (GitHub #102)
   * Added: CMake option URIPARSER_WARNINGS_AS_ERRORS=(ON|OFF)
