@@ -120,40 +120,40 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
 #
 check_symbol_exists(wprintf wchar.h HAVE_WPRINTF)
 check_function_exists(reallocarray HAVE_REALLOCARRAY)  # no luck with CheckSymbolExists
-configure_file(src/UriConfig.h.in config.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/UriConfig.h.in config.h)
 
 #
 # C library
 #
 set(API_HEADER_FILES
-    include/uriparser/UriBase.h
-    include/uriparser/UriDefsAnsi.h
-    include/uriparser/UriDefsConfig.h
-    include/uriparser/UriDefsUnicode.h
-    include/uriparser/Uri.h
-    include/uriparser/UriIp4.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriBase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriDefsAnsi.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriDefsConfig.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriDefsUnicode.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/Uri.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/uriparser/UriIp4.h
 )
 set(LIBRARY_CODE_FILES
-    src/UriCommon.c
-    src/UriCommon.h
-    src/UriCompare.c
-    src/UriEscape.c
-    src/UriFile.c
-    src/UriIp4Base.c
-    src/UriIp4Base.h
-    src/UriIp4.c
-    src/UriMemory.c
-    src/UriMemory.h
-    src/UriNormalizeBase.c
-    src/UriNormalizeBase.h
-    src/UriNormalize.c
-    src/UriParseBase.c
-    src/UriParseBase.h
-    src/UriParse.c
-    src/UriQuery.c
-    src/UriRecompose.c
-    src/UriResolve.c
-    src/UriShorten.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCommon.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCommon.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCompare.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriEscape.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriFile.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriIp4Base.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriIp4Base.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriIp4.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriMemory.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriMemory.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalizeBase.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalizeBase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalize.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParseBase.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParseBase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParse.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriQuery.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriRecompose.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriResolve.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriShorten.c
 )
 
 add_library(uriparser
@@ -226,7 +226,7 @@ uriparser_install(
 #
 if(URIPARSER_BUILD_TOOLS)
     add_executable(uriparse
-        tool/uriparse.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/tool/uriparse.c
     )
 
     target_link_libraries(uriparse PUBLIC uriparser)
@@ -272,10 +272,10 @@ if(URIPARSER_BUILD_TESTS)
     find_package(GTest 1.8.0 REQUIRED)
 
     add_executable(testrunner
-        test/FourSuite.cpp
-        test/MemoryManagerSuite.cpp
-        test/test.cpp
-        test/VersionSuite.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/FourSuite.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/VersionSuite.cpp
 
         # These library code files have non-public symbols that the test suite
         # needs to link to, so they appear here as well:
@@ -344,8 +344,8 @@ if(URIPARSER_BUILD_DOCS)
     else()
         set(GENERATE_QHP NO)
     endif()
-    configure_file(doc/Doxyfile.in doc/Doxyfile @ONLY)
-    configure_file(doc/release.sh.in doc/release.sh @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in doc/Doxyfile @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/release.sh.in doc/release.sh @ONLY)
 
     add_custom_target(doc
         ALL
@@ -379,7 +379,7 @@ endif()
 # CMake files for find_package(uriparser [..] CONFIG [..])
 #
 configure_package_config_file(
-        cmake/uriparser-config.cmake.in
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/uriparser-config.cmake.in
         cmake/uriparser-config.cmake
     INSTALL_DESTINATION
         ${CMAKE_INSTALL_LIBDIR}/cmake/uriparser-${PROJECT_VERSION}/
@@ -414,7 +414,7 @@ uriparser_install(
 # pkg-config file
 #
 if(NOT MSVC)
-    configure_file(liburiparser.pc.in liburiparser.pc @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/liburiparser.pc.in liburiparser.pc @ONLY)
     uriparser_install(
         FILES
             ${CMAKE_CURRENT_BINARY_DIR}/liburiparser.pc
