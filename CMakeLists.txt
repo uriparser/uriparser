@@ -217,7 +217,7 @@ uriparser_install(
 #
 if(URIPARSER_BUILD_TOOLS)
     add_executable(uriparse
-        tool/uriparse.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/tool/uriparse.c
     )
 
     target_link_libraries(uriparse PUBLIC uriparser)
@@ -396,7 +396,7 @@ uriparser_install(
 # pkg-config file
 #
 if(NOT MSVC)
-    configure_file(liburiparser.pc.in liburiparser.pc @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/liburiparser.pc.in liburiparser.pc @ONLY)
     uriparser_install(
         FILES
             ${CMAKE_CURRENT_BINARY_DIR}/liburiparser.pc
