@@ -20,6 +20,7 @@ NOTE: uriparser is looking for help with a few things:
       Thanks for the patch to Shehzan Mohammed!
   * Fixed: Addressed MSVC compile warning about lack of /EHsc when compiling
       the C++ test suite code (GitHub #102)
+  * Fixed: Stopped misadvertising wide characters as Unicode support
   * Added: CMake option URIPARSER_WARNINGS_AS_ERRORS=(ON|OFF)
       to turn compile warnings into errors, defaults to "OFF" (GitHub #102)
   * Improved: pkg-config: Use ${prefix} and ${exec_prefix} to ease
@@ -512,7 +513,7 @@ NOTE: uriparser is looking for help with a few things:
 2007-03-26 -- 0.3.0
 
   * Added: New API, old marked deprecated
-  * Added: Unicode support (think wchar_t)
+  * Added: Added support for wide strings (think wchar_t)
   * Added: Doxygen code documentation
   * Added: Test suite using CppTest
   * Changed: Library code is now licensed under the new BSD license.

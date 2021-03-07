@@ -10,7 +10,7 @@ URI parsing and handling library
 written in C89 ("ANSI C").
 uriparser is cross-platform,
 fast,
-supports Unicode, and
+supports both `char` and `wchar_t`, and
 is licensed under the [New BSD license](https://github.com/uriparser/uriparser/blob/master/COPYING).
 
 To learn more about uriparser,
