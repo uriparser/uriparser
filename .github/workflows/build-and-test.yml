@@ -30,7 +30,7 @@ jobs:
               graphviz \
               llvm-11 \
               lzip \
-              qt4-dev-tools \
+              qhelpgenerator-qt5 \
               qtchooser
 
       - name: Build, test and install
