@@ -55,8 +55,8 @@ CMAKE_BUILD_TYPE:STRING=
 // Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=/usr/local
 
-// Path to a program.
-QHG_LOCATION:FILEPATH=/usr/bin/qhelpgenerator
+// Path to qhelpgenerator program (default: auto-detect)
+QHG_LOCATION:FILEPATH=
 
 // Build code supporting data type 'char'
 URIPARSER_BUILD_CHAR:BOOL=ON

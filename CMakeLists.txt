@@ -326,11 +326,20 @@ endif()
 #
 if(URIPARSER_BUILD_DOCS)
     find_package(Doxygen REQUIRED dot doxygen)
-    find_program(QHG_LOCATION
-        NAMES
-            qhelpgenerator
-            qhelpgenerator-qt5  # e.g. CentOS 7
-    )
+
+    set(QHG_LOCATION "" CACHE FILEPATH "Path to qhelpgenerator program (default: auto-detect)")
+    if(NOT QHG_LOCATION)
+        find_package(Qt5Help QUIET)
+        if(TARGET Qt5::qhelpgenerator)
+            get_target_property(QHG_LOCATION Qt5::qhelpgenerator LOCATION)
+            mark_as_advanced(Qt5Core_DIR)
+            mark_as_advanced(Qt5Gui_DIR)
+            mark_as_advanced(Qt5Help_DIR)
+            mark_as_advanced(Qt5Sql_DIR)
+            mark_as_advanced(Qt5Widgets_DIR)
+        endif()
+    endif()
+
     include(FindHTMLHelp)
 
     # Generate Doxyfile
@@ -429,7 +438,6 @@ endif()
 message(STATUS "===========================================================================")
 message(STATUS "")
 message(STATUS "Configuration")
-message(STATUS "  Prefix ................. ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "  Build type ............. ${CMAKE_BUILD_TYPE}")
 message(STATUS "  Shared libraries ....... ${BUILD_SHARED_LIBS}")
 message(STATUS "  Compiler flags")
@@ -439,6 +447,9 @@ message(STATUS "  Linker flags")
 message(STATUS "    Executable ........... ${CMAKE_EXE_LINKER_FLAGS}")
 message(STATUS "    Module ............... ${CMAKE_MODULE_LINKER_FLAGS}")
 message(STATUS "    Shared ............... ${CMAKE_SHARED_LINKER_FLAGS}")
+message(STATUS "  Paths")
+message(STATUS "    Prefix ............... ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "    qhelpgenerator ....... ${QHG_LOCATION}")
 message(STATUS "")
 message(STATUS "  Features")
 message(STATUS "    Code for char * ...... ${URIPARSER_BUILD_CHAR}")

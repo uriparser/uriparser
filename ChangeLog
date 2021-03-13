@@ -27,6 +27,10 @@ NOTE: uriparser is looking for help with a few things:
       overriding variables using --define-variable=NAME=VALUE,
       e.g. as done on OpenWRT (GitHub #91)
       Thanks to Karel Kočí for the pull request!
+  * Improved: Auto-detection of the qhelpgenerator command based on CMake
+      package "Qt5Help" when available.  CMake option "QHG_LOCATION" can still
+      be used to enforce a specific location (GitHub #103)
+      Thanks for his help to Andreas Sturmlechner!
 
 2020-05-31 -- 0.9.4
 
