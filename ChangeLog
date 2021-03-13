@@ -31,6 +31,8 @@ NOTE: uriparser is looking for help with a few things:
       package "Qt5Help" when available.  CMake option "QHG_LOCATION" can still
       be used to enforce a specific location (GitHub #103)
       Thanks for his help to Andreas Sturmlechner!
+  * Improved: Make documentation use pkg-config in example on how to
+      check for uriparser from within configure.ac (GNU Autoconf) (GitHub #37)
 
 2020-05-31 -- 0.9.4
 
