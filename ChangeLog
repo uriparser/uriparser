@@ -6,7 +6,7 @@ NOTE: uriparser is looking for help with a few things:
 
   * Fixed: Fix a bug regarding section "5.2.4. Remove Dot Segments"
       of RFC 3986 that affected both normalization and reference resolution
-      with regard to trailing slashes (GitHub #92)
+      with regard to trailing slashes (GitHub #92, #97)
       Thanks to Dan Pape for the report!
   * Fixed: MinGW: Fix name of static library (GitHub #90)
       Thanks to SpaceIm for the patch and Sandro Mani for review!
@@ -14,13 +14,14 @@ NOTE: uriparser is looking for help with a few things:
       (GitHub #93)
       Thanks to jensenrichardson for the patch!
   * Fixed: Link against pthreads for (default) -DURIPARSER_BUILD_TESTS=ON
-      (GitHub #99)
+      (GitHub #99, #100)
   * Fixed: When integrated using CMake function add_subdirectory, installation
       could fail due to lack of prefix ${CMAKE_CURRENT_SOURCE_DIR} (GitHub #98)
       Thanks for the patch to Shehzan Mohammed!
   * Fixed: Addressed MSVC compile warning about lack of /EHsc when compiling
       the C++ test suite code (GitHub #102)
   * Fixed: Stopped misadvertising wide characters as Unicode support
+      (GitHub #104)
   * Added: CMake option URIPARSER_WARNINGS_AS_ERRORS=(ON|OFF)
       to turn compile warnings into errors, defaults to "OFF" (GitHub #102)
   * Improved: pkg-config: Use ${prefix} and ${exec_prefix} to ease
@@ -32,7 +33,8 @@ NOTE: uriparser is looking for help with a few things:
       be used to enforce a specific location (GitHub #103)
       Thanks for his help to Andreas Sturmlechner!
   * Improved: Make documentation use pkg-config in example on how to
-      check for uriparser from within configure.ac (GNU Autoconf) (GitHub #37)
+      check for uriparser from within configure.ac (GNU Autoconf)
+      (GitHub #37, #106)
   * Improved: In testing code, add a missing 'extern "C"' (GitHub #109)
       Thanks to Jørgen Ibsen for the patch!
 
