@@ -2,7 +2,7 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
-20xx-xx-x -- x.x.x
+2021-03-18 -- 0.9.5
 
   * Fixed: Fix a bug regarding section "5.2.4. Remove Dot Segments"
       of RFC 3986 that affected both normalization and reference resolution
