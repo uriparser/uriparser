@@ -38,14 +38,14 @@ cmake_minimum_required(VERSION 3.3)
 
 project(uriparser
     VERSION
-        0.9.4
+        0.9.5
     LANGUAGES
         C
 )
 
-# See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+# See https://verbump.de/ for what these numbers do
 set(URIPARSER_SO_CURRENT    1)
-set(URIPARSER_SO_REVISION  27)
+set(URIPARSER_SO_REVISION  28)
 set(URIPARSER_SO_AGE        0)
 
 include(CheckCCompilerFlag)
