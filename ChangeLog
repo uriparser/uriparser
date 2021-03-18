@@ -37,6 +37,7 @@ NOTE: uriparser is looking for help with a few things:
       (GitHub #37, #106)
   * Improved: In testing code, add a missing 'extern "C"' (GitHub #109)
       Thanks to Jørgen Ibsen for the patch!
+  * Soname: 1:28:0
 
 2020-05-31 -- 0.9.4
 
