@@ -43,7 +43,7 @@ project(uriparser
         C
 )
 
-# See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+# See https://verbump.de/ for what these numbers do
 set(URIPARSER_SO_CURRENT    1)
 set(URIPARSER_SO_REVISION  28)
 set(URIPARSER_SO_AGE        0)
