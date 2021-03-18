@@ -33,6 +33,8 @@ NOTE: uriparser is looking for help with a few things:
       Thanks for his help to Andreas Sturmlechner!
   * Improved: Make documentation use pkg-config in example on how to
       check for uriparser from within configure.ac (GNU Autoconf) (GitHub #37)
+  * Improved: In testing code, add a missing 'extern "C"' (GitHub #109)
+      Thanks to Jørgen Ibsen for the patch!
 
 2020-05-31 -- 0.9.4
 
