@@ -286,6 +286,7 @@ if(URIPARSER_BUILD_TESTS)
     target_compile_definitions(testrunner PRIVATE URI_STATIC_BUILD)
 
     if(MSVC)
+        target_compile_definitions(testrunner PRIVATE -D_CRT_NONSTDC_NO_WARNINGS)
         target_compile_definitions(testrunner PRIVATE -D_CRT_SECURE_NO_WARNINGS)
     endif()
 

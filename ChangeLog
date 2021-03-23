@@ -2,6 +2,10 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
+XXXX-XX-XX -- X.X.X
+
+  * Fixed: Windows: Address MSVC compiler warnings (GitHub #111)
+
 2021-03-18 -- 0.9.5
 
   * Fixed: Fix a bug regarding section "5.2.4. Remove Dot Segments"
