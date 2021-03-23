@@ -78,6 +78,11 @@ if(URIPARSER_BUILD_TOOLS AND NOT URIPARSER_BUILD_CHAR)
     message(SEND_ERROR "URIPARSER_BUILD_TOOLS=ON requires URIPARSER_BUILD_CHAR=ON.")
 endif()
 
+if(URIPARSER_BUILD_TESTS)
+    # We have to call enable_language() before modifying any CMAKE_CXX_* variables
+    enable_language(CXX)
+endif()
+
 macro(uriparser_apply_msvc_runtime_to ref)
     string(REGEX REPLACE "/M[DT]d?" ${URIPARSER_MSVC_RUNTIME} ${ref} "${${ref}}")
 endmacro()
@@ -259,8 +264,6 @@ endif()
 # C++ test runner
 #
 if(URIPARSER_BUILD_TESTS)
-    enable_language(CXX)
-
     if(MSVC AND URIPARSER_MSVC_RUNTIME)
         uriparser_apply_msvc_runtime_to(CMAKE_CXX_FLAGS)
         uriparser_apply_msvc_runtime_to(CMAKE_CXX_FLAGS_DEBUG)
