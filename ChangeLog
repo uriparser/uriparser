@@ -4,7 +4,14 @@ NOTE: uriparser is looking for help with a few things:
 
 XXXX-XX-XX -- X.X.X
 
+  * Fixed: CMake: Call "enable_language(CXX)" prior to tinkering with
+      CMAKE_CXX_* variables (GitHub #110)
+      Thanks to Alexander Richardson for the patch (originally at libexpat)
   * Fixed: Windows: Address MSVC compiler warnings (GitHub #111)
+  * Improved: Windows: Exclude target "testrunner" from
+      -DURIPARSER_WARNINGS_AS_ERRORS=ON because dependency googletest
+      is not free of warnings and MSVC seems to lack an equivalent
+      of Clang's -isystem that is not marked experimental (GitHub #110)
 
 2021-03-18 -- 0.9.5
 

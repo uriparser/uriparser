@@ -78,6 +78,11 @@ if(URIPARSER_BUILD_TOOLS AND NOT URIPARSER_BUILD_CHAR)
     message(SEND_ERROR "URIPARSER_BUILD_TOOLS=ON requires URIPARSER_BUILD_CHAR=ON.")
 endif()
 
+if(URIPARSER_BUILD_TESTS)
+    # We have to call enable_language() before modifying any CMAKE_CXX_* variables
+    enable_language(CXX)
+endif()
+
 macro(uriparser_apply_msvc_runtime_to ref)
     string(REGEX REPLACE "/M[DT]d?" ${URIPARSER_MSVC_RUNTIME} ${ref} "${${ref}}")
 endmacro()
@@ -103,17 +108,6 @@ check_c_compiler_flag("-fvisibility=hidden" URIPARSER_COMPILER_SUPPORTS_VISIBILI
 if(URIPARSER_COMPILER_SUPPORTS_VISIBILITY)
     set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -fvisibility=hidden")
 endif()
-
-if(URIPARSER_WARNINGS_AS_ERRORS)
-    if(MSVC)
-        add_definitions(/WX)
-    else()
-        set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -Werror")
-    endif()
-endif()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
 
 #
 # config.h
@@ -259,8 +253,6 @@ endif()
 # C++ test runner
 #
 if(URIPARSER_BUILD_TESTS)
-    enable_language(CXX)
-
     if(MSVC AND URIPARSER_MSVC_RUNTIME)
         uriparser_apply_msvc_runtime_to(CMAKE_CXX_FLAGS)
         uriparser_apply_msvc_runtime_to(CMAKE_CXX_FLAGS_DEBUG)
@@ -321,6 +313,32 @@ if(URIPARSER_BUILD_TESTS)
 
     add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 endif()
+
+#
+# Compiler flags
+#
+if(URIPARSER_WARNINGS_AS_ERRORS)
+    if(MSVC)
+        # NOTE: We cannot use global "add_definitions(/WX)" currently because:
+        #       - it would affect target "testrunner"
+        #       - testrunner depends on googletest
+        #       - googletest is not free of warnings
+        #       - CMake's "target_include_directories([..] SYSTEM PRIVATE [..])"
+        #         is not showing any effect with MSVC
+        #       - The equivalent of Clang's "-isystem <includedir>" is
+        #         marked as experimental and a dead-end street according to
+        #         https://developercommunity.visualstudio.com/t/fully-support-c-externali-flag-instead-of-making-i/1191080
+        #         so that is not used, either.
+        #       As a result, warnings are fatal for all target but "testrunner" as of today.
+        target_compile_definitions(uriparser PRIVATE /WX)  # the library
+        target_compile_definitions(uriparse PRIVATE /WX)  # the CLI
+    else()
+        set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -Werror")
+    endif()
+endif()
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
 
 #
 # Doxygen API documentation
