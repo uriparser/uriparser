@@ -319,7 +319,19 @@ endif()
 #
 if(URIPARSER_WARNINGS_AS_ERRORS)
     if(MSVC)
-        add_definitions(/WX)
+        # NOTE: We cannot use global "add_definitions(/WX)" currently because:
+        #       - it would affect target "testrunner"
+        #       - testrunner depends on googletest
+        #       - googletest is not free of warnings
+        #       - CMake's "target_include_directories([..] SYSTEM PRIVATE [..])"
+        #         is not showing any effect with MSVC
+        #       - The equivalent of Clang's "-isystem <includedir>" is
+        #         marked as experimental and a dead-end street according to
+        #         https://developercommunity.visualstudio.com/t/fully-support-c-externali-flag-instead-of-making-i/1191080
+        #         so that is not used, either.
+        #       As a result, warnings are fatal for all target but "testrunner" as of today.
+        target_compile_definitions(uriparser PRIVATE /WX)  # the library
+        target_compile_definitions(uriparse PRIVATE /WX)  # the CLI
     else()
         set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -Werror")
     endif()
