@@ -41,7 +41,7 @@ configuration:
 # - Release
 
 environment:
-  GTEST_VERSION: 1.8.1
+  GTEST_VERSION: 1.10.0
 
   # https://www.appveyor.com/docs/windows-images-software/
   matrix:
@@ -76,8 +76,8 @@ before_build:
   - cmake --build . --config Release -- /m
 # BEGIN Enrich folder to make FindGTest.cmake happy
   - md googletest\lib
-  - copy googlemock\gtest\Release\gtest.lib googletest\lib
-  - copy googlemock\gtest\Release\gtest_main.lib googletest\lib
+  - copy lib\Release\gtest.lib googletest\lib
+  - copy lib\Release\gtest_main.lib googletest\lib
 # END
   - cd ..
   - mkdir build
