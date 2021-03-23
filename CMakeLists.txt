@@ -109,17 +109,6 @@ if(URIPARSER_COMPILER_SUPPORTS_VISIBILITY)
     set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -fvisibility=hidden")
 endif()
 
-if(URIPARSER_WARNINGS_AS_ERRORS)
-    if(MSVC)
-        add_definitions(/WX)
-    else()
-        set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -Werror")
-    endif()
-endif()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
-
 #
 # config.h
 #
@@ -324,6 +313,20 @@ if(URIPARSER_BUILD_TESTS)
 
     add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 endif()
+
+#
+# Compiler flags
+#
+if(URIPARSER_WARNINGS_AS_ERRORS)
+    if(MSVC)
+        add_definitions(/WX)
+    else()
+        set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -Werror")
+    endif()
+endif()
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${URIPARSER_EXTRA_COMPILE_FLAGS}")
 
 #
 # Doxygen API documentation
