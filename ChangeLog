@@ -8,6 +8,7 @@ XXXX-XX-XX -- X.X.X
       CMAKE_CXX_* variables (GitHub #110)
       Thanks to Alexander Richardson for the patch (originally at libexpat)
   * Fixed: Windows: Address MSVC compiler warnings (GitHub #111)
+  * Fixed: Addressed MSVC compiler warnings in test suite code (GitHub #113)
 
 2021-03-18 -- 0.9.5
 

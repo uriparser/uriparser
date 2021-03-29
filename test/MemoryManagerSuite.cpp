@@ -318,11 +318,11 @@ TEST(FailingMemoryManagerSuite, DissectQueryMallocExMm) {
 TEST(FailingMemoryManagerSuite, FreeQueryListMm) {
 	UriQueryListA * const queryList = parseQueryList("k1=v1");
 	FailingMemoryManager failingMemoryManager;
-	ASSERT_EQ(failingMemoryManager.getCallCountFree(), 0);
+	ASSERT_EQ(failingMemoryManager.getCallCountFree(), 0U);
 
 	uriFreeQueryListMmA(queryList, &failingMemoryManager);
 
-	ASSERT_GE(failingMemoryManager.getCallCountFree(), 1);
+	ASSERT_GE(failingMemoryManager.getCallCountFree(), 1U);
 }
 
 
@@ -330,11 +330,11 @@ TEST(FailingMemoryManagerSuite, FreeQueryListMm) {
 TEST(FailingMemoryManagerSuite, FreeUriMembersMm) {
 	UriUriA uri = parse("http://example.org/");
 	FailingMemoryManager failingMemoryManager;
-	ASSERT_EQ(failingMemoryManager.getCallCountFree(), 0);
+	ASSERT_EQ(failingMemoryManager.getCallCountFree(), 0U);
 
 	uriFreeUriMembersMmA(&uri, &failingMemoryManager);
 
-	ASSERT_GE(failingMemoryManager.getCallCountFree(), 1);
+	ASSERT_GE(failingMemoryManager.getCallCountFree(), 1U);
 	uriFreeUriMembersA(&uri);
 }
 
