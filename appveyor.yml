@@ -65,6 +65,16 @@ environment:
       CMAKE_GENERATOR: Visual Studio 15 2017 Win64
       PLATFORM: x64
 
+  # Visual Studio 2019, 32 bit
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      CMAKE_GENERATOR: Visual Studio 16 2019
+      COMMON_CMAKE_ARGS: -A Win32
+
+  # Visual Studio 2019, 64 bit
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      CMAKE_GENERATOR: Visual Studio 16 2019
+      COMMON_CMAKE_ARGS: -A x64
+
 before_build:
   - curl -fsSL -o release-%GTEST_VERSION%.zip https://github.com/google/googletest/archive/release-%GTEST_VERSION%.zip
   - unzip -q release-%GTEST_VERSION%.zip
@@ -72,6 +82,7 @@ before_build:
   - cmake
       -G "%CMAKE_GENERATOR%"
       -DCVF_VERSION=%GTEST_VERSION%
+      %COMMON_CMAKE_ARGS%
       .
   - cmake --build . --config Release -- /m
 # BEGIN Enrich folder to make FindGTest.cmake happy
@@ -89,6 +100,7 @@ before_build:
       -DURIPARSER_BUILD_DOCS=OFF
       -DURIPARSER_MSVC_RUNTIME=/MT
       -DURIPARSER_WARNINGS_AS_ERRORS=ON
+      %COMMON_CMAKE_ARGS%
       ..
 
 build:
