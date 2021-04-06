@@ -7,6 +7,9 @@ XXXX-XX-XX -- X.X.X
   * Fixed: CMake: Call "enable_language(CXX)" prior to tinkering with
       CMAKE_CXX_* variables (GitHub #110)
       Thanks to Alexander Richardson for the patch (originally at libexpat)
+  * Fixed: CMake: Support absolute paths for both CMAKE_INSTALL_LIBDIR
+      and CMAKE_INSTALL_INCLUDEDIR (GitHub #114)
+      Thanks to Rafael Fontenelle for bringing this up (originally at libexpat)
   * Fixed: Windows: Address MSVC compiler warnings (GitHub #111)
   * Fixed: Addressed MSVC compiler warnings in test suite code (GitHub #113)
 
