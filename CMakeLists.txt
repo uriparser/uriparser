@@ -430,6 +430,18 @@ uriparser_install(
 # pkg-config file
 #
 if(NOT MSVC)
+    if(CMAKE_INSTALL_LIBDIR MATCHES "^/")
+        set(_URIPARSER_PKGCONFIG_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
+    else()
+        set(_URIPARSER_PKGCONFIG_LIBDIR "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+    endif()
+
+    if(CMAKE_INSTALL_INCLUDEDIR MATCHES "^/")
+        set(_URIPARSER_PKGCONFIG_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+    else()
+        set(_URIPARSER_PKGCONFIG_INCLUDEDIR "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+    endif()
+
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/liburiparser.pc.in liburiparser.pc @ONLY)
     uriparser_install(
         FILES
