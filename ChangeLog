@@ -12,6 +12,7 @@ XXXX-XX-XX -- X.X.X
       Thanks to Rafael Fontenelle for bringing this up (originally at libexpat)
   * Fixed: Windows: Address MSVC compiler warnings (GitHub #111)
   * Fixed: Addressed MSVC compiler warnings in test suite code (GitHub #113)
+  * Improved: Respect variable ${CPP} in doc/preprocess.sh (GitHub #115)
 
 2021-03-18 -- 0.9.5
 
