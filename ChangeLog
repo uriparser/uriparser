@@ -10,8 +10,7 @@ XXXX-XX-XX -- X.X.X
   * Fixed: CMake: Support absolute paths for both CMAKE_INSTALL_LIBDIR
       and CMAKE_INSTALL_INCLUDEDIR (GitHub #114)
       Thanks to Rafael Fontenelle for bringing this up (originally at libexpat)
-  * Fixed: Windows: Address MSVC compiler warnings (GitHub #111)
-  * Fixed: Addressed MSVC compiler warnings in test suite code (GitHub #113)
+  * Fixed: Windows: Address MSVC compiler warnings (GitHub #111, GitHub #113)
   * Improved: Respect variable ${CPP} in doc/preprocess.sh (GitHub #115)
 
 2021-03-18 -- 0.9.5
