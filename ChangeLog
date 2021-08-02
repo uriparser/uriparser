@@ -11,6 +11,10 @@ XXXX-XX-XX -- X.X.X
       and CMAKE_INSTALL_INCLUDEDIR (GitHub #114)
       Thanks to Rafael Fontenelle for bringing this up (originally at libexpat)
   * Fixed: Windows: Address MSVC compiler warnings (GitHub #111, GitHub #113)
+  * Fixed: Documentation: Space requirements for uriUriStringToUnixFilename
+      did not take into account short form "file:/bin/bash" of RFC 8089 of 2017
+      (with prefix "file:/" rather than "file:///") that uriparser supports
+      since release 0.8.6 in 2018 (GitHub #118, GitHub #119)
   * Improved: Respect variable ${CPP} in doc/preprocess.sh (GitHub #115)
 
 2021-03-18 -- 0.9.5
