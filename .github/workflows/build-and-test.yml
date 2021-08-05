@@ -35,8 +35,10 @@ jobs:
 
       - name: Build, test and install
         run: |-
+          set -x
           sed 's,:,\n,g' <<<"${PATH}"
           clang --version
+          cmake --version
 
           GTEST_VERSION=1.8.1
           GTEST_PREFIX=~/.local/
