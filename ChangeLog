@@ -15,7 +15,12 @@ XXXX-XX-XX -- X.X.X
       did not take into account short form "file:/bin/bash" of RFC 8089 of 2017
       (with prefix "file:/" rather than "file:///") that uriparser supports
       since release 0.8.6 in 2018 (GitHub #118, GitHub #119)
+  * Fixed: Compile error with MinGW GCC 9 related to a mismatched prototype
+      for function inet_ntop (GitHub #117, GitHub #120)
+      Thanks to Sandro Mani for the report!
+  * Fixed: Compile warnings in test suite code (GitHub #120)
   * Improved: Respect variable ${CPP} in doc/preprocess.sh (GitHub #115)
+  * Added: Test suite invocation for MinGW using Wine (GitHub #120)
 
 2021-03-18 -- 0.9.5
 
