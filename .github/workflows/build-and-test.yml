@@ -12,11 +12,32 @@ on:
 jobs:
   build_and_test:
     name: Build and test
+    strategy:
+      matrix:
+        include:
+          - name: Native Linux
+            cmake_args: >-
+              -DCMAKE_C_COMPILER=clang-11
+              -DCMAKE_CXX_COMPILER=clang++-11
+            cflags: >-
+              -fsanitize=address,undefined,leak
+              -fno-sanitize-recover=all
+              -fno-omit-frame-pointer
+            ldflags: >-
+              -fsanitize=address
+          - name: MingGW on Linux
+            cmake_args: >-
+              -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc
+              -DCMAKE_CXX_COMPILER=i686-w64-mingw32-g++
+              -DCMAKE_SYSTEM_NAME=Windows
+              -DWIN32=ON
+              -DMINGW=ON
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
 
-      - name: Add Clang/LLVM repositories
+      - name: Add Clang/LLVM repositories (Non-MinGW)
+        if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
         run: |-
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main'
@@ -24,20 +45,34 @@ jobs:
       - name: Install build dependencies
         run: |-
           sudo apt-get install --yes --no-install-recommends -V \
-              clang-11 \
               cmake \
               doxygen \
               graphviz \
-              llvm-11 \
               lzip \
               qhelpgenerator-qt5 \
               qtchooser
+
+      - name: Install build dependencies (MinGW)
+        if: "${{ contains(matrix.cmake_args, 'mingw') }}"
+        run: |-
+          sudo dpkg --add-architecture i386  # for wine32
+          sudo apt-get update  # due to new architecture
+          sudo apt-get install --yes --no-install-recommends -V \
+              mingw-w64 \
+              wine-stable \
+              wine32
+
+      - name: Install build dependencies (Non-MinGW)
+        if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
+        run: |-
+          sudo apt-get install --yes --no-install-recommends -V \
+              clang-11 \
+              llvm-11
 
       - name: Build, test and install
         run: |-
           set -x
           sed 's,:,\n,g' <<<"${PATH}"
-          clang --version
           cmake --version
 
           GTEST_VERSION=1.8.1
@@ -55,6 +90,7 @@ jobs:
                 -DBUILD_SHARED_LIBS=ON \
                 -DCVF_VERSION=${GTEST_VERSION} \
                 -DCMAKE_INSTALL_PREFIX:PATH=${GTEST_PREFIX} \
+                ${{ matrix.cmake_args }} \
                 .
             make
             make install
@@ -67,9 +103,7 @@ jobs:
 
               -O1
               -g
-              -fsanitize=address,undefined,leak
-              -fno-sanitize-recover=all
-              -fno-omit-frame-pointer
+              ${{ matrix.cflags }}
 
               -Wall
               -Wextra
@@ -77,7 +111,7 @@ jobs:
             )
             CFLAGS="${compile_flags[*]} -std=c89"
             CXXFLAGS="${compile_flags[*]} -std=c++98"
-            LDFLAGS='-g -fsanitize=address'
+            LDFLAGS='-g ${{ matrix.ldflags }}'
             cmake_args=(
               -DCMAKE_INSTALL_PREFIX:PATH=${GTEST_PREFIX}
 
@@ -86,19 +120,28 @@ jobs:
               -Wdeprecated
               -Werror=deprecated
 
-              -DCMAKE_C_COMPILER=clang-11
-              -DCMAKE_CXX_COMPILER=clang++-11
               -DCMAKE_C_FLAGS="${CFLAGS}"
               -DCMAKE_CXX_FLAGS="${CXXFLAGS}"
               -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}"
               -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}"
               -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}"
 
+              ${{ matrix.cmake_args }}
+
               -DURIPARSER_WARNINGS_AS_ERRORS=ON
             )
             cmake "${cmake_args[@]}" -DCMAKE_INSTALL_INCLUDEDIR=include123 ..
 
             make VERBOSE=1 all
+
+            # NOTE: We need to copy some .dll files next to the
+            #       Windows binaries so that they are ready to be executed
+            if [[ "${{ matrix.cmake_args }}" == *mingw* ]]; then
+              cp /usr/lib/gcc/i686-w64-mingw32/*-posix/libgcc_s_sjlj-1.dll ./
+              cp /usr/lib/gcc/i686-w64-mingw32/*-posix/libstdc++-6.dll ./
+              cp /usr/i686-w64-mingw32/lib/libwinpthread-1.dll ./
+              cp "${GTEST_PREFIX}"/bin/libgtest.dll ./
+            fi
 
             make VERBOSE=1 test ARGS=--verbose
             cat Testing/Temporary/LastTest.log
@@ -112,11 +155,19 @@ jobs:
           pushd cmake/test_find_package
             cmake "${cmake_args[@]}" .
             make VERBOSE=1
-            ./hello
+            if [[ "${{ matrix.cmake_args }}" == *mingw* ]]; then
+              cp "${GTEST_PREFIX}"/bin/liburiparser-1.dll ./
+              wine ./hello.exe
+            else
+              ./hello
+            fi
           popd
 
           git fetch --tags --unshallow origin  # for "git describe" in make-distcheck.sh
 
-          ./make-distcheck.sh -DCMAKE_INSTALL_PREFIX:PATH=${GTEST_PREFIX}  # without AddressSanitizer
+          GTEST_PREFIX="${GTEST_PREFIX}" \
+            ./make-distcheck.sh \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GTEST_PREFIX} \
+            ${{ matrix.cmake_args }}
 
           ! git status | fgrep -A100 'Untracked files:'  # works best at the very end
