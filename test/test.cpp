@@ -267,7 +267,7 @@ TEST(UriSuite, TestIpSixOverread) {
 
 		// NOTE: This string is designed to not have a terminator
 		char uriText[2 + 3 + 2 + 1 + 1];
-		strncpy(uriText, "//[::44.1", sizeof(uriText));
+		memcpy(uriText, "//[::44.1", sizeof(uriText));
 
 		EXPECT_EQ(uriParseSingleUriExA(&uri, uriText,
 				uriText + sizeof(uriText), &errorPos), URI_ERROR_SYNTAX);

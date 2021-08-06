@@ -304,11 +304,17 @@ if(URIPARSER_BUILD_TESTS)
         target_compile_options(testrunner PRIVATE /EHsc)
     endif()
 
+    if(MINGW)
+        set(_URIPARSER_TEST_COMMAND wine testrunner)
+    else()
+        set(_URIPARSER_TEST_COMMAND      testrunner)
+    endif()
+
     add_test(
         NAME
             test
         COMMAND
-            testrunner
+            ${_URIPARSER_TEST_COMMAND}
     )
 
     add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
