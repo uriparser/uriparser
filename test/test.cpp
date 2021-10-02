@@ -2275,6 +2275,41 @@ TEST(MakeOwnerSuite, MakeOwner) {
 	uriFreeUriMembersA(&uri);
 }
 
+namespace {
+	void testMakeOwnerCopiesHostText(const char *const uriFirst) {  // issue #121
+		const char *const uriAfterLast = uriFirst + strlen(uriFirst);
+		UriUriA uri;
+
+		EXPECT_EQ(uriParseSingleUriA(&uri, uriFirst, NULL), URI_SUCCESS);
+		EXPECT_EQ(uri.owner, URI_FALSE);
+		URI_EXPECT_RANGE_BETWEEN(uri.hostText, uriFirst, uriAfterLast);
+
+		EXPECT_EQ(uriMakeOwnerA(&uri), URI_SUCCESS);
+
+		EXPECT_EQ(uri.owner, URI_TRUE);
+		URI_EXPECT_RANGE_OUTSIDE(uri.hostText, uriFirst, uriAfterLast);
+
+		uriFreeUriMembersA(&uri);
+		uriFreeUriMembersA(&uri);  // tried freeing stack pointers before the fix
+	}
+} // namespace
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextIp4) {  // issue #121
+	testMakeOwnerCopiesHostText("//192.0.2.0");  // RFC 5737
+}
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextIp6) {  // issue #121
+	testMakeOwnerCopiesHostText("//[2001:db8::]");  // RFC 3849
+}
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextRegname) {  // issue #121
+	testMakeOwnerCopiesHostText("//host123.test");  // RFC 6761
+}
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextFuture) {  // issue #121
+	testMakeOwnerCopiesHostText("//[v7.X]");  // arbitrary IPvFuture
+}
+
 TEST(ParseIpFourAddressSuite, FourSaneOctets) {
 	unsigned char octetOutput[4];
 	const char * const ipAddressText = "111.22.3.40";
