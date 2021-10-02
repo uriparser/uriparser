@@ -407,22 +407,19 @@ static URI_INLINE UriBool URI_FUNC(MakeOwnerEngine)(URI_TYPE(Uri) * uri,
 
 	/* Host */
 	if ((*doneMask & URI_NORMALIZE_HOST) == 0) {
-		if ((uri->hostData.ip4 == NULL)
-				&& (uri->hostData.ip6 == NULL)) {
-			if (uri->hostData.ipFuture.first != NULL) {
-				/* IPvFuture */
-				if (!URI_FUNC(MakeRangeOwner)(doneMask, URI_NORMALIZE_HOST,
-						&(uri->hostData.ipFuture), memory)) {
-					return URI_FALSE; /* Raises malloc error */
-				}
-				uri->hostText.first = uri->hostData.ipFuture.first;
-				uri->hostText.afterLast = uri->hostData.ipFuture.afterLast;
-			} else if (uri->hostText.first != NULL) {
-				/* Regname */
-				if (!URI_FUNC(MakeRangeOwner)(doneMask, URI_NORMALIZE_HOST,
-						&(uri->hostText), memory)) {
-					return URI_FALSE; /* Raises malloc error */
-				}
+		if (uri->hostData.ipFuture.first != NULL) {
+			/* IPvFuture */
+			if (!URI_FUNC(MakeRangeOwner)(doneMask, URI_NORMALIZE_HOST,
+					&(uri->hostData.ipFuture), memory)) {
+				return URI_FALSE; /* Raises malloc error */
+			}
+			uri->hostText.first = uri->hostData.ipFuture.first;
+			uri->hostText.afterLast = uri->hostData.ipFuture.afterLast;
+		} else if (uri->hostText.first != NULL) {
+			/* Regname */
+			if (!URI_FUNC(MakeRangeOwner)(doneMask, URI_NORMALIZE_HOST,
+					&(uri->hostText), memory)) {
+				return URI_FALSE; /* Raises malloc error */
 			}
 		}
 	}

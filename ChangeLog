@@ -4,6 +4,10 @@ NOTE: uriparser is looking for help with a few things:
 
 XXXX-XX-XX -- X.X.X
 
+  * Fixed: Fix a bug affecting both uriNormalizeSyntax* and uriMakeOwner*
+      functions where the text range in .hostText would not be duped using
+      malloc but remain unchanged (and hence "not owned") for URIs with
+      an IPv4 or IPv6 address hostname (GitHub #121)
   * Fixed: CMake: Call "enable_language(CXX)" prior to tinkering with
       CMAKE_CXX_* variables (GitHub #110)
       Thanks to Alexander Richardson for the patch (originally at libexpat)
