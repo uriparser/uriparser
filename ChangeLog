@@ -8,6 +8,11 @@ XXXX-XX-XX -- X.X.X
       functions where the text range in .hostText would not be duped using
       malloc but remain unchanged (and hence "not owned") for URIs with
       an IPv4 or IPv6 address hostname (GitHub #121)
+  * Fixed: Fix the same bug in uriFreeUriMembers* functions that would not
+      free .hostText memory for URIs with an IPv4 or IPv6 address host;
+      also, calling uriFreeUriMembers* multiple times on a URI of this
+      very nature would result in trying to free pointers to stack
+      (rather than heap) memory (GitHub #121)
   * Fixed: CMake: Call "enable_language(CXX)" prior to tinkering with
       CMAKE_CXX_* variables (GitHub #110)
       Thanks to Alexander Richardson for the patch (originally at libexpat)
