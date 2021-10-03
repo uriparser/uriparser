@@ -361,20 +361,26 @@ TEST(FailingMemoryManagerSuite, FreeUriMembersMm) {
 	uriFreeUriMembersA(&uri);
 }
 
+namespace {
+	void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(const char * uriString,
+															unsigned int mask,
+															unsigned int failAllocAfterTimes = 0,
+															unsigned int expectedCallCountFree = 0) {
+		UriUriA uri = parse(uriString);
+		FailingMemoryManager failingMemoryManager(failAllocAfterTimes);
 
+		ASSERT_EQ(uriNormalizeSyntaxExMmA(&uri, mask, &failingMemoryManager),
+				  URI_ERROR_MALLOC);
 
-TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMm) {
-	UriUriA uri = parse("hTTp://example.org/path");
-	const unsigned int mask = URI_NORMALIZE_SCHEME;  // anything but URI_NORMALIZED
-	FailingMemoryManager failingMemoryManager;
+		EXPECT_EQ(failingMemoryManager.getCallCountFree(), expectedCallCountFree);
 
-	ASSERT_EQ(uriNormalizeSyntaxExMmA(&uri, mask, &failingMemoryManager),
-			URI_ERROR_MALLOC);
+		uriFreeUriMembersA(&uri);
+	}
+}  // namespace
 
-	uriFreeUriMembersA(&uri);
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmScheme) {
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("hTTp://example.org/path", URI_NORMALIZE_SCHEME);
 }
-
-
 
 TEST(FailingMemoryManagerSuite, ParseSingleUriExMm) {
 	UriUriA uri;
