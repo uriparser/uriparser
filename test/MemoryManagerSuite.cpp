@@ -382,6 +382,22 @@ TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmScheme) {
 	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("hTTp://example.org/path", URI_NORMALIZE_SCHEME);
 }
 
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyUserInfo) {
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//@:123", URI_NORMALIZE_USER_INFO);
+}
+
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyHostRegname) {
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//:123", URI_NORMALIZE_HOST);
+}
+
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyQuery) {
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//:123?", URI_NORMALIZE_QUERY);
+}
+
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyFragment) {
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//:123#", URI_NORMALIZE_FRAGMENT);
+}
+
 TEST(FailingMemoryManagerSuite, ParseSingleUriExMm) {
 	UriUriA uri;
 	const char * const first = "k1=v1&k2=v2";
