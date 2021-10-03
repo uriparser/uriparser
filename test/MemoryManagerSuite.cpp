@@ -398,6 +398,24 @@ TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyFragment) {
 	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//:123#", URI_NORMALIZE_FRAGMENT);
 }
 
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextIp4) {  // issue #121
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//192.0.2.0:123" /* RFC 5737 */, URI_NORMALIZE_HOST, 1, 1);
+}
+
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextIp6) {  // issue #121
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//[2001:db8::]:123" /* RFC 3849 */, URI_NORMALIZE_HOST, 1, 1);
+}
+
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextRegname) {  // issue #121
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//host123.test:123" /* RFC 6761 */, URI_NORMALIZE_HOST, 1, 1);
+}
+
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextFuture) {  // issue #121
+	testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//[v7.X]:123" /* arbitrary IPvFuture */, URI_NORMALIZE_HOST, 1, 1);
+}
+
+
+
 TEST(FailingMemoryManagerSuite, ParseSingleUriExMm) {
 	UriUriA uri;
 	const char * const first = "k1=v1&k2=v2";
