@@ -2287,22 +2287,24 @@ int URI_FUNC(FreeUriMembersMm)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 			uri->userInfo.afterLast = NULL;
 		}
 
-		/* Host data - IPvFuture */
+		/* Host data - IPvFuture (may affect host text) */
 		if (uri->hostData.ipFuture.first != NULL) {
+			/* NOTE: .hostData.ipFuture may hold the very same range pointers
+			 *       as .hostText; then we need to prevent freeing memory twice. */
+			if (uri->hostText.first == uri->hostData.ipFuture.first) {
+				uri->hostText.first = NULL;
+				uri->hostText.afterLast = NULL;
+			}
+
 			if (uri->hostData.ipFuture.first != uri->hostData.ipFuture.afterLast) {
 				memory->free(memory, (URI_CHAR *)uri->hostData.ipFuture.first);
 			}
 			uri->hostData.ipFuture.first = NULL;
 			uri->hostData.ipFuture.afterLast = NULL;
-			uri->hostText.first = NULL;
-			uri->hostText.afterLast = NULL;
 		}
 
-		/* Host text (if regname, after IPvFuture!) */
-		if ((uri->hostText.first != NULL)
-				&& (uri->hostData.ip4 == NULL)
-				&& (uri->hostData.ip6 == NULL)) {
-			/* Real regname */
+		/* Host text (after IPvFuture, see above) */
+		if (uri->hostText.first != NULL) {
 			if (uri->hostText.first != uri->hostText.afterLast) {
 				memory->free(memory, (URI_CHAR *)uri->hostText.first);
 			}

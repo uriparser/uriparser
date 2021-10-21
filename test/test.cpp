@@ -2216,6 +2216,45 @@ TEST(FreeUriMembersSuite, MultiFreeWorksFine) {
 	uriFreeUriMembersA(&uri);  // second time
 }
 
+namespace {
+	void testFreeUriMembersFreesHostText(const char *const uriFirst) {  // issue #121
+		const char *const uriAfterLast = uriFirst + strlen(uriFirst);
+		UriUriA uri;
+
+		EXPECT_EQ(uriParseSingleUriA(&uri, uriFirst, NULL), URI_SUCCESS);
+		EXPECT_EQ(uriMakeOwnerA(&uri), URI_SUCCESS);
+
+		EXPECT_EQ(uri.owner, URI_TRUE);
+		EXPECT_TRUE(uri.hostText.first);
+		EXPECT_TRUE(uri.hostText.afterLast);
+		EXPECT_NE(uri.hostText.first, uri.hostText.afterLast);
+		URI_EXPECT_RANGE_OUTSIDE(uri.hostText, uriFirst, uriAfterLast);
+
+		uriFreeUriMembersA(&uri);
+
+		EXPECT_FALSE(uri.hostText.first);
+		EXPECT_FALSE(uri.hostText.afterLast);
+
+		uriFreeUriMembersA(&uri);  // second time
+	}
+}  // namespace
+
+TEST(FreeUriMembersSuite, FreeUriMembersFreesHostTextIp4) {  // issue #121
+	testFreeUriMembersFreesHostText("//192.0.2.0");  // RFC 5737
+}
+
+TEST(FreeUriMembersSuite, FreeUriMembersFreesHostTextIp6) {  // issue #121
+	testFreeUriMembersFreesHostText("//[2001:db8::]");  // RFC 3849
+}
+
+TEST(FreeUriMembersSuite, FreeUriMembersFreesHostTextRegname) {  // issue #121
+	testFreeUriMembersFreesHostText("//host123.test");  // RFC 6761
+}
+
+TEST(FreeUriMembersSuite, FreeUriMembersFreesHostTextFuture) {  // issue #121
+	testFreeUriMembersFreesHostText("//[v7.X]");  // arbitrary IPvFuture
+}
+
 TEST(MakeOwnerSuite, MakeOwner) {
 	const char * const uriString = "scheme://user:pass@[v7.X]:55555/path/../path/?query#fragment";
 	UriUriA uri;
@@ -2273,6 +2312,41 @@ TEST(MakeOwnerSuite, MakeOwner) {
 	delete [] uriRemake;
 
 	uriFreeUriMembersA(&uri);
+}
+
+namespace {
+	void testMakeOwnerCopiesHostText(const char *const uriFirst) {  // issue #121
+		const char *const uriAfterLast = uriFirst + strlen(uriFirst);
+		UriUriA uri;
+
+		EXPECT_EQ(uriParseSingleUriA(&uri, uriFirst, NULL), URI_SUCCESS);
+		EXPECT_EQ(uri.owner, URI_FALSE);
+		URI_EXPECT_RANGE_BETWEEN(uri.hostText, uriFirst, uriAfterLast);
+
+		EXPECT_EQ(uriMakeOwnerA(&uri), URI_SUCCESS);
+
+		EXPECT_EQ(uri.owner, URI_TRUE);
+		URI_EXPECT_RANGE_OUTSIDE(uri.hostText, uriFirst, uriAfterLast);
+
+		uriFreeUriMembersA(&uri);
+		uriFreeUriMembersA(&uri);  // tried freeing stack pointers before the fix
+	}
+} // namespace
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextIp4) {  // issue #121
+	testMakeOwnerCopiesHostText("//192.0.2.0");  // RFC 5737
+}
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextIp6) {  // issue #121
+	testMakeOwnerCopiesHostText("//[2001:db8::]");  // RFC 3849
+}
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextRegname) {  // issue #121
+	testMakeOwnerCopiesHostText("//host123.test");  // RFC 6761
+}
+
+TEST(MakeOwnerSuite, MakeOwnerCopiesHostTextFuture) {  // issue #121
+	testMakeOwnerCopiesHostText("//[v7.X]");  // arbitrary IPvFuture
 }
 
 TEST(ParseIpFourAddressSuite, FourSaneOctets) {
