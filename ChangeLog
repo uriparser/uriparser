@@ -4,6 +4,7 @@ NOTE: uriparser is looking for help with a few things:
 
 XXXX-XX-XX -- X.X.X
 
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   * Fixed: Fix a bug affecting both uriNormalizeSyntax* and uriMakeOwner*
       functions where the text range in .hostText would not be duped using
       malloc but remain unchanged (and hence "not owned") for URIs with
@@ -18,6 +19,7 @@ XXXX-XX-XX -- X.X.X
       (any of user info, host text, query, or fragment) where previously
       pointers to stack (rather than heap) memory were freed (GitHub #122,
       GitHub #124)
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   * Fixed: CMake: Call "enable_language(CXX)" prior to tinkering with
       CMAKE_CXX_* variables (GitHub #110)
       Thanks to Alexander Richardson for the patch (originally at libexpat)
