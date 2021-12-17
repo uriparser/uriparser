@@ -44,6 +44,7 @@ XXXX-XX-XX -- X.X.X
   * Fixed: Compile warnings in test suite code (GitHub #120)
   * Improved: Respect variable ${CPP} in doc/preprocess.sh (GitHub #115)
   * Added: Test suite invocation for MinGW using Wine (GitHub #120)
+  * Soname: 1:29:0 — see https://verbump.de/ for what these numbers do
 
 2021-03-18 -- 0.9.5
 
