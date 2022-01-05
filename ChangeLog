@@ -5,20 +5,27 @@ NOTE: uriparser is looking for help with a few things:
 XXXX-XX-XX -- X.X.X
 
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  * Fixed: Fix a bug affecting both uriNormalizeSyntax* and uriMakeOwner*
+  * Fixed: [CVE-2021-46141]
+      Fix a bug affecting both uriNormalizeSyntax* and uriMakeOwner*
       functions where the text range in .hostText would not be duped using
       malloc but remain unchanged (and hence "not owned") for URIs with
-      an IPv4 or IPv6 address hostname (GitHub #121, GitHub #124)
-  * Fixed: Fix the same bug in uriFreeUriMembers* functions that would not
+      an IPv4 or IPv6 address hostname; depending on how an application
+      uses uriparser, this could lead the application into a use-after-free
+      situation.
+      As the second half, fix uriFreeUriMembers* functions that would not
       free .hostText memory for URIs with an IPv4 or IPv6 address host;
       also, calling uriFreeUriMembers* multiple times on a URI of this
       very nature would result in trying to free pointers to stack
       (rather than heap) memory (GitHub #121, GitHub #124)
-  * Fixed: Fix functions uriNormalizeSyntax* for out-of-memory situations
+      Commit 987b046e41f407d17c622e580fc82a5e834b4329
+      Commit b1a34743bc1472e055d886e29e9b53f670eb3282
+  * Fixed: [CVE-2021-46142]
+      Fix functions uriNormalizeSyntax* for out-of-memory situations
       (i.e. malloc returning NULL) for URIs containing empty segments
       (any of user info, host text, query, or fragment) where previously
       pointers to stack (rather than heap) memory were freed (GitHub #122,
       GitHub #124)
+      Commit c0483990e6b5b454f7c8752b36760cfcb0d093f5
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   * Fixed: CMake: Call "enable_language(CXX)" prior to tinkering with
       CMAKE_CXX_* variables (GitHub #110)
