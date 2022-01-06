@@ -1,5 +1,7 @@
+/.idea/
 /config.h
 /build/
+/cmake-build-debug/
 /CMakeCache.txt
 /CMakeDoxyfile.in
 /CMakeDoxygenDefaults.cmake
