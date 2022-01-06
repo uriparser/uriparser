@@ -165,7 +165,7 @@ jobs:
             fi
           popd
 
-          git fetch --tags --unshallow origin  # for "git describe" in make-distcheck.sh
+          git fetch --force --tags --unshallow origin  # for "git describe" in make-distcheck.sh
 
           GTEST_PREFIX="${GTEST_PREFIX}" \
             ./make-distcheck.sh \
