@@ -32,7 +32,7 @@ jobs:
               -DCMAKE_SYSTEM_NAME=Windows
               -DWIN32=ON
               -DMINGW=ON
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2.4.0
 
