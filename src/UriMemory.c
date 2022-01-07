@@ -48,6 +48,9 @@
 # ifndef _GNU_SOURCE
 #  define _GNU_SOURCE 1
 # endif
+# ifdef __NetBSD__
+#  define _OPENBSD_SOURCE 1
+# endif
 #endif
 
 #include <errno.h>
