@@ -42,7 +42,7 @@
  * Holds memory manager implementation.
  */
 
-#include <config.h>
+#include <config.h>  /* for HAVE_REALLOCARRAY */
 
 #ifdef HAVE_REALLOCARRAY
 # ifndef _GNU_SOURCE
