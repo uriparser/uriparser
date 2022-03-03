@@ -64,6 +64,7 @@ option(URIPARSER_BUILD_TESTS "Build test suite (requires GTest >=1.8.0)" ON)
 option(URIPARSER_BUILD_TOOLS "Build tools (e.g. CLI \"uriparse\")" ON)
 option(URIPARSER_BUILD_CHAR "Build code supporting data type 'char'" ON)
 option(URIPARSER_BUILD_WCHAR_T "Build code supporting data type 'wchar_t'" ON)
+option(URIPARSER_VISIBILITY_HIDDEN "Build libraries with hidden symbols unless they are specifically exported" ON)
 option(URIPARSER_ENABLE_INSTALL "Enable installation of uriparser" ON)
 option(URIPARSER_WARNINGS_AS_ERRORS "Treat all compiler warnings as errors" OFF)
 set(URIPARSER_MSVC_RUNTIME "" CACHE STRING "Use of specific runtime library (/MT /MTd /MD /MDd) with MSVC")
@@ -104,9 +105,11 @@ endmacro()
 #
 set(URIPARSER_EXTRA_COMPILE_FLAGS)
 
+if(URIPARSER_VISIBILITY_HIDDEN)
 check_c_compiler_flag("-fvisibility=hidden" URIPARSER_COMPILER_SUPPORTS_VISIBILITY)
 if(URIPARSER_COMPILER_SUPPORTS_VISIBILITY)
     set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -fvisibility=hidden")
+endif()
 endif()
 
 #

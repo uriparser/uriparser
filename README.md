@@ -82,6 +82,9 @@ URIPARSER_ENABLE_INSTALL:BOOL=ON
 // Use of specific runtime library (/MT /MTd /MD /MDd) with MSVC
 URIPARSER_MSVC_RUNTIME:STRING=
 
+// Build libraries with hidden symbols unless they are specifically exported
+URIPARSER_VISIBILITY_HIDDEN:BOOL=ON
+
 // Treat all compiler warnings as errors
 URIPARSER_WARNINGS_AS_ERRORS:BOOL=OFF
 ```
