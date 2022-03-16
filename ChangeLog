@@ -2,6 +2,11 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
+xxxx-xx-xx -- x.x.x
+
+  * Fixed: Fix symbol visibility for -DBUILD_SHARED_LIBS=OFF (GitHub #139,
+      GitHub #141); thanks to Mariusz Zaborski for the report!
+
 2022-01-06 -- 0.9.6
 
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

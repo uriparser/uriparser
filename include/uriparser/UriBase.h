@@ -98,23 +98,19 @@
 
 
 /* Import/export decorator */
-#if defined(URI_STATIC_BUILD)
-# define URI_PUBLIC
-#else
-# if defined(URI_LIBRARY_BUILD)
-#  if defined(_MSC_VER)
-#   define URI_PUBLIC __declspec(dllexport)
-#  elif defined(URI_VISIBILITY)
-#   define URI_PUBLIC __attribute__ ((visibility("default")))
-#  else
-#   define URI_PUBLIC
-#  endif
+#if defined(_MSC_VER)
+# if defined(URI_STATIC_BUILD)
+#  define URI_PUBLIC
+# elif defined(URI_LIBRARY_BUILD)
+#  define URI_PUBLIC __declspec(dllexport)
 # else
-#  if defined(_MSC_VER)
-#   define URI_PUBLIC __declspec(dllimport)
-#  else
-#   define URI_PUBLIC
-#  endif
+#  define URI_PUBLIC __declspec(dllimport)
+# endif
+#else
+# if ! defined(URI_LIBRARY_BUILD) || ! defined(URI_VISIBILITY)
+#  define URI_PUBLIC
+# else
+#  define URI_PUBLIC __attribute__ ((visibility("default")))
 # endif
 #endif
 
