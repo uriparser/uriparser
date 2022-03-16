@@ -16,6 +16,8 @@ jobs:
       matrix:
         include:
           - name: Native Linux
+            runs-on: ubuntu-20.04
+            qhelpgenerator_package: qhelpgenerator-qt5
             cmake_args: >-
               -DCMAKE_C_COMPILER=clang-13
               -DCMAKE_CXX_COMPILER=clang++-13
@@ -26,43 +28,48 @@ jobs:
             ldflags: >-
               -fsanitize=address
           - name: MingGW on Linux
+            # NOTE: This is avoiding 20.04 for libwine:i386 conflicts
+            runs-on: ubuntu-18.04
+            qhelpgenerator_package: qttools5-dev-tools
             cmake_args: >-
               -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc
               -DCMAKE_CXX_COMPILER=i686-w64-mingw32-g++
               -DCMAKE_SYSTEM_NAME=Windows
               -DWIN32=ON
               -DMINGW=ON
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v3.0.0
 
       - name: Add Clang/LLVM repositories (Non-MinGW)
         if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
         run: |-
+          set -x
+          source /etc/os-release
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main'
+          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-13 main"
 
       - name: Install build dependencies
         run: |-
+          set -x
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends -V \
               cmake \
               doxygen \
               graphviz \
               lzip \
-              qhelpgenerator-qt5 \
+              ${{ matrix.qhelpgenerator_package }} \
               qtchooser
 
       - name: Install build dependencies (MinGW)
         if: "${{ contains(matrix.cmake_args, 'mingw') }}"
         run: |-
           sudo dpkg --add-architecture i386  # for wine32
-          sudo apt-add-repository ppa:ondrej/php -y  # due to libwine:i386 conflicts
           sudo apt-get update  # again, due to new architecture
           sudo apt-get install --yes --no-install-recommends -V \
               mingw-w64 \
               wine-stable \
-              wine32
+              wine32:i386
 
       - name: Install build dependencies (Non-MinGW)
         if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
