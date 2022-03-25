@@ -19,8 +19,8 @@ jobs:
             runs-on: ubuntu-20.04
             qhelpgenerator_package: qhelpgenerator-qt5
             cmake_args: >-
-              -DCMAKE_C_COMPILER=clang-13
-              -DCMAKE_CXX_COMPILER=clang++-13
+              -DCMAKE_C_COMPILER=clang-14
+              -DCMAKE_CXX_COMPILER=clang++-14
             cflags: >-
               -fsanitize=address,undefined,leak
               -fno-sanitize-recover=all
@@ -47,7 +47,7 @@ jobs:
           set -x
           source /etc/os-release
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-13 main"
+          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-14 main"
 
       - name: Install build dependencies
         run: |-
@@ -75,8 +75,8 @@ jobs:
         if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
         run: |-
           sudo apt-get install --yes --no-install-recommends -V \
-              clang-13 \
-              llvm-13
+              clang-14 \
+              llvm-14
 
       - name: Build, test and install
         run: |-
