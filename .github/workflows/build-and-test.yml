@@ -16,8 +16,6 @@ jobs:
       matrix:
         include:
           - name: Native Linux
-            runs-on: ubuntu-20.04
-            qhelpgenerator_package: qhelpgenerator-qt5
             cmake_args: >-
               -DCMAKE_C_COMPILER=clang-14
               -DCMAKE_CXX_COMPILER=clang++-14
@@ -28,15 +26,13 @@ jobs:
             ldflags: >-
               -fsanitize=address
           - name: MingGW on Linux
-            runs-on: ubuntu-20.04
-            qhelpgenerator_package: qhelpgenerator-qt5
             cmake_args: >-
               -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc
               -DCMAKE_CXX_COMPILER=i686-w64-mingw32-g++
               -DCMAKE_SYSTEM_NAME=Windows
               -DWIN32=ON
               -DMINGW=ON
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3.0.0
 
@@ -57,7 +53,7 @@ jobs:
               doxygen \
               graphviz \
               lzip \
-              ${{ matrix.qhelpgenerator_package }} \
+              qhelpgenerator-qt5 \
               qtchooser
 
       - name: Install build dependencies (MinGW)
