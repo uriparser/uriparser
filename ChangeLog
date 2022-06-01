@@ -6,6 +6,11 @@ xxxx-xx-xx -- x.x.x
 
   * Fixed: Fix symbol visibility for -DBUILD_SHARED_LIBS=OFF (GitHub #139,
       GitHub #141); thanks to Mariusz Zaborski for the report!
+  * Improved: Use name UriConfig.h rather than generic config.h for the
+      config header file to avoid name clashes and also include it through
+      "UriConfig.h" with quotes rather than <UriConfig.h> so that it is found
+      in quote path locations (GitHub #149)
+      Thanks to Gaspard Petit for bringing this up!
 
 2022-01-06 -- 0.9.6
 
