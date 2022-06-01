@@ -42,9 +42,7 @@
  * Holds memory manager implementation.
  */
 
-#ifndef URI_CONFIG_H
-#include <config.h>  /* for HAVE_REALLOCARRAY */
-#endif
+#include "UriConfig.h"  /* for HAVE_REALLOCARRAY */
 
 #ifdef HAVE_REALLOCARRAY
 # ifndef _GNU_SOURCE
