@@ -110,11 +110,11 @@ if(URIPARSER_COMPILER_SUPPORTS_VISIBILITY)
 endif()
 
 #
-# config.h
+# UriConfig.h
 #
 check_symbol_exists(wprintf wchar.h HAVE_WPRINTF)
 check_function_exists(reallocarray HAVE_REALLOCARRAY)  # no luck with CheckSymbolExists
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/UriConfig.h.in config.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/UriConfig.h.in UriConfig.h)
 
 #
 # C library
@@ -193,7 +193,7 @@ target_include_directories(uriparser
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     PRIVATE
-        ${CMAKE_CURRENT_BINARY_DIR}  # for config.h
+        ${CMAKE_CURRENT_BINARY_DIR}  # for UriConfig.h
 )
 
 uriparser_install(
@@ -288,7 +288,7 @@ if(URIPARSER_BUILD_TESTS)
 
     target_include_directories(testrunner PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_BINARY_DIR}  # for config.h
+        ${CMAKE_CURRENT_BINARY_DIR}  # for UriConfig.h
     )
 
     target_link_libraries(testrunner PUBLIC

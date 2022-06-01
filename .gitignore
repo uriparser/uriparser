@@ -1,5 +1,5 @@
 /.idea/
-/config.h
+/UriConfig.h
 /build/
 /cmake-build-debug/
 /CMakeCache.txt
