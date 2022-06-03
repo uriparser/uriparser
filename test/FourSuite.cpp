@@ -511,6 +511,10 @@ TEST(FourSuite, GoodUriReferences) {
 	// Random other things that crop up
 	ASSERT_TRUE(testGoodUri("http://example/Andr&#567;"));
 	ASSERT_TRUE(testGoodUri("file:///C:/DEV/Haskell/lib/HXmlToolbox-3.01/examples/"));
+
+	// Issue #146: The leading "v" of IPvFuture is case-insensitive.
+	ASSERT_TRUE(testGoodUri("//[vF.addr]"));
+	ASSERT_TRUE(testGoodUri("//[VF.addr]"));
 }
 
 

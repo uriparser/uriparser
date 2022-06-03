@@ -213,6 +213,18 @@ TEST(UriSuite, TestIpSixPass) {
 		URI_TEST_IP_SIX_PASS("2001:db8:100:f101::1");
 		URI_TEST_IP_SIX_PASS("a:b:c::12:1");
 		URI_TEST_IP_SIX_PASS("a:b::0:1:2:3");
+
+		// Issue #146: These are not leading zeros.
+		URI_TEST_IP_SIX_PASS("::100.1.1.1");
+		URI_TEST_IP_SIX_PASS("::1.100.1.1");
+		URI_TEST_IP_SIX_PASS("::1.1.100.1");
+		URI_TEST_IP_SIX_PASS("::1.1.1.100");
+		URI_TEST_IP_SIX_PASS("::100.100.100.100");
+		URI_TEST_IP_SIX_PASS("::10.1.1.1");
+		URI_TEST_IP_SIX_PASS("::1.10.1.1");
+		URI_TEST_IP_SIX_PASS("::1.1.10.1");
+		URI_TEST_IP_SIX_PASS("::1.1.1.10");
+		URI_TEST_IP_SIX_PASS("::10.10.10.10");
 }
 
 TEST(UriSuite, TestIpSixFail) {
@@ -259,6 +271,17 @@ TEST(UriSuite, TestIpSixFail) {
 
 		// Nonhex
 		URI_TEST_IP_SIX_FAIL("g:0:0:0:0:0:0");
+
+		// Issue #146: Zipper between the 7th and 8th quads.
+		URI_TEST_IP_SIX_FAIL("0:0:0:0:0:0:0::1");
+
+		// Issue #146: Leading or trailing ":".
+		URI_TEST_IP_SIX_FAIL(":1::1");
+		URI_TEST_IP_SIX_FAIL("1::1:");
+		URI_TEST_IP_SIX_FAIL(":1::1:");
+		URI_TEST_IP_SIX_FAIL(":0:0:0:0:0:0:0:0");
+		URI_TEST_IP_SIX_FAIL("0:0:0:0:0:0:0:0:");
+		URI_TEST_IP_SIX_FAIL(":0:0:0:0:0:0:0:0:");
 }
 
 TEST(UriSuite, TestIpSixOverread) {
