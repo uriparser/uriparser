@@ -795,6 +795,7 @@ static const URI_CHAR * URI_FUNC(ParseIPv6address2)(
 
 				case _UT('.'):
 					if ((quadsDone > 6) /* NOTE */
+							|| (zipperEver && (quadsDone == 6))
 							|| (!zipperEver && (quadsDone < 6))
 							|| letterAmong
 							|| (digitCount == 0)

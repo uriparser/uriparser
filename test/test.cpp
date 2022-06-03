@@ -282,6 +282,9 @@ TEST(UriSuite, TestIpSixFail) {
 		URI_TEST_IP_SIX_FAIL(":0:0:0:0:0:0:0:0");
 		URI_TEST_IP_SIX_FAIL("0:0:0:0:0:0:0:0:");
 		URI_TEST_IP_SIX_FAIL(":0:0:0:0:0:0:0:0:");
+
+		// Issue #146: Zipper between six quads and IPv4 address.
+		URI_TEST_IP_SIX_FAIL("1:1:1:1:1:1::1.1.1.1");
 }
 
 TEST(UriSuite, TestIpSixOverread) {
