@@ -2,7 +2,7 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
-xxxx-xx-xx -- x.x.x
+2022-10-05 -- 0.9.7
 
   * Fixed: Multiple issues with IPv6 and IPvFuture literal parsing
       (GitHub #146, GitHub #150)
