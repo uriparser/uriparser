@@ -45,16 +45,6 @@ environment:
 
   # https://www.appveyor.com/docs/windows-images-software/
   matrix:
-  # Visual Studio 2015, 32 bit
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      CMAKE_GENERATOR: Visual Studio 14 2015
-      PLATFORM: Win32
-
-  # Visual Studio 2015, 64 bit
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      CMAKE_GENERATOR: Visual Studio 14 2015 Win64
-      PLATFORM: x64
-
   # Visual Studio 2017, 32 bit
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       CMAKE_GENERATOR: Visual Studio 15 2017
