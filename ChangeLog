@@ -11,6 +11,7 @@ xxxx-xx-xx -- x.x.x
       "UriConfig.h" with quotes rather than <UriConfig.h> so that it is found
       in quote path locations (GitHub #149)
       Thanks to Gaspard Petit for bringing this up!
+  * Soname: 1:30:0 — see https://verbump.de/ for what these numbers do
 
 2022-01-06 -- 0.9.6
 
