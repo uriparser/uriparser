@@ -782,7 +782,7 @@ static const URI_CHAR * URI_FUNC(ParseIPv6address2)(
 								return NULL; /* ":::+ "*/
 							}
 						} else if (quadsDone == 0 || first[1] == _UT(']')) {
-							/* Leading or trailing ":" */
+							/* Single leading or trailing ":" */
 							URI_FUNC(StopSyntax)(state, first, memory);
 							return NULL;
 						}
@@ -794,8 +794,7 @@ static const URI_CHAR * URI_FUNC(ParseIPv6address2)(
 					break;
 
 				case _UT('.'):
-					if ((quadsDone > 6) /* NOTE */
-							|| (zipperEver && (quadsDone == 6))
+					if ((quadsDone + zipperEver > 6) /* NOTE */
 							|| (!zipperEver && (quadsDone < 6))
 							|| letterAmong
 							|| (digitCount == 0)
@@ -841,8 +840,8 @@ static const URI_CHAR * URI_FUNC(ParseIPv6address2)(
 
 					if (digitCount > 0) {
 						if (zipperEver) {
-							/* Zipping no quads? */
-							if (quadsDone == 7) {
+							/* Too many quads? */
+							if (quadsDone >= 7) {
 								URI_FUNC(StopSyntax)(state, first, memory);
 								return NULL;
 							}

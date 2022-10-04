@@ -287,6 +287,18 @@ TEST(UriSuite, TestIpSixFail) {
 		URI_TEST_IP_SIX_FAIL("1:1:1:1:1:1::1.1.1.1");
 }
 
+TEST(UriSuite, TestIpFuture) {
+		UriParserStateA stateA;
+		UriUriA uriA;
+		stateA.uri = &uriA;
+
+		// Issue #146: The leading "v" of IPvFuture is case-insensitive.
+		ASSERT_TRUE(0 == uriParseUriA(&stateA, "//[vF.addr]"));
+		uriFreeUriMembersA(&uriA);
+		ASSERT_TRUE(0 == uriParseUriA(&stateA, "//[VF.addr]"));
+		uriFreeUriMembersA(&uriA);
+}
+
 TEST(UriSuite, TestIpSixOverread) {
 		UriUriA uri;
 		const char * errorPos;
