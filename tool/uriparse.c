@@ -59,7 +59,7 @@ WINSOCK_API_LINKAGE const char * WSAAPI inet_ntop(
 #define RANGE(x)  (int)((x).afterLast-(x).first), ((x).first)
 
 
-void usage() {
+void usage(void) {
 	printf("Usage: uriparse URI [..]\n");
 }
 
