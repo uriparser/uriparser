@@ -17,8 +17,8 @@ jobs:
         include:
           - name: Native Linux
             cmake_args: >-
-              -DCMAKE_C_COMPILER=clang-14
-              -DCMAKE_CXX_COMPILER=clang++-14
+              -DCMAKE_C_COMPILER=clang-15
+              -DCMAKE_CXX_COMPILER=clang++-15
             cflags: >-
               -fsanitize=address,undefined,leak
               -fno-sanitize-recover=all
@@ -42,7 +42,7 @@ jobs:
           set -x
           source /etc/os-release
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-14 main"
+          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-15 main"
 
       - name: Install build dependencies
         run: |-
@@ -86,8 +86,8 @@ jobs:
         if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
         run: |-
           sudo apt-get install --yes --no-install-recommends -V \
-              clang-14 \
-              llvm-14
+              clang-15 \
+              llvm-15
 
       - name: Build, test and install
         run: |-
