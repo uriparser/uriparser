@@ -38,14 +38,14 @@ cmake_minimum_required(VERSION 3.3)
 
 project(uriparser
     VERSION
-        0.9.6
+        0.9.7
     LANGUAGES
         C
 )
 
 # See https://verbump.de/ for what these numbers do
 set(URIPARSER_SO_CURRENT    1)
-set(URIPARSER_SO_REVISION  29)
+set(URIPARSER_SO_REVISION  30)
 set(URIPARSER_SO_AGE        0)
 
 include(CheckCCompilerFlag)
