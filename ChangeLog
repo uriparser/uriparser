@@ -22,7 +22,7 @@ NOTE: uriparser is looking for help with a few things:
   * Infrastructure: Drop (support for) Visual Studio <=14/2015 (GitHub #152)
   * Infrastructure: Update Clang from 13 to 15 (GitHub #143, GitHub #151)
   * Infrastructure: Make MinGW with 32bit Wine on Ubuntu 20.04 possible
-      (GitHub #144, GitHub #145)
+      (GitHub #142, GitHub #144, GitHub #145)
   * Soname: 1:30:0 — see https://verbump.de/ for what these numbers do
 
 2022-01-06 -- 0.9.6
