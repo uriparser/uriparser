@@ -87,7 +87,7 @@ jobs:
         run: |-
           sudo apt-get install --yes --no-install-recommends -V \
               clang-15 \
-              llvm-15
+              libclang-rt-15-dev
 
       - name: Build, test and install
         run: |-
