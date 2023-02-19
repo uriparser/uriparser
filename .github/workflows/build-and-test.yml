@@ -17,14 +17,14 @@ jobs:
         include:
           - name: Native Linux
             cmake_args: >-
-              -DCMAKE_C_COMPILER=clang-15
-              -DCMAKE_CXX_COMPILER=clang++-15
+              -DCMAKE_C_COMPILER=clang-16
+              -DCMAKE_CXX_COMPILER=clang++-16
             cflags: >-
               -fsanitize=address,undefined,leak
               -fno-sanitize-recover=all
               -fno-omit-frame-pointer
             ldflags: >-
-              -fsanitize=address
+              -fsanitize=address,undefined,leak
           - name: MingGW on Linux
             cmake_args: >-
               -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc
@@ -42,7 +42,7 @@ jobs:
           set -x
           source /etc/os-release
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-15 main"
+          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-16 main"
 
       - name: Install build dependencies
         run: |-
@@ -86,8 +86,8 @@ jobs:
         if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
         run: |-
           sudo apt-get install --yes --no-install-recommends -V \
-              clang-15 \
-              libclang-rt-15-dev
+              clang-16 \
+              libclang-rt-16-dev
 
       - name: Build, test and install
         run: |-
