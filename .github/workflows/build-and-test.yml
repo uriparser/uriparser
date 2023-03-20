@@ -34,7 +34,7 @@ jobs:
               -DMINGW=ON
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v3.4.0
 
       - name: Add Clang/LLVM repositories (Non-MinGW)
         if: "${{ ! contains(matrix.cmake_args, 'mingw') }}"
