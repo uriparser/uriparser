@@ -58,7 +58,12 @@ include(GNUInstallDirs)
 #
 # Configuration
 #
-option(BUILD_SHARED_LIBS "Build shared libraries (rather than static ones)" ON)
+if(DEFINED BUILD_SHARED_LIBS)
+    set(_URIPARSER_SHARED_LIBS_DEFAULT ${BUILD_SHARED_LIBS})
+else()
+    set(_URIPARSER_SHARED_LIBS_DEFAULT ON)
+endif()
+option(URIPARSER_SHARED_LIBS "Build shared libraries (rather than static ones)" ${_URIPARSER_SHARED_LIBS_DEFAULT})
 option(URIPARSER_BUILD_DOCS "Build API documentation (requires Doxygen, Graphviz, and (optional) Qt's qhelpgenerator)" ON)
 option(URIPARSER_BUILD_TESTS "Build test suite (requires GTest >=1.8.0)" ON)
 option(URIPARSER_BUILD_TOOLS "Build tools (e.g. CLI \"uriparse\")" ON)
@@ -81,6 +86,12 @@ endif()
 if(URIPARSER_BUILD_TESTS)
     # We have to call enable_language() before modifying any CMAKE_CXX_* variables
     enable_language(CXX)
+endif()
+
+if(URIPARSER_SHARED_LIBS)
+    set(_URIPARSER_STATIC_OR_SHARED SHARED)
+else()
+    set(_URIPARSER_STATIC_OR_SHARED STATIC)
 endif()
 
 macro(uriparser_apply_msvc_runtime_to ref)
@@ -151,6 +162,7 @@ set(LIBRARY_CODE_FILES
 )
 
 add_library(uriparser
+    ${_URIPARSER_STATIC_OR_SHARED}
     ${API_HEADER_FILES}
     ${LIBRARY_CODE_FILES}
 )
@@ -175,7 +187,7 @@ set_property(
 )
 
 target_compile_definitions(uriparser PRIVATE URI_LIBRARY_BUILD)
-if (NOT BUILD_SHARED_LIBS)
+if (NOT URIPARSER_SHARED_LIBS)
     target_compile_definitions(uriparser PUBLIC URI_STATIC_BUILD)
 endif()
 if(NOT URIPARSER_BUILD_CHAR)
@@ -464,7 +476,7 @@ message(STATUS "================================================================
 message(STATUS "")
 message(STATUS "Configuration")
 message(STATUS "  Build type ............. ${CMAKE_BUILD_TYPE}")
-message(STATUS "  Shared libraries ....... ${BUILD_SHARED_LIBS}")
+message(STATUS "  Shared libraries ....... ${URIPARSER_SHARED_LIBS}")
 message(STATUS "  Compiler flags")
 message(STATUS "    C .................... ${CMAKE_C_FLAGS}")
 message(STATUS "    C++ .................. ${CMAKE_CXX_FLAGS}")
