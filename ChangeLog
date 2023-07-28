@@ -4,6 +4,7 @@ NOTE: uriparser is looking for help with a few things:
 
 xxxx-xx-xx -- x.x.x
 
+  * Changed: Require CMake >=3.5.0 (GitHub #172)
   * Added: CMake option URIPARSER_SHARED_LIBS=(ON|OFF) to control,
       whether to produce a shared or static library for uriparser
       and that alone, falls back to standard BUILD_SHARED_LIBS

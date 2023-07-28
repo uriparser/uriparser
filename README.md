@@ -20,7 +20,7 @@ please check out [https://uriparser.github.io/](https://uriparser.github.io/).
 # Example use from an existing CMake project
 
 ```cmake
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.5.0)
 
 project(hello VERSION 1.0.0)
 
