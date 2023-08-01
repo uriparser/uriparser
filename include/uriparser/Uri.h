@@ -608,6 +608,10 @@ URI_PUBLIC int URI_FUNC(ToStringCharsRequired)(const URI_TYPE(Uri) * uri,
  * Converts a %URI structure back to text as described in
  * <a href="http://tools.ietf.org/html/rfc3986#section-5.3">section 5.3 of RFC 3986</a>.
  *
+ * NOTE: Scheme-based normalization
+ * (<a href="http://tools.ietf.org/html/rfc3986#section-6.2.3">section 6.2.3 of RFC 3986</a>)
+ * is not applied and is considered a responsibility of the application using uriparser.
+ *
  * @param dest           <b>OUT</b>: Output destination
  * @param uri            <b>IN</b>: %URI to convert
  * @param maxChars       <b>IN</b>: Maximum number of characters to copy <b>including</b> terminator

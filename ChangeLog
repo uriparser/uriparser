@@ -9,6 +9,9 @@ xxxx-xx-xx -- x.x.x
       whether to produce a shared or static library for uriparser
       and that alone, falls back to standard BUILD_SHARED_LIBS
       if available, else defaults to "ON" (GitHub #169, GitHub #170)
+  * Improved: Document that scheme-based normalization a la
+      section 6.2.3 of RFC 3986 is a responsibility of the application
+      using uriparser (GitHub #173, GitHub #174)
 
 2022-10-05 -- 0.9.7
 
