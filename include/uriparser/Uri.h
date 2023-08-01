@@ -352,10 +352,11 @@ URI_PUBLIC int URI_FUNC(FreeUriMembersMm)(URI_TYPE(Uri) * uri,
 /**
  * Percent-encodes all unreserved characters from the input string and
  * writes the encoded version to the output string.
- * Be sure to allocate <b>3 times</b> the space of the input buffer for
+ *
+ * NOTE: Be sure to allocate <b>3 times</b> the space of the input buffer for
  * the output buffer for <c>normalizeBreaks == URI_FALSE</c> and <b>6 times</b>
  * the space for <c>normalizeBreaks == URI_TRUE</c>
- * (since e.g. "\x0d" becomes "%0D%0A" in that case)
+ * (since e.g. "\x0d" becomes "%0D%0A" in that case).
  *
  * @param inFirst           <b>IN</b>: Pointer to first character of the input text
  * @param inAfterLast       <b>IN</b>: Pointer after the last character of the input text
@@ -377,10 +378,11 @@ URI_PUBLIC URI_CHAR * URI_FUNC(EscapeEx)(const URI_CHAR * inFirst,
 /**
  * Percent-encodes all unreserved characters from the input string and
  * writes the encoded version to the output string.
- * Be sure to allocate <b>3 times</b> the space of the input buffer for
+ *
+ * NOTE: Be sure to allocate <b>3 times</b> the space of the input buffer for
  * the output buffer for <c>normalizeBreaks == URI_FALSE</c> and <b>6 times</b>
  * the space for <c>normalizeBreaks == URI_TRUE</c>
- * (since e.g. "\x0d" becomes "%0D%0A" in that case)
+ * (since e.g. "\x0d" becomes "%0D%0A" in that case).
  *
  * @param in                <b>IN</b>: Text source
  * @param out               <b>OUT</b>: Encoded text destination
