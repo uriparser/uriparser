@@ -352,10 +352,19 @@ URI_PUBLIC int URI_FUNC(FreeUriMembersMm)(URI_TYPE(Uri) * uri,
 /**
  * Percent-encodes all unreserved characters from the input string and
  * writes the encoded version to the output string.
- * Be sure to allocate <b>3 times</b> the space of the input buffer for
+ *
+ * NOTE: Be sure to allocate <b>3 times</b> the space of the input buffer for
  * the output buffer for <c>normalizeBreaks == URI_FALSE</c> and <b>6 times</b>
  * the space for <c>normalizeBreaks == URI_TRUE</c>
- * (since e.g. "\x0d" becomes "%0D%0A" in that case)
+ * (since e.g. "\x0d" becomes "%0D%0A" in that case).
+ *
+ * NOTE: The implementation treats (both <c>char</c> and) <c>wchar_t</c> units
+ * as code point integers, which works well for code points <c>U+0001</c> to <c>U+00ff</c>
+ * in host-native endianness but nothing more;
+ * in particular, using <c>uriEscapeExW</c> with arbitrary Unicode input will
+ * not produce healthy results.
+ * Passing UTF-8 input to <c>uriEscapeExA</c> may be useful in some scenarios.
+ * Keep in mind that uriparser is about %URI (RFC 3986) not %IRI (RFC 3987).
  *
  * @param inFirst           <b>IN</b>: Pointer to first character of the input text
  * @param inAfterLast       <b>IN</b>: Pointer after the last character of the input text
@@ -377,10 +386,19 @@ URI_PUBLIC URI_CHAR * URI_FUNC(EscapeEx)(const URI_CHAR * inFirst,
 /**
  * Percent-encodes all unreserved characters from the input string and
  * writes the encoded version to the output string.
- * Be sure to allocate <b>3 times</b> the space of the input buffer for
+ *
+ * NOTE: Be sure to allocate <b>3 times</b> the space of the input buffer for
  * the output buffer for <c>normalizeBreaks == URI_FALSE</c> and <b>6 times</b>
  * the space for <c>normalizeBreaks == URI_TRUE</c>
- * (since e.g. "\x0d" becomes "%0D%0A" in that case)
+ * (since e.g. "\x0d" becomes "%0D%0A" in that case).
+ *
+ * NOTE: The implementation treats (both <c>char</c> and) <c>wchar_t</c> units
+ * as code point integers, which works well for code points <c>U+0001</c> to <c>U+00ff</c>
+ * in host-native endianness but nothing more;
+ * in particular, using <c>uriEscapeW</c> with arbitrary Unicode input will
+ * not produce healthy results.
+ * Passing UTF-8 input to <c>uriEscapeA</c> may be useful in some scenarios.
+ * Keep in mind that uriparser is about %URI (RFC 3986) not %IRI (RFC 3987).
  *
  * @param in                <b>IN</b>: Text source
  * @param out               <b>OUT</b>: Encoded text destination

@@ -12,6 +12,8 @@ xxxx-xx-xx -- x.x.x
   * Improved: Document that scheme-based normalization a la
       section 6.2.3 of RFC 3986 is a responsibility of the application
       using uriparser (GitHub #173, GitHub #174)
+  * Improved: Document supported code points for functions uriEscape(Ex)W
+      (GitHub #171, GitHub #175)
 
 2022-10-05 -- 0.9.7
 
