@@ -177,10 +177,13 @@ int URI_FUNC(ComposeQueryMallocExMm)(URI_CHAR ** dest,
 	if (res != URI_SUCCESS) {
 		return res;
 	}
+	if (charsRequired == INT_MAX) {
+	    return URI_ERROR_MALLOC;
+	}
 	charsRequired++;
 
 	/* Allocate space */
-	queryString = memory->malloc(memory, charsRequired * sizeof(URI_CHAR));
+	queryString = memory->calloc(memory, charsRequired, sizeof(URI_CHAR));
 	if (queryString == NULL) {
 		return URI_ERROR_MALLOC;
 	}
