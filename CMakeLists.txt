@@ -45,7 +45,7 @@ project(uriparser
 
 # See https://verbump.de/ for what these numbers do
 set(URIPARSER_SO_CURRENT    1)
-set(URIPARSER_SO_REVISION  30)
+set(URIPARSER_SO_REVISION  31)
 set(URIPARSER_SO_AGE        0)
 
 include(CheckCCompilerFlag)

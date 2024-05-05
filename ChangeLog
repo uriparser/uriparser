@@ -27,6 +27,7 @@ xxxx-xx-xx -- x.x.x
   * Infrastructure: Get sanitizer CFLAGS and LDFLAGS back in sync (GitHub #161)
   * Infrastructure: Pin GitHub Actions to specific commits for security
       (GitHub #165)
+  * Soname: 1:31:0 — see https://verbump.de/ for what these numbers do
 
 2022-10-05 -- 0.9.7
 
