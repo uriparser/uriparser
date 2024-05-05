@@ -402,7 +402,7 @@ if(URIPARSER_BUILD_DOCS)
     if(QHG_LOCATION)
         uriparser_install(
             FILES
-                ${CMAKE_CURRENT_BINARY_DIR}/doc/uriparser-${PROJECT_VERSION}.qch
+                ${CMAKE_CURRENT_BINARY_DIR}/doc/uriparser-${PROJECT_VERSION}-doc.qch
             DESTINATION
                 ${CMAKE_INSTALL_DOCDIR}
         )

@@ -6,7 +6,7 @@ QHP_NAMESPACE = "io.github.uriparser"
 QHP_VIRTUAL_FOLDER = "uriparser-@PROJECT_VERSION@"
 
 # .qch output
-QCH_FILE = "../@PROJECT_NAME@-@PROJECT_VERSION@.qch"
+QCH_FILE = "../@PROJECT_NAME@-@PROJECT_VERSION@-doc.qch"
 QHG_LOCATION = "@QHG_LOCATION@"
 
 
