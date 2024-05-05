@@ -4,6 +4,14 @@ NOTE: uriparser is looking for help with a few things:
 
 xxxx-xx-xx -- x.x.x
 
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: [CVE-2024-34402]
+      Protect against integer overflow in ComposeQueryEngine
+      (GitHub #183, GitHub #185)
+  * Fixed: [CVE-2024-34403]
+      Protect against integer overflow in ComposeQueryMallocExMm
+      (GitHub #183, GitHub #186)
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   * Changed: Require CMake >=3.5.0 (GitHub #172)
   * Added: CMake option URIPARSER_SHARED_LIBS=(ON|OFF) to control,
       whether to produce a shared or static library for uriparser
@@ -14,6 +22,11 @@ xxxx-xx-xx -- x.x.x
       using uriparser (GitHub #173, GitHub #174)
   * Improved: Document supported code points for functions uriEscape(Ex)W
       (GitHub #171, GitHub #175)
+  * Infrastructure: Update Clang from 15 to 18 (GitHub #161, GitHub #187)
+  * Infrastructure: Adapt to breaking changes in Clang packaging (GitHub #160)
+  * Infrastructure: Get sanitizer CFLAGS and LDFLAGS back in sync (GitHub #161)
+  * Infrastructure: Pin GitHub Actions to specific commits for security
+      (GitHub #165)
 
 2022-10-05 -- 0.9.7
 
