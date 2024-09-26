@@ -167,6 +167,8 @@ add_library(uriparser
     ${LIBRARY_CODE_FILES}
 )
 
+add_library(uriparser::uriparser ALIAS uriparser)
+
 if(NOT MSVC)
     math(EXPR URIPARSER_SO_CURRENT_MINUS_AGE "${URIPARSER_SO_CURRENT} - ${URIPARSER_SO_AGE}")
     set_property(TARGET uriparser PROPERTY VERSION ${URIPARSER_SO_CURRENT_MINUS_AGE}.${URIPARSER_SO_AGE}.${URIPARSER_SO_REVISION})
