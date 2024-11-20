@@ -350,7 +350,7 @@ URI_PUBLIC int URI_FUNC(FreeUriMembersMm)(URI_TYPE(Uri) * uri,
 
 
 /**
- * Percent-encodes all unreserved characters from the input string and
+ * Percent-encodes all but unreserved characters from the input string and
  * writes the encoded version to the output string.
  *
  * NOTE: Be sure to allocate <b>3 times</b> the space of the input buffer for
@@ -384,7 +384,7 @@ URI_PUBLIC URI_CHAR * URI_FUNC(EscapeEx)(const URI_CHAR * inFirst,
 
 
 /**
- * Percent-encodes all unreserved characters from the input string and
+ * Percent-encodes all but unreserved characters from the input string and
  * writes the encoded version to the output string.
  *
  * NOTE: Be sure to allocate <b>3 times</b> the space of the input buffer for
