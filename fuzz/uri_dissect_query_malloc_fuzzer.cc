@@ -25,37 +25,39 @@
 using std::string;
 #include "uriparser/include/uriparser/Uri.h"
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
-  const string query(reinterpret_cast<const char *>(data), size);
 
-  UriQueryListA *query_list = nullptr;
-  int item_count = -1;
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
+	const string query(reinterpret_cast<const char *>(data), size);
 
-  const char *query_start = query.c_str();
-  const char *query_end = query_start + size;
+	UriQueryListA * query_list = nullptr;
+	int item_count = -1;
 
-  // Break a query like "a=b&2=3" into key/value pairs.
-  int result =
-      uriDissectQueryMallocA(&query_list, &item_count, query_start, query_end);
+	const char * query_start = query.c_str();
+	const char * query_end = query_start + size;
 
-  if (query_list == nullptr || result != URI_SUCCESS || item_count < 0)
-    return 0;
+	// Break a query like "a=b&2=3" into key/value pairs.
+	int result = uriDissectQueryMallocA(&query_list, &item_count, query_start, query_end);
 
-  int chars_required = 0;
-  if (uriComposeQueryCharsRequiredA(query_list, &chars_required) != URI_SUCCESS)
-    return 0;
+	if (query_list == nullptr || result != URI_SUCCESS || item_count < 0) {
+		return 0;
+	}
 
-  if (!chars_required) {
-    uriFreeQueryListA(query_list);
-    return 0;
-  }
+	int chars_required = 0;
+	if (uriComposeQueryCharsRequiredA(query_list, &chars_required) != URI_SUCCESS) {
+		return 0;
+	}
 
-  std::vector<char> buf(chars_required, 0);
-  int written = -1;
-  // Reverse the process of uriDissectQueryMallocA.
-  result = uriComposeQueryA(buf.data(), query_list, chars_required, &written);
+	if (!chars_required) {
+		uriFreeQueryListA(query_list);
+		return 0;
+	}
 
-  uriFreeQueryListA(query_list);
-  return 0;
+	std::vector<char> buf(chars_required, 0);
+	int written = -1;
+	// Reverse the process of uriDissectQueryMallocA.
+	result = uriComposeQueryA(buf.data(), query_list, chars_required, &written);
+
+	uriFreeQueryListA(query_list);
+	return 0;
 }

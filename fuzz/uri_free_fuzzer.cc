@@ -18,12 +18,14 @@
 
 #include "uriparser/include/uriparser/Uri.h"
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-  std::basic_string<char> fuzz_uri(reinterpret_cast<const char *>(data), size);
-  UriParserStateA state;
-  UriUriA uriA;
-  state.uri = &uriA;
-  uriParseUriA(&state, fuzz_uri.c_str());
-  uriFreeUriMembersA(&uriA);
-  return 0;
+
+
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
+	std::basic_string<char> fuzz_uri(reinterpret_cast<const char *>(data), size);
+	UriParserStateA state;
+	UriUriA uriA;
+	state.uri = &uriA;
+	uriParseUriA(&state, fuzz_uri.c_str());
+	uriFreeUriMembersA(&uriA);
+	return 0;
 }
