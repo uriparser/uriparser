@@ -1,4 +1,5 @@
 // Copyright 2020 Google LLC
+// Copyright 2025 Mikhail Khachaiants <mkhachaiants@gmail.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "uriparser/Uri.h"
+#include "FuzzingUtils.h"
 #include <cstddef>
 #include <cstdint>
-#include <string>
-
-#include "uriparser/include/uriparser/Uri.h"
-
 
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
-	std::basic_string<char> fuzz_uri(reinterpret_cast<const char *>(data), size);
-	UriParserStateA state;
-	UriUriA uriA;
+	FuzzedDataProvider fdp(data, size);
+	UriString fuzz_uri = consumeRemainingBytesAsString(fdp);
+	URI_TYPE(ParserState) state;
+	URI_TYPE(Uri) uriA;
 	state.uri = &uriA;
-	uriParseUriA(&state, fuzz_uri.c_str());
-	uriFreeUriMembersA(&uriA);
+	URI_FUNC(ParseUri)(&state, fuzz_uri.c_str());
+	URI_FUNC(FreeUriMembers)(&uriA);
 	return 0;
 }
