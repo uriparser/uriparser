@@ -67,6 +67,12 @@ URIPARSER_BUILD_DOCS:BOOL=ON
 // Build test suite (requires GTest >=1.8.0)
 URIPARSER_BUILD_TESTS:BOOL=ON
 
+// Build fuzzers (requires Clang)
+URIPARSER_BUILD_FUZZERS:BOOL=OFF
+
+// Build fuzzers via OSS-Fuzz
+URIPARSER_OSSFUZZ_BUILD:BOOL=OFF
+
 // Build tools (e.g. CLI "uriparse")
 URIPARSER_BUILD_TOOLS:BOOL=ON
 

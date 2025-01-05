@@ -66,6 +66,8 @@ endif()
 option(URIPARSER_SHARED_LIBS "Build shared libraries (rather than static ones)" ${_URIPARSER_SHARED_LIBS_DEFAULT})
 option(URIPARSER_BUILD_DOCS "Build API documentation (requires Doxygen, Graphviz, and (optional) Qt's qhelpgenerator)" ON)
 option(URIPARSER_BUILD_TESTS "Build test suite (requires GTest >=1.8.0)" ON)
+option(URIPARSER_BUILD_FUZZERS "Build fuzzers (requires Clang)" OFF)
+option(URIPARSER_OSSFUZZ_BUILD "Build fuzzers via OSS-Fuzz" OFF)
 option(URIPARSER_BUILD_TOOLS "Build tools (e.g. CLI \"uriparse\")" ON)
 option(URIPARSER_BUILD_CHAR "Build code supporting data type 'char'" ON)
 option(URIPARSER_BUILD_WCHAR_T "Build code supporting data type 'wchar_t'" ON)
@@ -83,7 +85,7 @@ if(URIPARSER_BUILD_TOOLS AND NOT URIPARSER_BUILD_CHAR)
     message(SEND_ERROR "URIPARSER_BUILD_TOOLS=ON requires URIPARSER_BUILD_CHAR=ON.")
 endif()
 
-if(URIPARSER_BUILD_TESTS)
+if(URIPARSER_BUILD_TESTS OR URIPARSER_BUILD_FUZZERS)
     # We have to call enable_language() before modifying any CMAKE_CXX_* variables
     enable_language(CXX)
 endif()
@@ -335,6 +337,73 @@ if(URIPARSER_BUILD_TESTS)
 endif()
 
 #
+# Fuzzers
+#
+if(URIPARSER_BUILD_FUZZERS)
+    if(NOT "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
+        message(FATAL_ERROR
+            "Building fuzz targets without Clang (but ${CMAKE_C_COMPILER_ID}) is not "
+            "supported. Please set -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++.")
+    endif()
+
+    if(URIPARSER_OSSFUZZ_BUILD AND NOT DEFINED ENV{LIB_FUZZING_ENGINE})
+        message(FATAL_ERROR
+            "OSS-Fuzz builds require the environment variable "
+            "LIB_FUZZING_ENGINE to be set. If you are seeing this "
+            "warning, it points to a deeper problem in the OSS-Fuzz "
+            "build setup.")
+    endif()
+
+    add_library(fuzzparser STATIC ${API_HEADER_FILES} ${LIBRARY_CODE_FILES})
+    target_compile_definitions(fuzzparser PUBLIC URI_STATIC_BUILD)
+    target_include_directories(fuzzparser
+        PUBLIC
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PRIVATE
+            ${CMAKE_CURRENT_BINARY_DIR}  # for UriConfig.h
+    )
+
+    if(NOT URIPARSER_OSSFUZZ_BUILD)
+        target_compile_options(fuzzparser PRIVATE -fsanitize=fuzzer-no-link)
+    endif()
+
+    function(add_fuzzer target_name source compile_definitions)
+        add_executable(${target_name} ${source})
+        target_link_libraries(${target_name} PRIVATE fuzzparser)
+        target_compile_definitions(${target_name} PRIVATE ${compile_definitions})
+        if(URIPARSER_OSSFUZZ_BUILD)
+            set_target_properties(${target_name} PROPERTIES LINK_FLAGS $ENV{LIB_FUZZING_ENGINE})
+            set_target_properties(${target_name} PROPERTIES LINKER_LANGUAGE "CXX")
+        else()
+            target_compile_options(${target_name} PRIVATE -fsanitize=fuzzer)
+            set_target_properties(${target_name} PROPERTIES LINK_FLAGS -fsanitize=fuzzer)
+        endif()
+        set_property(TARGET ${target_name} PROPERTY RUNTIME_OUTPUT_DIRECTORY fuzz)
+    endfunction()
+
+    function(add_ansi_and_unicode_fuzzer name source)
+        if(URIPARSER_BUILD_CHAR)
+            add_fuzzer(${name}_fuzzer ${source} URI_NO_UNICODE)
+        endif()
+
+        if(URIPARSER_BUILD_WCHAR_T)
+            add_fuzzer(${name}w_fuzzer ${source} URI_NO_ANSI)
+        endif()
+    endfunction()
+
+    add_ansi_and_unicode_fuzzer(uri_dissect_query_malloc fuzz/DissectQueryMallocFuzzer.cpp)
+    add_ansi_and_unicode_fuzzer(uri_free fuzz/FreeFuzzer.cpp)
+    add_ansi_and_unicode_fuzzer(uri_parse fuzz/ParseFuzzer.cpp)
+else()
+    if(URIPARSER_OSSFUZZ_BUILD)
+        message(SEND_ERROR
+                "Attempting to perform an OSS-Fuzz build without turning on the fuzzer build. "
+                "This is likely in error - consider adding "
+                "-DURIPARSER_BUILD_FUZZERS=ON to your CMake execution.")
+    endif()
+endif()
+
+#
 # Compiler flags
 #
 if(URIPARSER_WARNINGS_AS_ERRORS)
@@ -495,6 +564,7 @@ message(STATUS "    Code for char * ...... ${URIPARSER_BUILD_CHAR}")
 message(STATUS "    Code for wchar_t * ... ${URIPARSER_BUILD_WCHAR_T}")
 message(STATUS "    Tools ................ ${URIPARSER_BUILD_TOOLS}")
 message(STATUS "    Test suite ........... ${URIPARSER_BUILD_TESTS}")
+message(STATUS "    Fuzzers .............. ${URIPARSER_BUILD_FUZZERS}")
 message(STATUS "    Documentation ........ ${URIPARSER_BUILD_DOCS}")
 message(STATUS "")
 if(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
