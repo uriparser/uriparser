@@ -49,11 +49,14 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
 		return 0;
 	}
 
-	std::vector<URI_CHAR> buf(chars_required, 0);
+	// URI_FUNC(ComposeQuery) requires number of characters including terminator
+	const int buf_size = chars_required + 1;
+
+	std::vector<URI_CHAR> buf(buf_size, 0);
 	int written = -1;
 
 	// Reverse the process of uriDissectQueryMallocA.
-	result = URI_FUNC(ComposeQuery)(buf.data(), query_list, chars_required, &written);
+	result = URI_FUNC(ComposeQuery)(buf.data(), query_list, buf_size, &written);
 
 	URI_FUNC(FreeQueryList)(query_list);
 	return 0;
