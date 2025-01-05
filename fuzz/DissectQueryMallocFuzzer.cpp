@@ -1,4 +1,5 @@
 // Copyright 2020 Google LLC
+// Copyright 2025 Mikhail Khachaiants <mkhachaiants@gmail.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,52 +13,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Fuzz UriQuery.c:
-//   uriDissectQueryMallocA
-//   uriComposeQueryA
-
+#include "uriparser/Uri.h"
+#include "FuzzingUtils.h"
 #include <cstddef>
 #include <cstdint>
-#include <string>
 #include <utility>
 #include <vector>
-
-using std::string;
-#include "uriparser/include/uriparser/Uri.h"
 
 
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
-	const string query(reinterpret_cast<const char *>(data), size);
+	FuzzedDataProvider fdp(data, size);
+	const UriString query = consumeRemainingBytesAsString(fdp);
 
-	UriQueryListA * query_list = nullptr;
+	URI_TYPE(QueryList) * query_list = nullptr;
 	int item_count = -1;
 
-	const char * query_start = query.c_str();
-	const char * query_end = query_start + size;
+	const URI_CHAR * query_start = query.c_str();
+	const URI_CHAR * query_end = query_start + query.size();
 
 	// Break a query like "a=b&2=3" into key/value pairs.
-	int result = uriDissectQueryMallocA(&query_list, &item_count, query_start, query_end);
+	int result = URI_FUNC(DissectQueryMalloc)(&query_list, &item_count, query_start, query_end);
 
 	if (query_list == nullptr || result != URI_SUCCESS || item_count < 0) {
 		return 0;
 	}
 
 	int chars_required = 0;
-	if (uriComposeQueryCharsRequiredA(query_list, &chars_required) != URI_SUCCESS) {
+	if (URI_FUNC(ComposeQueryCharsRequired)(query_list, &chars_required) != URI_SUCCESS) {
 		return 0;
 	}
 
 	if (!chars_required) {
-		uriFreeQueryListA(query_list);
+		URI_FUNC(FreeQueryList)(query_list);
 		return 0;
 	}
 
-	std::vector<char> buf(chars_required, 0);
+	std::vector<URI_CHAR> buf(chars_required, 0);
 	int written = -1;
-	// Reverse the process of uriDissectQueryMallocA.
-	result = uriComposeQueryA(buf.data(), query_list, chars_required, &written);
 
-	uriFreeQueryListA(query_list);
+	// Reverse the process of uriDissectQueryMallocA.
+	result = URI_FUNC(ComposeQuery)(buf.data(), query_list, chars_required, &written);
+
+	URI_FUNC(FreeQueryList)(query_list);
 	return 0;
 }
