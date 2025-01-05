@@ -378,6 +378,7 @@ if(URIPARSER_BUILD_FUZZERS)
             target_compile_options(${target_name} PRIVATE -fsanitize=fuzzer-no-link)
             set_target_properties(${target_name} PROPERTIES LINK_FLAGS -fsanitize=fuzzer)
         endif()
+        set_property(TARGET ${target_name} PROPERTY RUNTIME_OUTPUT_DIRECTORY fuzz)
     endfunction()
 
     function (add_ansi_and_unicode_fuzzer name source)
