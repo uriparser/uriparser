@@ -38,7 +38,7 @@ inline UriString tryConsumeBytesAsString(FuzzedDataProvider & fdp, size_t chars)
 
 inline UriString consumeRandomLengthString(FuzzedDataProvider & fdp) {
 	const size_t max_chars = fdp.remaining_bytes() / sizeof(URI_CHAR);
-	const size_t chars = fdp.ConsumeIntegralInRange(0ul, max_chars);
+	const size_t chars = fdp.ConsumeIntegralInRange<size_t>(0, max_chars);
 	return tryConsumeBytesAsString(fdp, chars);
 }
 
