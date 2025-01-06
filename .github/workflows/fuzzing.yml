@@ -66,8 +66,8 @@ jobs:
 
         # Extract fuzzer names from code to not have to hardcode them in multiple places
         # TODO: Integrate "uri_*w_fuzzer" fuzzers here once a public corpus becomes available
-        git grep -h 'add_ansi_and_unicode_fuzzer(' -- ../CMakeLists.txt | sed -r 's|.*\((.*) .*|\1_fuzzer|' | tee fuzzer_names.txt
-        [[ "$(wc -l < fuzzer_names.txt)" = 3 ]]  # i.e. fail the CI for unexpected numbers, adjust number when adding fuzzers
+        git grep -h 'add_ansi_and_unicode_fuzzer(' -- ../CMakeLists.txt | sed -r -e 's|.*\((.*) .*|\1|' -e 's,.*,&_fuzzer\n&w_fuzzer,' | tee fuzzer_names.txt
+        [[ "$(wc -l < fuzzer_names.txt)" = 6 ]]  # i.e. fail the CI for unexpected numbers, adjust number when adding fuzzers
 
         while read i ; do
           wget -q -O "${i}.zip" "https://storage.googleapis.com/uriparser-backup.clusterfuzz-external.appspot.com/corpus/libFuzzer/uriparser_${i}/public.zip"
