@@ -110,7 +110,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
 
 	URI_CHAR buf[1024 * 8] = {0};
 	int written = 0;
-	URI_FUNC(ToString)(buf, state1.uri, sizeof(buf), &written);
+	URI_FUNC(ToString)(buf, state1.uri, sizeof(buf) / sizeof(buf[0]), &written);
 
 	UriHolder uriHolder2;
 	if (URI_FUNC(ParseSingleUri)(uriHolder2.get(), uri2.c_str(), nullptr) != URI_SUCCESS) {
