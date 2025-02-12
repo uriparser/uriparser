@@ -76,7 +76,7 @@ check_tarball() (
         # NOTE: We need to copy some .dll files next to the
         #       Windows binaries so that they are ready to be executed
         if [[ "${*:2}" == *mingw* ]]; then
-            cp /usr/lib/gcc/i686-w64-mingw32/*-posix/libgcc_s_sjlj-1.dll ./
+            cp /usr/lib/gcc/i686-w64-mingw32/*-posix/libgcc_s_dw2-1.dll ./
             cp /usr/lib/gcc/i686-w64-mingw32/*-posix/libstdc++-6.dll ./
             cp /usr/i686-w64-mingw32/lib/libwinpthread-1.dll ./
             cp "${GTEST_PREFIX:?}"/bin/libgtest.dll ./
