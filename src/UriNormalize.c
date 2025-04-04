@@ -331,8 +331,8 @@ static URI_INLINE void URI_FUNC(FixPercentEncodingEngine)(
 				/* 6.2.2.1 Case Normalization: *
 				 * uppercase percent-encodings */
 				write[0] = _UT('%');
-				write[1] = URI_FUNC(HexToLetter)(left);
-				write[2] = URI_FUNC(HexToLetter)(right);
+				write[1] = URI_FUNC(HexToLetterEx)(left, URI_TRUE);
+				write[2] = URI_FUNC(HexToLetterEx)(right, URI_TRUE);
 				write += 3;
 			}
 
