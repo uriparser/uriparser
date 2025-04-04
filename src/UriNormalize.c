@@ -329,7 +329,7 @@ static URI_INLINE void URI_FUNC(FixPercentEncodingEngine)(
 				write++;
 			} else {
 				/* 6.2.2.1 Case Normalization: *
-				 * lowercase percent-encodings */
+				 * uppercase percent-encodings */
 				write[0] = _UT('%');
 				write[1] = URI_FUNC(HexToLetter)(left);
 				write[2] = URI_FUNC(HexToLetter)(right);
