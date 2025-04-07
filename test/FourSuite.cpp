@@ -604,6 +604,8 @@ bool normalizeAndCompare(const char * uriText,
 
 TEST(FourSuite, CaseNormalizationTests) {
 	ASSERT_TRUE(normalizeAndCompare("HTTP://www.EXAMPLE.com/", "http://www.example.com/"));
+	ASSERT_TRUE(normalizeAndCompare("https://%e4%bd%a0%e5%a5%bd%e4%bd%a0%e5%a5%bd.com", "https://%E4%BD%A0%E5%A5%BD%E4%BD%A0%E5%A5%BD.com"));
+	ASSERT_TRUE(normalizeAndCompare("https://[2041:0000:140F::875B:131B]", "https://[2041:0000:140f::875b:131b"));
 	ASSERT_TRUE(normalizeAndCompare("example://A/b/c/%7bfoo%7d", "example://a/b/c/%7Bfoo%7D"));
 }
 

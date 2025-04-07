@@ -252,12 +252,11 @@ static URI_INLINE void URI_FUNC(LowercaseInplaceAfterPercentEncoding)(const URI_
 	if ((first != NULL) && (afterLast != NULL) && (afterLast > first)) {
 		URI_CHAR * i = (URI_CHAR *)first;
 		const int lowerUpperDiff = (_UT('a') - _UT('A'));
-		URI_CHAR * skipLowercasingUntilPosition = NULL;
 		for (; i < afterLast; i++) {
-			if ((*i >= _UT('A')) && (*i <=_UT('Z')) && skipLowercasingUntilPosition < i) {
+			if ((*i >= _UT('A')) && (*i <=_UT('Z'))) {
 				*i = (URI_CHAR)(*i + lowerUpperDiff);
 			} else if (*i == _UT('%')) {
-				skipLowercasingUntilPosition = i + 2;
+				i += 2;
 			}
 		}
 	}
