@@ -5,7 +5,7 @@
 # uriparser
 
 uriparser is a
-strictly [RFC 3986](http://tools.ietf.org/html/rfc3986) compliant
+strictly [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) compliant
 URI parsing and handling library
 written in C89 ("ANSI C").
 uriparser is cross-platform,

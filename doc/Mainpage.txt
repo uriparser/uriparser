@@ -47,7 +47,7 @@
  * <c>errorPos</c> points to the first character starting invalid syntax.
  *
  * @subsection recomposition Recomposing URIs (from object back to string)
- * According to <a href="http://tools.ietf.org/html/rfc3986#section-5.3" target="_blank">RFC 3986</a>
+ * According to <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-5.3" target="_blank">RFC 3986</a>
  * gluing parts of a URI together to form a string is called recomposition.
  * Before we can recompose a URI object we have to know how much
  * space the resulting string will take:
@@ -87,7 +87,7 @@
  *
  *
  * @subsection resolution Resolving References
- * <a href="http://tools.ietf.org/html/rfc3986#section-5" target="_blank">Reference Resolution</a>
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-5" target="_blank">Reference Resolution</a>
  * is the process of turning a (relative) URI reference into an absolute URI by applying a base
  * URI to it. In code it looks like this:
  *
@@ -183,9 +183,9 @@
  * @subsection normalization Normalizing URIs
  * Sometimes we come across unnecessarily long URIs like &quot;http<b></b>://example.org/one/two/../../one&quot;.
  * The algorithm we can use to shorten this URI down to &quot;http<b></b>://example.org/one&quot; is called
- * <a href="http://tools.ietf.org/html/rfc3986#section-6.2.2" target="_blank">Syntax-Based Normalization</a>.
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-6.2.2" target="_blank">Syntax-Based Normalization</a>.
  * Note that normalizing a URI does more than just &quot;stripping dot segments&quot;. Please have a look at
- * <a href="http://tools.ietf.org/html/rfc3986#section-6.2.2" target="_blank">Section 6.2.2 of RFC 3986</a>
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-6.2.2" target="_blank">Section 6.2.2 of RFC 3986</a>
  * for the full description.
  *
  * As we asked uriToStringCharsRequiredA() for the required space when converting
@@ -227,11 +227,11 @@
  *
  *
  * @section querystrings Working with Query Strings
- * <a href="http://tools.ietf.org/html/rfc3986" target="_blank">RFC 3986</a>
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986" target="_blank">RFC 3986</a>
  * itself does not understand the query part of a URI as a list of key/value pairs.
  * But HTML 2.0 does and defines a media type <i>application/x-www-form-urlencoded</i>
- * in in <a href="http://tools.ietf.org/html/rfc1866#section-8.2.1" target="blank">section 8.2.1</a>
- * of <a href="http://tools.ietf.org/html/rfc1866" target="blank">RFC 1866</a>.
+ * in in <a href="https://datatracker.ietf.org/doc/html/rfc1866#section-8.2.1" target="blank">section 8.2.1</a>
+ * of <a href="https://datatracker.ietf.org/doc/html/rfc1866" target="blank">RFC 1866</a>.
  * uriparser allows you to dissect (or parse) a query string into unescaped key/value pairs
  * and back.
  *
