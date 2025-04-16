@@ -1,16 +1,16 @@
 == Requirements ==
  (1) URI parser fully conforming to the
      latest URI RFC. Currently this is RFC 3986:
-     http://tools.ietf.org/html/rfc3986
+     https://datatracker.ietf.org/doc/html/rfc3986
 
  (2) Based on an LL(1) grammar, at least mainly.
      Not using a jump table but one function per
      rule instead.
 
  (3) Library licensed under "New BSD license".
-     http://www.opensource.org/licenses/bsd-license.php
+     https://opensource.org/license/BSD-2-Clause
      Test suite code licensed under LGPL.
-     http://www.opensource.org/licenses/lgpl-license.php
+     https://opensource.org/license/lgpl-3-0
 
  (4) Written in ANSI/ISO C.
 
@@ -26,7 +26,7 @@
 
  (8) Doxygen Code documentation at least for all
      interface functions and structures.
-     http://www.stack.nl/~dimitri/doxygen/index.html
+     https://www.doxygen.nl/
 
  (9) Sun Java code conventions for all C/C++ code.
      http://java.sun.com/docs/codeconv/

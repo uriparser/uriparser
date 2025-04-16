@@ -461,7 +461,7 @@ URI_PUBLIC const URI_CHAR * URI_FUNC(UnescapeInPlace)(URI_CHAR * inout);
 
 /**
  * Performs reference resolution as described in
- * <a href="http://tools.ietf.org/html/rfc3986#section-5.2.2">section 5.2.2 of RFC 3986</a>.
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.2">section 5.2.2 of RFC 3986</a>.
  * Uses default libc-based memory manager.
  * NOTE: On success you have to call uriFreeUriMembersA on \p absoluteDest manually later.
  *
@@ -484,7 +484,7 @@ URI_PUBLIC int URI_FUNC(AddBaseUri)(URI_TYPE(Uri) * absoluteDest,
 
 /**
  * Performs reference resolution as described in
- * <a href="http://tools.ietf.org/html/rfc3986#section-5.2.2">section 5.2.2 of RFC 3986</a>.
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.2">section 5.2.2 of RFC 3986</a>.
  * Uses default libc-based memory manager.
  * NOTE: On success you have to call uriFreeUriMembersA on \p absoluteDest manually later.
  *
@@ -508,7 +508,7 @@ URI_PUBLIC int URI_FUNC(AddBaseUriEx)(URI_TYPE(Uri) * absoluteDest,
 
 /**
  * Performs reference resolution as described in
- * <a href="http://tools.ietf.org/html/rfc3986#section-5.2.2">section 5.2.2 of RFC 3986</a>.
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.2">section 5.2.2 of RFC 3986</a>.
  * NOTE: On success you have to call uriFreeUriMembersMmA on \p absoluteDest manually later.
  *
  * @param absoluteDest     <b>OUT</b>: Result %URI
@@ -624,10 +624,10 @@ URI_PUBLIC int URI_FUNC(ToStringCharsRequired)(const URI_TYPE(Uri) * uri,
 
 /**
  * Converts a %URI structure back to text as described in
- * <a href="http://tools.ietf.org/html/rfc3986#section-5.3">section 5.3 of RFC 3986</a>.
+ * <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-5.3">section 5.3 of RFC 3986</a>.
  *
  * NOTE: Scheme-based normalization
- * (<a href="http://tools.ietf.org/html/rfc3986#section-6.2.3">section 6.2.3 of RFC 3986</a>)
+ * (<a href="https://datatracker.ietf.org/doc/html/rfc3986#section-6.2.3">section 6.2.3 of RFC 3986</a>)
  * is not applied and is considered a responsibility of the application using uriparser.
  *
  * @param dest           <b>OUT</b>: Output destination
