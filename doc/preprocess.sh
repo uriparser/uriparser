@@ -4,4 +4,10 @@ set -e -u -o pipefail
 : ${CC:=cc}
 PS4='doc/preprocess.sh|# '
 set -x
-"${CC}" -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include "$1" | sed -e '/^$/d' -e 's/COMMENT_HACK//g'
+{
+    if [[ "${1}" =~ \.txt$ ]]; then
+        cat "${1}"
+    else
+        "${CC}" -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include "$1"
+    fi
+} | sed -e '/^$/d' -e 's/COMMENT_HACK//g'
