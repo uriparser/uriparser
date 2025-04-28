@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 # Run GCC preprocessor and delete empty lines
+set -e -u -o pipefail
 : ${CC:=cc}
 PS4='doc/preprocess.sh|# '
 set -x
