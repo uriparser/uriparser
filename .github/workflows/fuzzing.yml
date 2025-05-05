@@ -91,6 +91,7 @@ jobs:
         set -x -o pipefail
         cd "build/corpus_${fuzzer_name}/"
         find . -type f | sort | xargs -n 1000 "../fuzz/${fuzzer_name}" "${fuzz_args[@]}"
+        find . -type f | wc -l
 
     - name: Store fuzzing logs of last batch
       if: always()
