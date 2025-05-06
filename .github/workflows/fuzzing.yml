@@ -15,8 +15,20 @@ permissions:
 
 jobs:
   run_fuzzers:
-    name: Run fuzzing regression tests
+    name: ${{ matrix.fuzzer_name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        fuzzer_name:
+          - uri_dissect_query_malloc_fuzzer
+          - uri_dissect_query_mallocw_fuzzer
+          - uri_free_fuzzer
+          - uri_freew_fuzzer
+          - uri_parse_fuzzer
+          - uri_parsew_fuzzer
     runs-on: ubuntu-24.04
+    env:
+      fuzzer_name: ${{ matrix.fuzzer_name }}
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
@@ -63,16 +75,9 @@ jobs:
       run: |-
         set -x -o pipefail
         cd build/
-
-        # Extract fuzzer names from code to not have to hardcode them in multiple places
-        # TODO: Integrate "uri_*w_fuzzer" fuzzers here once a public corpus becomes available
-        git grep -h 'add_ansi_and_unicode_fuzzer(' -- ../CMakeLists.txt | sed -r 's|.*\((.*) .*|\1_fuzzer|' | tee fuzzer_names.txt
-        [[ "$(wc -l < fuzzer_names.txt)" = 3 ]]  # i.e. fail the CI for unexpected numbers, adjust number when adding fuzzers
-
-        while read i ; do
-          wget -q -O "${i}.zip" "https://storage.googleapis.com/uriparser-backup.clusterfuzz-external.appspot.com/corpus/libFuzzer/uriparser_${i}/public.zip"
-          unzip -q -d "corpus_${i}" "${i}.zip"
-        done < fuzzer_names.txt
+        wget -q "https://storage.googleapis.com/uriparser-backup.clusterfuzz-external.appspot.com/corpus/libFuzzer/uriparser_${fuzzer_name}/public.zip"
+        unzip -q -d "corpus_${fuzzer_name}" public.zip
+        rm public.zip
 
     - name: Run fuzzing regression tests
       run: |
@@ -84,17 +89,14 @@ jobs:
         )
 
         set -x -o pipefail
-        cd build/
+        cd "build/corpus_${fuzzer_name}/"
+        find . -type f | sort | xargs -n 1000 "../fuzz/${fuzzer_name}" "${fuzz_args[@]}"
+        find . -type f | wc -l
 
-        while read i ; do
-          pushd corpus_"${i}"/
-            find . -type f | sort | xargs ../fuzz/"${i}" "${fuzz_args[@]}"
-          popd
-        done < fuzzer_names.txt
-
-    - name: Store fuzzing logs
+    - name: Store fuzzing logs of last batch
+      if: always()
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
       with:
-        name: uriparser_fuzzing_logs_${{ github.sha }}
+        name: uriparser_fuzzing_logs_last_${{ github.sha }}_${{ matrix.fuzzer_name }}
         path: build/*/fuzz-*.log
         if-no-files-found: error
