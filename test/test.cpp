@@ -1456,6 +1456,14 @@ TEST(UriSuite, TestNormalizeSyntax) {
 				L"http://user:pass@somehost.com:123"));
 
 		ASSERT_TRUE(testNormalizeSyntaxHelper(
+				L"https://%e4%bd%a0%e5%a5%bd%e4%bd%a0%e5%a5%bd.com",
+				L"https://%E4%BD%A0%E5%A5%BD%E4%BD%A0%E5%A5%BD.com"));
+
+		ASSERT_TRUE(testNormalizeSyntaxHelper(
+				L"https://[2041:0000:140F::875B:131B]",
+				L"https://[2041:0000:140f::875b:131b]"));
+
+		ASSERT_TRUE(testNormalizeSyntaxHelper(
 				L"HTTP://a:b@HOST:123/./1/2/../%41?abc#def",
 				L"http://a:b@host:123/1/A?abc#def"));
 

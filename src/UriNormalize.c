@@ -104,6 +104,8 @@ static UriBool URI_FUNC(ContainsUglyPercentEncoding)(const URI_CHAR * first,
 
 static void URI_FUNC(LowercaseInplace)(const URI_CHAR * first,
 		const URI_CHAR * afterLast);
+static void URI_FUNC(LowercaseInplaceExceptPercentEncoding)(const URI_CHAR * first,
+		const URI_CHAR * afterLast);
 static UriBool URI_FUNC(LowercaseMalloc)(const URI_CHAR ** first,
 		const URI_CHAR ** afterLast, UriMemoryManager * memory);
 
@@ -238,6 +240,26 @@ static URI_INLINE void URI_FUNC(LowercaseInplace)(const URI_CHAR * first,
 		for (; i < afterLast; i++) {
 			if ((*i >= _UT('A')) && (*i <=_UT('Z'))) {
 				*i = (URI_CHAR)(*i + lowerUpperDiff);
+			}
+		}
+	}
+}
+
+
+
+static URI_INLINE void URI_FUNC(LowercaseInplaceExceptPercentEncoding)(const URI_CHAR * first,
+		const URI_CHAR * afterLast) {
+	if ((first != NULL) && (afterLast != NULL) && (afterLast > first)) {
+		URI_CHAR * i = (URI_CHAR *)first;
+		const int lowerUpperDiff = (_UT('a') - _UT('A'));
+		for (; i < afterLast; i++) {
+			if ((*i >= _UT('A')) && (*i <=_UT('Z'))) {
+				*i = (URI_CHAR)(*i + lowerUpperDiff);
+			} else if (*i == _UT('%')) {
+				if (i + 3 >= afterLast) {
+					return;
+				}
+				i += 2;
 			}
 		}
 	}
@@ -614,9 +636,8 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
 				uri->hostText.first = uri->hostData.ipFuture.first;
 				uri->hostText.afterLast = uri->hostData.ipFuture.afterLast;
 			} else if ((uri->hostText.first != NULL)
-					&& (uri->hostData.ip4 == NULL)
-					&& (uri->hostData.ip6 == NULL)) {
-				/* Regname */
+					&& (uri->hostData.ip4 == NULL)) {
+				/* Regname or IPv6 */
 				if (uri->owner) {
 					URI_FUNC(FixPercentEncodingInplace)(uri->hostText.first,
 							&(uri->hostText.afterLast));
@@ -631,7 +652,7 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
 					doneMask |= URI_NORMALIZE_HOST;
 				}
 
-				URI_FUNC(LowercaseInplace)(uri->hostText.first,
+				URI_FUNC(LowercaseInplaceExceptPercentEncoding)(uri->hostText.first,
 						uri->hostText.afterLast);
 			}
 		}
