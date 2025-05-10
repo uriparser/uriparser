@@ -636,9 +636,8 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
 				uri->hostText.first = uri->hostData.ipFuture.first;
 				uri->hostText.afterLast = uri->hostData.ipFuture.afterLast;
 			} else if ((uri->hostText.first != NULL)
-					&& (uri->hostData.ip4 == NULL)
-					&& (uri->hostData.ip6 == NULL)) {
-				/* Regname */
+					&& (uri->hostData.ip4 == NULL)) {
+				/* Regname or IPv6 */
 				if (uri->owner) {
 					URI_FUNC(FixPercentEncodingInplace)(uri->hostText.first,
 							&(uri->hostText.afterLast));
