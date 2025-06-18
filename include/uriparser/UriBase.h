@@ -258,7 +258,8 @@ typedef enum UriNormalizationMaskEnum {
 	URI_NORMALIZE_HOST = 1 << 2, /**< Normalize host (fix uppercase letters) */
 	URI_NORMALIZE_PATH = 1 << 3, /**< Normalize path (fix uppercase percent-encodings and redundant dot segments) */
 	URI_NORMALIZE_QUERY = 1 << 4, /**< Normalize query (fix uppercase percent-encodings) */
-	URI_NORMALIZE_FRAGMENT = 1 << 5 /**< Normalize fragment (fix uppercase percent-encodings) */
+	URI_NORMALIZE_FRAGMENT = 1 << 5, /**< Normalize fragment (fix uppercase percent-encodings) */
+	URI_NORMALIZE_PORT = 1 << 6 /**< Normalize port (drop leading zeros) @since 0.9.9 */
 } UriNormalizationMask; /**< @copydoc UriNormalizationMaskEnum */
 
 
@@ -303,7 +304,7 @@ typedef enum UriResolutionOptionsEnum {
  * @since 0.9.0
  */
 URI_PUBLIC int uriCompleteMemoryManager(UriMemoryManager * memory,
-		UriMemoryManager * backend);
+										UriMemoryManager * backend);
 
 
 
@@ -322,7 +323,7 @@ URI_PUBLIC int uriCompleteMemoryManager(UriMemoryManager * memory,
  * @since 0.9.0
  */
 URI_PUBLIC void * uriEmulateCalloc(UriMemoryManager * memory,
-		size_t nmemb, size_t size);
+								   size_t nmemb, size_t size);
 
 
 
@@ -342,7 +343,7 @@ URI_PUBLIC void * uriEmulateCalloc(UriMemoryManager * memory,
  * @since 0.9.0
  */
 URI_PUBLIC void * uriEmulateReallocarray(UriMemoryManager * memory,
-		void * ptr, size_t nmemb, size_t size);
+										 void * ptr, size_t nmemb, size_t size);
 
 
 
