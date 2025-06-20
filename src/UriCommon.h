@@ -82,6 +82,11 @@ int URI_FUNC(CompareRange)(
 		const URI_TYPE(TextRange) * a,
 		const URI_TYPE(TextRange) * b);
 
+UriBool URI_FUNC(CopyRange)(URI_TYPE(TextRange) * destRange,
+		const URI_TYPE(TextRange) * sourceRange, UriMemoryManager * memory);
+UriBool URI_FUNC(CopyRangeAsNeeded)(URI_TYPE(TextRange) * destRange,
+		const URI_TYPE(TextRange) * sourceRange, UriBool useSafe, UriMemoryManager * memory);
+
 UriBool URI_FUNC(RemoveDotSegmentsAbsolute)(URI_TYPE(Uri) * uri,
 		UriMemoryManager * memory);
 UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,

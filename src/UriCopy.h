@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2007, Weijia Song <songweijia@gmail.com>
  * Copyright (C) 2007, Sebastian Pipping <sebastian@pipping.org>
+ * Copyright (C) 2025, Máté Kocsis <kocsismate@php.net>
  * All rights reserved.
  *
  * Redistribution and use in source  and binary forms, with or without
@@ -68,10 +69,6 @@
 
 
 
-UriBool URI_FUNC(CopyRangeEngine)(URI_TYPE(TextRange) * destRange,
-		const URI_TYPE(TextRange) * sourceRange, UriMemoryManager * memory);
-UriBool URI_FUNC(CopyRange)(URI_TYPE(TextRange) * destRange,
-		const URI_TYPE(TextRange) * sourceRange, UriBool useSafe, UriMemoryManager * memory);
 void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
 		unsigned int revertMask, UriMemoryManager * memory);
 int URI_FUNC(CopyUriMm)(URI_TYPE(Uri) * destUri,

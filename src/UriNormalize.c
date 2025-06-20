@@ -150,14 +150,6 @@ void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
 		}
 	}
 
-	if (revertMask & URI_NORMALIZE_PORT) {
-		if (uri->portText.first != uri->portText.afterLast) {
-			memory->free(memory, (URI_CHAR *)uri->portText.first);
-		}
-		uri->portText.first = NULL;
-		uri->portText.afterLast = NULL;
-	}
-
 	if (revertMask & URI_NORMALIZE_PATH) {
 		URI_TYPE(PathSegment) * walker = uri->pathHead;
 		while (walker != NULL) {
@@ -411,7 +403,7 @@ static URI_INLINE UriBool URI_FUNC(MakeRangeOwner)(unsigned int * doneMask,
 			&& (range->first != NULL)
 			&& (range->afterLast != NULL)
 			&& (range->afterLast > range->first)) {
-		if (URI_FUNC(CopyRangeEngine)(range, range, memory) == URI_FALSE) {
+		if (URI_FUNC(CopyRange)(range, range, memory) == URI_FALSE) {
 			return URI_FALSE;
 		}
 		*doneMask |= maskTest;

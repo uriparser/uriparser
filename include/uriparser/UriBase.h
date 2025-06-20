@@ -304,7 +304,7 @@ typedef enum UriResolutionOptionsEnum {
  * @since 0.9.0
  */
 URI_PUBLIC int uriCompleteMemoryManager(UriMemoryManager * memory,
-										UriMemoryManager * backend);
+		UriMemoryManager * backend);
 
 
 
