@@ -42,6 +42,9 @@ project(uriparser
     LANGUAGES
         C
 )
+set(CMAKE_C_STANDARD 90)  # same as C89, value "89" not supported by CMake
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)  # i.e. -std=c90 rather than default -std=gnu90
 
 # See https://verbump.de/ for what these numbers do
 set(URIPARSER_SO_CURRENT    1)
