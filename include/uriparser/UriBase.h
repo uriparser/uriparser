@@ -323,7 +323,7 @@ URI_PUBLIC int uriCompleteMemoryManager(UriMemoryManager * memory,
  * @since 0.9.0
  */
 URI_PUBLIC void * uriEmulateCalloc(UriMemoryManager * memory,
-		size_t nmemb, size_t size);
+								   size_t nmemb, size_t size);
 
 
 
@@ -343,7 +343,7 @@ URI_PUBLIC void * uriEmulateCalloc(UriMemoryManager * memory,
  * @since 0.9.0
  */
 URI_PUBLIC void * uriEmulateReallocarray(UriMemoryManager * memory,
-		void * ptr, size_t nmemb, size_t size);
+										 void * ptr, size_t nmemb, size_t size);
 
 
 
