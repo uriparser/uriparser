@@ -1384,6 +1384,16 @@ TEST(UriSuite, TestNormalizeSyntaxMaskRequired) {
 		ASSERT_TRUE(testNormalizeMaskHelper(L"http://localhost/#AB%43", URI_NORMALIZE_FRAGMENT));
 }
 
+TEST(UriSuite, TestNormalizeSyntaxMaskRequiredPort) {
+		EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:443/", URI_NORMALIZED));
+		EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:0/", URI_NORMALIZED));
+		EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:/", URI_NORMALIZED));
+
+		EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:0443/", URI_NORMALIZE_PORT));
+		EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:00443/", URI_NORMALIZE_PORT));
+		EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:00/", URI_NORMALIZE_PORT));
+}
+
 namespace {
 	bool testNormalizeSyntaxHelper(const wchar_t * uriText, const wchar_t * expectedNormalized,
 			unsigned int mask = static_cast<unsigned int>(-1)) {
@@ -1521,6 +1531,11 @@ TEST(UriSuite, TestNormalizeSyntaxComponents) {
 				URI_NORMALIZE_HOST));
 
 		ASSERT_TRUE(testNormalizeSyntaxHelper(
+				L"HTTP://EXAMPLE.ORG:00080/",
+				L"HTTP://EXAMPLE.ORG:80/",
+				URI_NORMALIZE_PORT));
+
+		ASSERT_TRUE(testNormalizeSyntaxHelper(
 				L"HTTP://%41@EXAMPLE.ORG/../a?%41#%41",
 				L"HTTP://%41@EXAMPLE.ORG/a?%41#%41",
 				URI_NORMALIZE_PATH));
@@ -1534,6 +1549,29 @@ TEST(UriSuite, TestNormalizeSyntaxComponents) {
 				L"HTTP://%41@EXAMPLE.ORG/../a?%41#%41",
 				L"HTTP://%41@EXAMPLE.ORG/../a?%41#A",
 				URI_NORMALIZE_FRAGMENT));
+}
+
+TEST(UriSuite, TestNormalizeSyntaxPort) {
+	// Empty port text unchanged
+	ASSERT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme://host:/",
+			L"scheme://host:/",
+			URI_NORMALIZE_PORT));
+	// Zero port unchanged
+	ASSERT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme://host:0/",
+			L"scheme://host:0/",
+			URI_NORMALIZE_PORT));
+	// All-zeros port turned into single zero
+	ASSERT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme://host:00/",
+			L"scheme://host:0/",
+			URI_NORMALIZE_PORT));
+	// Leading zeros cut off
+	ASSERT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme://host:00080/",
+			L"scheme://host:80/",
+			URI_NORMALIZE_PORT));
 }
 
 TEST(UriSuite, TestNormalizeSyntaxPath) {
