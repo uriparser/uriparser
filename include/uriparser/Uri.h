@@ -201,6 +201,15 @@ typedef struct URI_TYPE(QueryListStruct) {
 } URI_TYPE(QueryList); /**< @copydoc UriQueryListStructA */
 
 
+/**
+ * Checks if a URI has the host component set.
+ *
+ * @param uri %URI to check
+ * @return <c>URI_TRUE</c> when host is set, <c>URI_FAlSE</c> otherwise
+ */
+URI_PUBLIC UriBool URI_FUNC(IsHostSet)(const URI_TYPE(Uri) * uri);
+
+
 
 /**
  * Parses a RFC 3986 %URI.
