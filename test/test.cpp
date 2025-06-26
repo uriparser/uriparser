@@ -1794,7 +1794,7 @@ namespace {
 				input, input + wcslen(input), spacePlusConversion, breakConversion);
 		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_EQ(itemCount, expectedItemCount);
-		ASSERT_TRUE((queryList == NULL) == (expectedItemCount == 0));
+		ASSERT_EQ((queryList == NULL), (expectedItemCount == 0));
 
 		if (expectedItemCount != 0) {
 			// First
@@ -1900,7 +1900,7 @@ TEST(UriSuite, TestQueryCompositionMathCalc) {
 				== URI_SUCCESS);
 
 		const int FACTOR = 6;  /* due to escaping with normalizeBreaks */
-		ASSERT_TRUE((unsigned)charsRequired ==
+		ASSERT_EQ((unsigned)charsRequired,
 			FACTOR * strlen(first.key) + 1 + FACTOR * strlen(first.value)
 			+ 1
 			+ FACTOR * strlen(second.key) + 1 + FACTOR * strlen(second.value)
