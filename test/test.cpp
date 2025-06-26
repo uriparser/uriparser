@@ -376,7 +376,7 @@ TEST(UriSuite, TestUri) {
 		// Percent encoding
 		ASSERT_EQ(0, uriParseUriA(&stateA, "http://www.example.com/name%20with%20spaces/"));
 		uriFreeUriMembersA(&uriA);
-		ASSERT_TRUE(0 != uriParseUriA(&stateA, "http://www.example.com/name with spaces/"));
+		ASSERT_NE(0, uriParseUriA(&stateA, "http://www.example.com/name with spaces/"));
 		uriFreeUriMembersA(&uriA);
 }
 
