@@ -1731,7 +1731,7 @@ TEST(UriSuite, TestQueryStringEndingInEqualSignNonBug32) {
 		const int res = uriDissectQueryMallocA(&queryList, &itemCount,
 				queryString, queryString + strlen(queryString));
 
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_EQ(itemCount, 2);
 		ASSERT_TRUE(queryList != NULL);
 		ASSERT_EQ(strcmp(queryList->key, "firstname"), 0);
@@ -1749,14 +1749,14 @@ namespace {
 		UriUriA uri;
 		state.uri = &uri;
 		int res = uriParseUriA(&state, uriString);
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 
 		UriQueryListA * queryList = NULL;
 		int itemCount = 0;
 
 		res = uriDissectQueryMallocA(&queryList, &itemCount,
 				uri.query.first, uri.query.afterLast);
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(queryList != NULL);
 		ASSERT_TRUE(itemCount == pairsExpected);
 		uriFreeQueryListA(queryList);
@@ -1792,7 +1792,7 @@ namespace {
 		UriQueryListW * queryList;
 		res = uriDissectQueryMallocExW(&queryList, &itemCount,
 				input, input + wcslen(input), spacePlusConversion, breakConversion);
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(itemCount == expectedItemCount);
 		ASSERT_TRUE((queryList == NULL) == (expectedItemCount == 0));
 
@@ -1801,14 +1801,14 @@ namespace {
 			int charsRequired;
 			res = uriComposeQueryCharsRequiredExW(queryList, &charsRequired, spacePlusConversion,
 					normalizeBreaks);
-			ASSERT_TRUE(res == URI_SUCCESS);
+			ASSERT_EQ(res, URI_SUCCESS);
 			ASSERT_TRUE(charsRequired >= (int)wcslen(input));
 
 			wchar_t * recomposed = new wchar_t[charsRequired + 1];
 			int charsWritten;
 			res = uriComposeQueryExW(recomposed, queryList, charsRequired + 1,
 					&charsWritten, spacePlusConversion, normalizeBreaks);
-			ASSERT_TRUE(res == URI_SUCCESS);
+			ASSERT_EQ(res, URI_SUCCESS);
 			ASSERT_TRUE(charsWritten <= charsRequired);
 			ASSERT_TRUE(charsWritten == (int)wcslen(input) + 1);
 			ASSERT_TRUE(!wcscmp(input, recomposed));
@@ -1816,7 +1816,7 @@ namespace {
 
 			recomposed = NULL;
 			res = uriComposeQueryMallocW(&recomposed, queryList);
-			ASSERT_TRUE(res == URI_SUCCESS);
+			ASSERT_EQ(res, URI_SUCCESS);
 			ASSERT_TRUE(recomposed != NULL);
 			ASSERT_TRUE(charsWritten == (int)wcslen(input) + 1);
 			ASSERT_TRUE(!wcscmp(input, recomposed));
@@ -1844,7 +1844,7 @@ namespace {
 		int itemCount;
 
 		res = uriDissectQueryMallocA(&queryList, &itemCount, pair, pair + strlen(pair));
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(queryList != NULL);
 		ASSERT_EQ(itemCount, 1);
 		ASSERT_TRUE(!strcmp(queryList->key, unescapedKey));
@@ -1852,7 +1852,7 @@ namespace {
 
 		char * recomposed;
 		res = uriComposeQueryMallocA(&recomposed, queryList);
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(recomposed != NULL);
 		ASSERT_TRUE(!strcmp(recomposed, (fixed != NULL) ? fixed : pair));
 		free(recomposed);
@@ -1873,7 +1873,7 @@ TEST(UriSuite, TestQueryDissectionBug3590761) {
 		const char * const pair = "q=hello&x=&y=";
 
 		res = uriDissectQueryMallocA(&queryList, &itemCount, pair, pair + strlen(pair));
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(queryList != NULL);
 		ASSERT_EQ(itemCount, 3);
 
@@ -1950,14 +1950,14 @@ TEST(UriSuite, TestFreeCrashBug20080827) {
 
 		state.uri = &relativeSource;
 		res = uriParseUriA(&state, sourceUri);
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 
 		state.uri = &absoluteBase;
 		res = uriParseUriA(&state, baseUri);
-		ASSERT_TRUE(res == URI_SUCCESS);
+		ASSERT_EQ(res, URI_SUCCESS);
 
 		res = uriRemoveBaseUriA(&absoluteDest, &relativeSource, &absoluteBase, URI_FALSE);
-		ASSERT_TRUE(res == URI_ERROR_REMOVEBASE_REL_SOURCE);
+		ASSERT_EQ(res, URI_ERROR_REMOVEBASE_REL_SOURCE);
 
 		uriFreeUriMembersA(&relativeSource);
 		uriFreeUriMembersA(&absoluteBase);
@@ -1972,9 +1972,9 @@ TEST(UriSuite, TestInvalidInputBug16) {
 
 		const int res = uriParseUriA(&stateA, input);
 
-		ASSERT_TRUE(res == URI_ERROR_SYNTAX);
+		ASSERT_EQ(res, URI_ERROR_SYNTAX);
 		ASSERT_TRUE(stateA.errorPos == input + 1);
-		ASSERT_TRUE(stateA.errorCode == URI_ERROR_SYNTAX);  /* failed previously */
+		ASSERT_EQ(stateA.errorCode, URI_ERROR_SYNTAX);  /* failed previously */
 
 		uriFreeUriMembersA(&uriA);
 }
@@ -2152,16 +2152,16 @@ namespace {
 		UriUriA dest;
 
 		state.uri = &absSource;
-		ASSERT_TRUE(uriParseUriA(&state, absSourceStr) == URI_SUCCESS);
+		ASSERT_EQ(uriParseUriA(&state, absSourceStr), URI_SUCCESS);
 
 		state.uri = &absBase;
-		ASSERT_TRUE(uriParseUriA(&state, absBaseStr) == URI_SUCCESS);
+		ASSERT_EQ(uriParseUriA(&state, absBaseStr), URI_SUCCESS);
 
 		ASSERT_TRUE(uriRemoveBaseUriA(&dest, &absSource, &absBase, URI_FALSE)
 				== URI_SUCCESS);
 
 		int size = 0;
-		ASSERT_TRUE(uriToStringCharsRequiredA(&dest, &size) == URI_SUCCESS);
+		ASSERT_EQ(uriToStringCharsRequiredA(&dest, &size), URI_SUCCESS);
 		char * const buffer = (char *)malloc(size + 1);
 		ASSERT_TRUE(buffer);
 		ASSERT_TRUE(uriToStringA(buffer, &dest, size + 1, &size)
