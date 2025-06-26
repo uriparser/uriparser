@@ -496,9 +496,9 @@ TEST(UriSuite, TestUriUserInfoHostPort22Bug1948038) {
 		res = uriParseUriA(&stateA, "http://user:21@host/");
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "user:21", 7 * sizeof(char)));
-		ASSERT_TRUE(uriA.userInfo.afterLast - uriA.userInfo.first == 7);
+		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 7);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "host", 4 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 4);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 4);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -527,9 +527,9 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198One) {
 		res = uriParseUriA(&stateA, "http" "://" "user:%2F21" "@" "host" "/");
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "user:%2F21", 10 * sizeof(char)));
-		ASSERT_TRUE(uriA.userInfo.afterLast - uriA.userInfo.first == 10);
+		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 10);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "host", 4 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 4);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 4);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -546,9 +546,9 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198Two) {
 		res = uriParseUriA(&stateA, "http" "://" "%2Fuser:%2F21" "@" "host" "/");
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "%2Fuser:%2F21", 13 * sizeof(char)));
-		ASSERT_TRUE(uriA.userInfo.afterLast - uriA.userInfo.first == 13);
+		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 13);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "host", 4 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 4);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 4);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -565,9 +565,9 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198Three) {
 		res = uriParseUriA(&stateA, "http" "://" "user:!$&'()*+,;=" "@" "host" "/");
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "user:!$&'()*+,;=", 16 * sizeof(char)));
-		ASSERT_TRUE(uriA.userInfo.afterLast - uriA.userInfo.first == 16);
+		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 16);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "host", 4 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 4);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 4);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -584,9 +584,9 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198Four) {
 		res = uriParseUriA(&stateA, "http" "://" "!$&'()*+,;=:password" "@" "host" "/");
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "!$&'()*+,;=:password", 20 * sizeof(char)));
-		ASSERT_TRUE(uriA.userInfo.afterLast - uriA.userInfo.first == 20);
+		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 20);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "host", 4 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 4);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 4);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -604,9 +604,9 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198RelatedOne) {
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(uriA.userInfo.afterLast != NULL);
 		ASSERT_TRUE(uriA.userInfo.first != NULL);
-		ASSERT_TRUE(uriA.userInfo.afterLast - uriA.userInfo.first == 0);
+		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 0);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "host", 4 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 4);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 4);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -625,7 +625,7 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198RelatedOneTwo) {
 		ASSERT_TRUE(uriA.userInfo.afterLast == NULL);
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "%2Fhost", 7 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 7);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 7);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -642,9 +642,9 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198RelatedTwo) {
 		res = uriParseUriA(&stateA, "http" "://" "::" "@" "host" "/");
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "::", 2 * sizeof(char)));
-		ASSERT_TRUE(uriA.userInfo.afterLast - uriA.userInfo.first == 2);
+		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 2);
 		ASSERT_TRUE(!memcmp(uriA.hostText.first, "host", 4 * sizeof(char)));
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 4);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 4);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -821,7 +821,7 @@ TEST(UriSuite, TestUriHostEmpty) {
 		ASSERT_TRUE(uriA.userInfo.afterLast == NULL);
 		ASSERT_TRUE(uriA.hostText.first != NULL);
 		ASSERT_TRUE(uriA.hostText.afterLast != NULL);
-		ASSERT_TRUE(uriA.hostText.afterLast - uriA.hostText.first == 0);
+		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 0);
 		ASSERT_TRUE(uriA.portText.first == input + 4 + 3 + 1);
 		ASSERT_TRUE(uriA.portText.afterLast == input + 4 + 3 + 1 + 3);
 		uriFreeUriMembersA(&uriA);
@@ -1623,17 +1623,17 @@ TEST(UriSuite, TestNormalizeCrashBug20080224) {
 		stateW.uri = &testUri;
 
 		res = uriParseUriW(&stateW, L"http://example.org/abc//../def");
-		ASSERT_TRUE(res == 0);
+		ASSERT_EQ(res, 0);
 
 		// First call will make us owner of copied memory
 		res = uriNormalizeSyntaxExW(&testUri, URI_NORMALIZE_SCHEME);
-		ASSERT_TRUE(res == 0);
+		ASSERT_EQ(res, 0);
 		res = uriNormalizeSyntaxExW(&testUri, URI_NORMALIZE_HOST);
-		ASSERT_TRUE(res == 0);
+		ASSERT_EQ(res, 0);
 
 		// Frees empty path segment -> crash
 		res = uriNormalizeSyntaxW(&testUri);
-		ASSERT_TRUE(res == 0);
+		ASSERT_EQ(res, 0);
 
 		uriFreeUriMembersW(&testUri);
 }
@@ -1732,12 +1732,12 @@ TEST(UriSuite, TestQueryStringEndingInEqualSignNonBug32) {
 				queryString, queryString + strlen(queryString));
 
 		ASSERT_TRUE(res == URI_SUCCESS);
-		ASSERT_TRUE(itemCount == 2);
+		ASSERT_EQ(itemCount, 2);
 		ASSERT_TRUE(queryList != NULL);
-		ASSERT_TRUE(strcmp(queryList->key, "firstname") == 0);
-		ASSERT_TRUE(strcmp(queryList->value, "sdsd") == 0);
-		ASSERT_TRUE(strcmp(queryList->next->key, "lastname") == 0);
-		ASSERT_TRUE(strcmp(queryList->next->value, "") == 0);
+		ASSERT_EQ(strcmp(queryList->key, "firstname"), 0);
+		ASSERT_EQ(strcmp(queryList->value, "sdsd"), 0);
+		ASSERT_EQ(strcmp(queryList->next->key, "lastname"), 0);
+		ASSERT_EQ(strcmp(queryList->next->value, ""), 0);
 		ASSERT_TRUE(queryList->next->next == NULL);
 
 		uriFreeQueryListA(queryList);
@@ -1846,7 +1846,7 @@ namespace {
 		res = uriDissectQueryMallocA(&queryList, &itemCount, pair, pair + strlen(pair));
 		ASSERT_TRUE(res == URI_SUCCESS);
 		ASSERT_TRUE(queryList != NULL);
-		ASSERT_TRUE(itemCount == 1);
+		ASSERT_EQ(itemCount, 1);
 		ASSERT_TRUE(!strcmp(queryList->key, unescapedKey));
 		ASSERT_TRUE(!strcmp(queryList->value, unescapedValue));
 
@@ -1875,7 +1875,7 @@ TEST(UriSuite, TestQueryDissectionBug3590761) {
 		res = uriDissectQueryMallocA(&queryList, &itemCount, pair, pair + strlen(pair));
 		ASSERT_TRUE(res == URI_SUCCESS);
 		ASSERT_TRUE(queryList != NULL);
-		ASSERT_TRUE(itemCount == 3);
+		ASSERT_EQ(itemCount, 3);
 
 		ASSERT_TRUE(!strcmp(queryList->key, "q"));
 		ASSERT_TRUE(!strcmp(queryList->value, "hello"));
