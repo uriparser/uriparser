@@ -2021,9 +2021,9 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, emptyHostWithPortUri));
 		ASSERT_EQ(uri.hostText.first, emptyHostWithPortUri + strlen("//"));
 		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
-		ASSERT_TRUE(uri.portText.first == emptyHostWithPortUri
+		ASSERT_EQ(uri.portText.first, emptyHostWithPortUri
 															+ strlen("//:"));
-		ASSERT_TRUE(uri.portText.afterLast == uri.portText.first
+		ASSERT_EQ(uri.portText.afterLast, uri.portText.first
 															+ strlen("123"));
 		uriFreeUriMembersA(&uri);
 
@@ -2031,21 +2031,21 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 		const char * const hostWithPortUri = "//h:123";
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, hostWithPortUri));
 		ASSERT_EQ(uri.hostText.first, hostWithPortUri + strlen("//"));
-		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first
+		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first
 															+ strlen("h"));
 		ASSERT_EQ(uri.portText.first, hostWithPortUri + strlen("//h:"));
-		ASSERT_TRUE(uri.portText.afterLast == uri.portText.first
+		ASSERT_EQ(uri.portText.afterLast, uri.portText.first
 															+ strlen("123"));
 		uriFreeUriMembersA(&uri);
 
 		// Empty host, empty user info
 		const char * const emptyHostEmptyUserInfoUri = "//@";
-		ASSERT_TRUE(URI_SUCCESS == uriParseUriA(&state,
+		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state,
 												emptyHostEmptyUserInfoUri));
-		ASSERT_TRUE(uri.userInfo.first == emptyHostEmptyUserInfoUri
+		ASSERT_EQ(uri.userInfo.first, emptyHostEmptyUserInfoUri
 															+ strlen("//"));
 		ASSERT_EQ(uri.userInfo.afterLast, uri.userInfo.first + 0);
-		ASSERT_TRUE(uri.hostText.first == emptyHostEmptyUserInfoUri
+		ASSERT_EQ(uri.hostText.first, emptyHostEmptyUserInfoUri
 															+ strlen("//@"));
 		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
 		uriFreeUriMembersA(&uri);
@@ -2055,20 +2055,20 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, hostEmptyUserInfoUri));
 		ASSERT_EQ(uri.userInfo.first, hostEmptyUserInfoUri + strlen("//"));
 		ASSERT_EQ(uri.userInfo.afterLast, uri.userInfo.first + 0);
-		ASSERT_TRUE(uri.hostText.first == hostEmptyUserInfoUri
+		ASSERT_EQ(uri.hostText.first, hostEmptyUserInfoUri
 															+ strlen("//@"));
-		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first
+		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first
 															+ strlen("h"));
 		uriFreeUriMembersA(&uri);
 
 		// Empty host, non-empty user info
 		const char * const emptyHostWithUserInfoUri = "//:@";
-		ASSERT_TRUE(URI_SUCCESS == uriParseUriA(&state,
+		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state,
 												emptyHostWithUserInfoUri));
-		ASSERT_TRUE(uri.userInfo.first == emptyHostWithUserInfoUri
+		ASSERT_EQ(uri.userInfo.first, emptyHostWithUserInfoUri
 															+ strlen("//"));
 		ASSERT_EQ(uri.userInfo.afterLast, uri.userInfo.first + 1);
-		ASSERT_TRUE(uri.hostText.first == emptyHostWithUserInfoUri
+		ASSERT_EQ(uri.hostText.first, emptyHostWithUserInfoUri
 															+ strlen("//:@"));
 		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
 		uriFreeUriMembersA(&uri);
@@ -2077,7 +2077,7 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 		const char * const issue15Uri = "//:%aa@";
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, issue15Uri));
 		ASSERT_EQ(uri.userInfo.first, issue15Uri + strlen("//"));
-		ASSERT_TRUE(uri.userInfo.afterLast == uri.userInfo.first
+		ASSERT_EQ(uri.userInfo.afterLast, uri.userInfo.first
 															+ strlen(":%aa"));
 		ASSERT_EQ(uri.hostText.first, issue15Uri + strlen("//:%aa@"));
 		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
