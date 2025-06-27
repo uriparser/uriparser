@@ -390,26 +390,26 @@ TEST(UriSuite, TestUriComponents) {
 				"platformdownload.php" "?" "group_id=182840";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.scheme.first == input);
-		ASSERT_TRUE(uriA.scheme.afterLast == input + 4);
+		ASSERT_EQ(uriA.scheme.first, input);
+		ASSERT_EQ(uriA.scheme.afterLast, input + 4);
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
 		ASSERT_TRUE(uriA.userInfo.afterLast == NULL);
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 15);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 15);
 		ASSERT_TRUE(uriA.hostData.ipFuture.first == NULL);
 		ASSERT_TRUE(uriA.hostData.ipFuture.afterLast == NULL);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 
-		ASSERT_TRUE(uriA.pathHead->text.first == input + 4 + 3 + 15 + 1);
-		ASSERT_TRUE(uriA.pathHead->text.afterLast == input + 4 + 3 + 15 + 1 + 7);
-		ASSERT_TRUE(uriA.pathHead->next->text.first == input + 4 + 3 + 15 + 1 + 7 + 1);
-		ASSERT_TRUE(uriA.pathHead->next->text.afterLast == input + 4 + 3 + 15 + 1 + 7 + 1 + 20);
+		ASSERT_EQ(uriA.pathHead->text.first, input + 4 + 3 + 15 + 1);
+		ASSERT_EQ(uriA.pathHead->text.afterLast, input + 4 + 3 + 15 + 1 + 7);
+		ASSERT_EQ(uriA.pathHead->next->text.first, input + 4 + 3 + 15 + 1 + 7 + 1);
+		ASSERT_EQ(uriA.pathHead->next->text.afterLast, input + 4 + 3 + 15 + 1 + 7 + 1 + 20);
 		ASSERT_TRUE(uriA.pathHead->next->next == NULL);
-		ASSERT_TRUE(uriA.pathTail == uriA.pathHead->next);
+		ASSERT_EQ(uriA.pathTail, uriA.pathHead->next);
 
-		ASSERT_TRUE(uriA.query.first == input + 4 + 3 + 15 + 1 + 7 + 1 + 20 + 1);
-		ASSERT_TRUE(uriA.query.afterLast == input + 4 + 3 + 15 + 1 + 7 + 1 + 20 + 1 + 15);
+		ASSERT_EQ(uriA.query.first, input + 4 + 3 + 15 + 1 + 7 + 1 + 20 + 1);
+		ASSERT_EQ(uriA.query.afterLast, input + 4 + 3 + 15 + 1 + 7 + 1 + 20 + 1 + 15);
 		ASSERT_TRUE(uriA.fragment.first == NULL);
 		ASSERT_TRUE(uriA.fragment.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -423,8 +423,8 @@ TEST(UriSuite, TestUriComponentsBug20070701) {
 		const char * const input = "a" ":" "b";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.scheme.first == input);
-		ASSERT_TRUE(uriA.scheme.afterLast == input + 1);
+		ASSERT_EQ(uriA.scheme.first, input);
+		ASSERT_EQ(uriA.scheme.afterLast, input + 1);
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
 		ASSERT_TRUE(uriA.userInfo.afterLast == NULL);
 		ASSERT_TRUE(uriA.hostText.first == NULL);
@@ -434,10 +434,10 @@ TEST(UriSuite, TestUriComponentsBug20070701) {
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 
-		ASSERT_TRUE(uriA.pathHead->text.first == input + 1 + 1);
-		ASSERT_TRUE(uriA.pathHead->text.afterLast == input + 1 + 1 + 1);
+		ASSERT_EQ(uriA.pathHead->text.first, input + 1 + 1);
+		ASSERT_EQ(uriA.pathHead->text.afterLast, input + 1 + 1 + 1);
 		ASSERT_TRUE(uriA.pathHead->next == NULL);
-		ASSERT_TRUE(uriA.pathTail == uriA.pathHead);
+		ASSERT_EQ(uriA.pathTail, uriA.pathHead);
 
 		ASSERT_TRUE(uriA.query.first == NULL);
 		ASSERT_TRUE(uriA.query.afterLast == NULL);
@@ -457,10 +457,10 @@ TEST(UriSuite, TestUriUserInfoHostPort1) {
 		const char * const input = "http" "://" "abc:def" "@" "localhost";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.userInfo.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.userInfo.afterLast == input + 4 + 3 + 7);
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3 + 7 + 1);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 7 + 1 + 9);
+		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
+		ASSERT_EQ(uriA.userInfo.afterLast, input + 4 + 3 + 7);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 7 + 1);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 7 + 1 + 9);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -477,12 +477,12 @@ TEST(UriSuite, TestUriUserInfoHostPort2) {
 				":" "123";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.userInfo.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.userInfo.afterLast == input + 4 + 3 + 7);
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3 + 7 + 1);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 7 + 1 + 9);
-		ASSERT_TRUE(uriA.portText.first == input + 4 + 3 + 7 + 1 + 9 + 1);
-		ASSERT_TRUE(uriA.portText.afterLast == input + 4 + 3 + 7 + 1 + 9 + 1 + 3);
+		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
+		ASSERT_EQ(uriA.userInfo.afterLast, input + 4 + 3 + 7);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 7 + 1);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 7 + 1 + 9);
+		ASSERT_EQ(uriA.portText.first, input + 4 + 3 + 7 + 1 + 9 + 1);
+		ASSERT_EQ(uriA.portText.afterLast, input + 4 + 3 + 7 + 1 + 9 + 1 + 3);
 		uriFreeUriMembersA(&uriA);
 }
 
@@ -659,10 +659,10 @@ TEST(UriSuite, TestUriUserInfoHostPort3) {
 		const char * const input = "http" "://" "abcdefg" "@" "localhost";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.userInfo.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.userInfo.afterLast == input + 4 + 3 + 7);
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3 + 7 + 1);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 7 + 1 + 9);
+		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
+		ASSERT_EQ(uriA.userInfo.afterLast, input + 4 + 3 + 7);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 7 + 1);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 7 + 1 + 9);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -679,12 +679,12 @@ TEST(UriSuite, TestUriUserInfoHostPort4) {
 				":" "123";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.userInfo.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.userInfo.afterLast == input + 4 + 3 + 7);
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3 + 7 + 1);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 7 + 1 + 9);
-		ASSERT_TRUE(uriA.portText.first == input + 4 + 3 + 7 + 1 + 9 + 1);
-		ASSERT_TRUE(uriA.portText.afterLast == input + 4 + 3 + 7 + 1 + 9 + 1 + 3);
+		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
+		ASSERT_EQ(uriA.userInfo.afterLast, input + 4 + 3 + 7);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 7 + 1);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 7 + 1 + 9);
+		ASSERT_EQ(uriA.portText.first, input + 4 + 3 + 7 + 1 + 9 + 1);
+		ASSERT_EQ(uriA.portText.afterLast, input + 4 + 3 + 7 + 1 + 9 + 1 + 3);
 		uriFreeUriMembersA(&uriA);
 }
 
@@ -699,8 +699,8 @@ TEST(UriSuite, TestUriUserInfoHostPort5) {
 
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
 		ASSERT_TRUE(uriA.userInfo.afterLast == NULL);
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 9);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 9);
 		ASSERT_TRUE(uriA.portText.first == NULL);
 		ASSERT_TRUE(uriA.portText.afterLast == NULL);
 		uriFreeUriMembersA(&uriA);
@@ -717,10 +717,10 @@ TEST(UriSuite, TestUriUserInfoHostPort6) {
 
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
 		ASSERT_TRUE(uriA.userInfo.afterLast == NULL);
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 9);
-		ASSERT_TRUE(uriA.portText.first == input + 4 + 3 + 9 + 1);
-		ASSERT_TRUE(uriA.portText.afterLast == input + 4 + 3 + 9 + 1 + 3);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 9);
+		ASSERT_EQ(uriA.portText.first, input + 4 + 3 + 9 + 1);
+		ASSERT_EQ(uriA.portText.afterLast, input + 4 + 3 + 9 + 1 + 3);
 		uriFreeUriMembersA(&uriA);
 }
 
@@ -732,8 +732,8 @@ TEST(UriSuite, TestUriHostRegname) {
 		const char * const input = "http" "://" "example.com";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 11);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 11);
 		ASSERT_TRUE(uriA.hostData.ip4 == NULL);
 		ASSERT_TRUE(uriA.hostData.ip6 == NULL);
 		ASSERT_TRUE(uriA.hostData.ipFuture.first == NULL);
@@ -749,8 +749,8 @@ TEST(UriSuite, TestUriHostIpFour1) {
 		const char * const input = "http" "://" "1.2.3.4" ":" "80";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 7);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 7);
 		ASSERT_TRUE(uriA.hostData.ip4 != NULL);
 		ASSERT_TRUE(uriA.hostData.ip6 == NULL);
 		ASSERT_TRUE(uriA.hostData.ipFuture.first == NULL);
@@ -766,8 +766,8 @@ TEST(UriSuite, TestUriHostIpFour2) {
 		const char * const input = "http" "://" "1.2.3.4";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 7);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 7);
 		ASSERT_TRUE(uriA.hostData.ip4 != NULL);
 		ASSERT_TRUE(uriA.hostData.ip6 == NULL);
 		ASSERT_TRUE(uriA.hostData.ipFuture.first == NULL);
@@ -783,8 +783,8 @@ TEST(UriSuite, TestUriHostIpSix1) {
 		const char * const input = "http" "://" "[::1]" ":" "80";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3 + 1);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 4);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 1);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 4);
 		ASSERT_TRUE(uriA.hostData.ip4 == NULL);
 		ASSERT_TRUE(uriA.hostData.ip6 != NULL);
 		ASSERT_TRUE(uriA.hostData.ipFuture.first == NULL);
@@ -800,8 +800,8 @@ TEST(UriSuite, TestUriHostIpSix2) {
 		const char * const input = "http" "://" "[::1]";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.hostText.first == input + 4 + 3 + 1);
-		ASSERT_TRUE(uriA.hostText.afterLast == input + 4 + 3 + 4);
+		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 1);
+		ASSERT_EQ(uriA.hostText.afterLast, input + 4 + 3 + 4);
 		ASSERT_TRUE(uriA.hostData.ip4 == NULL);
 		ASSERT_TRUE(uriA.hostData.ip6 != NULL);
 		ASSERT_TRUE(uriA.hostData.ipFuture.first == NULL);
@@ -822,8 +822,8 @@ TEST(UriSuite, TestUriHostEmpty) {
 		ASSERT_TRUE(uriA.hostText.first != NULL);
 		ASSERT_TRUE(uriA.hostText.afterLast != NULL);
 		ASSERT_EQ(uriA.hostText.afterLast - uriA.hostText.first, 0);
-		ASSERT_TRUE(uriA.portText.first == input + 4 + 3 + 1);
-		ASSERT_TRUE(uriA.portText.afterLast == input + 4 + 3 + 1 + 3);
+		ASSERT_EQ(uriA.portText.first, input + 4 + 3 + 1);
+		ASSERT_EQ(uriA.portText.afterLast, input + 4 + 3 + 1 + 3);
 		uriFreeUriMembersA(&uriA);
 }
 
@@ -1072,11 +1072,11 @@ TEST(UriSuite, TestTrailingSlash) {
 		const char * const input = "abc" "/";
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
-		ASSERT_TRUE(uriA.pathHead->text.first == input);
-		ASSERT_TRUE(uriA.pathHead->text.afterLast == input + 3);
-		ASSERT_TRUE(uriA.pathHead->next->text.first == uriA.pathHead->next->text.afterLast);
+		ASSERT_EQ(uriA.pathHead->text.first, input);
+		ASSERT_EQ(uriA.pathHead->text.afterLast, input + 3);
+		ASSERT_EQ(uriA.pathHead->next->text.first, uriA.pathHead->next->text.afterLast);
 		ASSERT_TRUE(uriA.pathHead->next->next == NULL);
-		ASSERT_TRUE(uriA.pathTail == uriA.pathHead->next);
+		ASSERT_EQ(uriA.pathTail, uriA.pathHead->next);
 		uriFreeUriMembersA(&uriA);
 }
 
@@ -1758,7 +1758,7 @@ namespace {
 				uri.query.first, uri.query.afterLast);
 		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(queryList != NULL);
-		ASSERT_TRUE(itemCount == pairsExpected);
+		ASSERT_EQ(itemCount, pairsExpected);
 		uriFreeQueryListA(queryList);
 		uriFreeUriMembersA(&uri);
 	}
@@ -1793,7 +1793,7 @@ namespace {
 		res = uriDissectQueryMallocExW(&queryList, &itemCount,
 				input, input + wcslen(input), spacePlusConversion, breakConversion);
 		ASSERT_EQ(res, URI_SUCCESS);
-		ASSERT_TRUE(itemCount == expectedItemCount);
+		ASSERT_EQ(itemCount, expectedItemCount);
 		ASSERT_TRUE((queryList == NULL) == (expectedItemCount == 0));
 
 		if (expectedItemCount != 0) {
@@ -1810,7 +1810,7 @@ namespace {
 					&charsWritten, spacePlusConversion, normalizeBreaks);
 			ASSERT_EQ(res, URI_SUCCESS);
 			ASSERT_TRUE(charsWritten <= charsRequired);
-			ASSERT_TRUE(charsWritten == (int)wcslen(input) + 1);
+			ASSERT_EQ(charsWritten, (int)wcslen(input) + 1);
 			ASSERT_TRUE(!wcscmp(input, recomposed));
 			delete [] recomposed;
 
@@ -1818,7 +1818,7 @@ namespace {
 			res = uriComposeQueryMallocW(&recomposed, queryList);
 			ASSERT_EQ(res, URI_SUCCESS);
 			ASSERT_TRUE(recomposed != NULL);
-			ASSERT_TRUE(charsWritten == (int)wcslen(input) + 1);
+			ASSERT_EQ(charsWritten, (int)wcslen(input) + 1);
 			ASSERT_TRUE(!wcscmp(input, recomposed));
 			free(recomposed);
 		}
@@ -1925,7 +1925,7 @@ TEST(UriSuite, TestQueryCompositionMathWriteGoogleAutofuzz113244572) {
 					&charsWritten, spaceToPlus, normalizeBreaks)
 				== URI_SUCCESS);
 			ASSERT_TRUE(! strcmp(dest, expected));
-			ASSERT_TRUE(charsWritten == strlen(expected) + 1);
+			ASSERT_EQ(charsWritten, strlen(expected) + 1);
 		}
 
 		{
@@ -1973,7 +1973,7 @@ TEST(UriSuite, TestInvalidInputBug16) {
 		const int res = uriParseUriA(&stateA, input);
 
 		ASSERT_EQ(res, URI_ERROR_SYNTAX);
-		ASSERT_TRUE(stateA.errorPos == input + 1);
+		ASSERT_EQ(stateA.errorPos, input + 1);
 		ASSERT_EQ(stateA.errorCode, URI_ERROR_SYNTAX);  /* failed previously */
 
 		uriFreeUriMembersA(&uriA);
@@ -2019,8 +2019,8 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 		// Empty host and port
 		const char * const emptyHostWithPortUri = "//:123";
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, emptyHostWithPortUri));
-		ASSERT_TRUE(uri.hostText.first == emptyHostWithPortUri + strlen("//"));
-		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first + 0);
+		ASSERT_EQ(uri.hostText.first, emptyHostWithPortUri + strlen("//"));
+		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
 		ASSERT_TRUE(uri.portText.first == emptyHostWithPortUri
 															+ strlen("//:"));
 		ASSERT_TRUE(uri.portText.afterLast == uri.portText.first
@@ -2030,10 +2030,10 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 		// Non-empty host and port
 		const char * const hostWithPortUri = "//h:123";
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, hostWithPortUri));
-		ASSERT_TRUE(uri.hostText.first == hostWithPortUri + strlen("//"));
+		ASSERT_EQ(uri.hostText.first, hostWithPortUri + strlen("//"));
 		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first
 															+ strlen("h"));
-		ASSERT_TRUE(uri.portText.first == hostWithPortUri + strlen("//h:"));
+		ASSERT_EQ(uri.portText.first, hostWithPortUri + strlen("//h:"));
 		ASSERT_TRUE(uri.portText.afterLast == uri.portText.first
 															+ strlen("123"));
 		uriFreeUriMembersA(&uri);
@@ -2044,17 +2044,17 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 												emptyHostEmptyUserInfoUri));
 		ASSERT_TRUE(uri.userInfo.first == emptyHostEmptyUserInfoUri
 															+ strlen("//"));
-		ASSERT_TRUE(uri.userInfo.afterLast == uri.userInfo.first + 0);
+		ASSERT_EQ(uri.userInfo.afterLast, uri.userInfo.first + 0);
 		ASSERT_TRUE(uri.hostText.first == emptyHostEmptyUserInfoUri
 															+ strlen("//@"));
-		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first + 0);
+		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
 		uriFreeUriMembersA(&uri);
 
 		// Non-empty host, empty user info
 		const char * const hostEmptyUserInfoUri = "//@h";
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, hostEmptyUserInfoUri));
-		ASSERT_TRUE(uri.userInfo.first == hostEmptyUserInfoUri + strlen("//"));
-		ASSERT_TRUE(uri.userInfo.afterLast == uri.userInfo.first + 0);
+		ASSERT_EQ(uri.userInfo.first, hostEmptyUserInfoUri + strlen("//"));
+		ASSERT_EQ(uri.userInfo.afterLast, uri.userInfo.first + 0);
 		ASSERT_TRUE(uri.hostText.first == hostEmptyUserInfoUri
 															+ strlen("//@"));
 		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first
@@ -2067,20 +2067,20 @@ TEST(UriSuite, TestHostTextTerminationIssue15) {
 												emptyHostWithUserInfoUri));
 		ASSERT_TRUE(uri.userInfo.first == emptyHostWithUserInfoUri
 															+ strlen("//"));
-		ASSERT_TRUE(uri.userInfo.afterLast == uri.userInfo.first + 1);
+		ASSERT_EQ(uri.userInfo.afterLast, uri.userInfo.first + 1);
 		ASSERT_TRUE(uri.hostText.first == emptyHostWithUserInfoUri
 															+ strlen("//:@"));
-		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first + 0);
+		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
 		uriFreeUriMembersA(&uri);
 
 		// Exact case from issue #15
 		const char * const issue15Uri = "//:%aa@";
 		ASSERT_EQ(URI_SUCCESS, uriParseUriA(&state, issue15Uri));
-		ASSERT_TRUE(uri.userInfo.first == issue15Uri + strlen("//"));
+		ASSERT_EQ(uri.userInfo.first, issue15Uri + strlen("//"));
 		ASSERT_TRUE(uri.userInfo.afterLast == uri.userInfo.first
 															+ strlen(":%aa"));
-		ASSERT_TRUE(uri.hostText.first == issue15Uri + strlen("//:%aa@"));
-		ASSERT_TRUE(uri.hostText.afterLast == uri.hostText.first + 0);
+		ASSERT_EQ(uri.hostText.first, issue15Uri + strlen("//:%aa@"));
+		ASSERT_EQ(uri.hostText.afterLast, uri.hostText.first + 0);
 		uriFreeUriMembersA(&uri);
 }
 
@@ -2112,7 +2112,7 @@ namespace {
 			printf("Comparing <%s> to <%s> yields %d, expected %d.\n",
 					a, b, received, expected);
 		}
-		ASSERT_TRUE(received == expected);
+		ASSERT_EQ(received, expected);
 	}
 }  // namespace
 
