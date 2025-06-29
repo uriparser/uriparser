@@ -147,6 +147,8 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCommon.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCommon.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCompare.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCopy.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriCopy.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriEscape.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriFile.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriIp4Base.c
@@ -157,6 +159,7 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalizeBase.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalizeBase.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalize.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriNormalize.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParseBase.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParseBase.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriParse.c
@@ -283,6 +286,7 @@ if(URIPARSER_BUILD_TESTS)
     find_package(GTest 1.8.0 REQUIRED)
 
     add_executable(testrunner
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/copy.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/FourSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp

@@ -109,12 +109,9 @@ static void URI_FUNC(LowercaseInplaceExceptPercentEncoding)(const URI_CHAR * fir
 static UriBool URI_FUNC(LowercaseMalloc)(const URI_CHAR ** first,
 		const URI_CHAR ** afterLast, UriMemoryManager * memory);
 
-static void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
-		unsigned int revertMask, UriMemoryManager * memory);
 
 
-
-static URI_INLINE void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
+void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
 		unsigned int revertMask, UriMemoryManager * memory) {
 	if (revertMask & URI_NORMALIZE_SCHEME) {
 		/* NOTE: A scheme cannot be the empty string
@@ -407,15 +404,9 @@ static URI_INLINE UriBool URI_FUNC(MakeRangeOwner)(unsigned int * doneMask,
 			&& (range->first != NULL)
 			&& (range->afterLast != NULL)
 			&& (range->afterLast > range->first)) {
-		const int lenInChars = (int)(range->afterLast - range->first);
-		const int lenInBytes = lenInChars * sizeof(URI_CHAR);
-		URI_CHAR * dup = memory->malloc(memory, lenInBytes);
-		if (dup == NULL) {
-			return URI_FALSE; /* Raises malloc error */
+		if (URI_FUNC(CopyRange)(range, range, memory) == URI_FALSE) {
+			return URI_FALSE;
 		}
-		memcpy(dup, range->first, lenInBytes);
-		range->first = dup;
-		range->afterLast = dup + lenInChars;
 		*doneMask |= maskTest;
 	}
 	return URI_TRUE;
