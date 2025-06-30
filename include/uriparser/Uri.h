@@ -209,7 +209,7 @@ typedef struct URI_TYPE(QueryListStruct) {
  *
  * @since 0.9.9
  */
-URI_PUBLIC UriBool URI_FUNC(IsHostSet)(const URI_TYPE(Uri) * uri);
+URI_PUBLIC UriBool URI_FUNC(HasHost)(const URI_TYPE(Uri) * uri);
 
 
 

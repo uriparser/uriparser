@@ -189,7 +189,7 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 
 						if (prev == NULL) {
 							/* Last and first */
-							if (URI_FUNC(IsHostSet)(uri)) {
+							if (URI_FUNC(HasHost)(uri)) {
 								/* Replace "." with empty segment to represent trailing slash */
 								walker->text.first = URI_FUNC(SafeToPointTo);
 								walker->text.afterLast = URI_FUNC(SafeToPointTo);
@@ -463,7 +463,7 @@ URI_CHAR URI_FUNC(HexToLetterEx)(unsigned int value, UriBool uppercase) {
 
 
 /* Checks if a URI has the host component set. */
-UriBool URI_FUNC(IsHostSet)(const URI_TYPE(Uri) * uri) {
+UriBool URI_FUNC(HasHost)(const URI_TYPE(Uri) * uri) {
 	return (uri != NULL)
 			&& ((uri->hostText.first != NULL)
 				|| (uri->hostData.ip4 != NULL)
@@ -601,7 +601,7 @@ void URI_FUNC(FixEmptyTrailSegment)(URI_TYPE(Uri) * uri,
 		UriMemoryManager * memory) {
 	/* Fix path if only one empty segment */
 	if (!uri->absolutePath
-			&& !URI_FUNC(IsHostSet)(uri)
+			&& !URI_FUNC(HasHost)(uri)
 			&& (uri->pathHead != NULL)
 			&& (uri->pathHead->next == NULL)
 			&& (uri->pathHead->text.first == uri->pathHead->text.afterLast)) {
