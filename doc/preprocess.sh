@@ -10,4 +10,4 @@ set -x
     else
         "${CC}" -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include "$1"
     fi
-} | sed -e '/^$/d' -e 's/COMMENT_HACK//g'
+} | sed -e '/^$/d' -e 's/COMMENT_HACK//g' -e 's/URI_PUBLIC //g'
