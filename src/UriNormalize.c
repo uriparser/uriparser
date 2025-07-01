@@ -109,12 +109,9 @@ static void URI_FUNC(LowercaseInplaceExceptPercentEncoding)(const URI_CHAR * fir
 static UriBool URI_FUNC(LowercaseMalloc)(const URI_CHAR ** first,
 		const URI_CHAR ** afterLast, UriMemoryManager * memory);
 
-static void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
-		unsigned int revertMask, UriMemoryManager * memory);
 
 
-
-static URI_INLINE void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
+void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
 		unsigned int revertMask, UriMemoryManager * memory) {
 	if (revertMask & URI_NORMALIZE_SCHEME) {
 		/* NOTE: A scheme cannot be the empty string

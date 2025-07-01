@@ -136,6 +136,23 @@ UriBool URI_FUNC(CopyRange)(URI_TYPE(TextRange) * destRange,
 
 
 
+UriBool URI_FUNC(CopyRangeAsNeeded)(URI_TYPE(TextRange) * destRange,
+		const URI_TYPE(TextRange) * sourceRange, UriBool useSafe, UriMemoryManager * memory) {
+	if (sourceRange->first == NULL) {
+		destRange->first = NULL;
+		destRange->afterLast = NULL;
+	} else if (sourceRange->first == sourceRange->afterLast && useSafe) {
+		destRange->first = URI_FUNC(SafeToPointTo);
+		destRange->afterLast = URI_FUNC(SafeToPointTo);
+	} else {
+		return URI_FUNC(CopyRange)(destRange, sourceRange, memory);
+	}
+
+	return URI_TRUE;
+}
+
+
+
 UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 		UriBool relative, UriBool pathOwned, UriMemoryManager * memory) {
 	URI_TYPE(PathSegment) * walker;
