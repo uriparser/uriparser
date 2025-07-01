@@ -407,15 +407,9 @@ static URI_INLINE UriBool URI_FUNC(MakeRangeOwner)(unsigned int * doneMask,
 			&& (range->first != NULL)
 			&& (range->afterLast != NULL)
 			&& (range->afterLast > range->first)) {
-		const int lenInChars = (int)(range->afterLast - range->first);
-		const int lenInBytes = lenInChars * sizeof(URI_CHAR);
-		URI_CHAR * dup = memory->malloc(memory, lenInBytes);
-		if (dup == NULL) {
-			return URI_FALSE; /* Raises malloc error */
+		if (URI_FUNC(CopyRange)(range, range, memory) == URI_FALSE) {
+			return URI_FALSE;
 		}
-		memcpy(dup, range->first, lenInBytes);
-		range->first = dup;
-		range->afterLast = dup + lenInChars;
 		*doneMask |= maskTest;
 	}
 	return URI_TRUE;
