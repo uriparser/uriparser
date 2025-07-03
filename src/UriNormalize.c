@@ -131,15 +131,22 @@ void URI_FUNC(PreventLeakage)(URI_TYPE(Uri) * uri,
 
 	if (revertMask & URI_NORMALIZE_HOST) {
 		if (uri->hostData.ipFuture.first != NULL) {
+			/* NOTE: .hostData.ipFuture may hold the very same range pointers
+			 *       as .hostText; then we need to prevent freeing memory twice. */
+			if (uri->hostText.first == uri->hostData.ipFuture.first) {
+				uri->hostText.first = NULL;
+				uri->hostText.afterLast = NULL;
+			}
+
 			/* IPvFuture */
 			/* NOTE: An IPvFuture address cannot be the empty string
 			 *       so no need to compare .first with .afterLast, here. */
 			memory->free(memory, (URI_CHAR *)uri->hostData.ipFuture.first);
 			uri->hostData.ipFuture.first = NULL;
 			uri->hostData.ipFuture.afterLast = NULL;
-			uri->hostText.first = NULL;
-			uri->hostText.afterLast = NULL;
-		} else if (uri->hostText.first != NULL) {
+		}
+
+		if (uri->hostText.first != NULL) {
 			/* Regname */
 			if (uri->hostText.first != uri->hostText.afterLast) {
 				memory->free(memory, (URI_CHAR *)uri->hostText.first);
@@ -683,8 +690,18 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
 			if (uri->hostData.ipFuture.first != NULL) {
 				/* IPvFuture */
 				if (uri->owner) {
+					const UriBool matchedHostText = (uri->hostText.first == uri->hostData.ipFuture.first) ? URI_TRUE : URI_FALSE;
+
 					URI_FUNC(LowercaseInplace)(uri->hostData.ipFuture.first,
 							uri->hostData.ipFuture.afterLast);
+
+					if (matchedHostText == URI_FALSE) {
+						if (uri->hostText.first != uri->hostText.afterLast) {
+							memory->free(memory, (URI_CHAR *)uri->hostText.first);
+						}
+						uri->hostText.first = NULL;
+						uri->hostText.afterLast = NULL;
+					}
 				} else {
 					if (!URI_FUNC(LowercaseMalloc)(&(uri->hostData.ipFuture.first),
 							&(uri->hostData.ipFuture.afterLast), memory)) {
