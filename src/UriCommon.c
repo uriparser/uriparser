@@ -464,14 +464,6 @@ unsigned char URI_FUNC(HexdigToInt)(URI_CHAR hexdig) {
 
 
 
-URI_CHAR URI_FUNC(HexToLetter)(unsigned int value) {
-	/* Uppercase recommended in section 2.1. of RFC 3986         *
-	 * https://datatracker.ietf.org/doc/html/rfc3986#section-2.1 */
-	return URI_FUNC(HexToLetterEx)(value, URI_TRUE);
-}
-
-
-
 URI_CHAR URI_FUNC(HexToLetterEx)(unsigned int value, UriBool uppercase) {
 	switch (value) {
 	case  0: return _UT('0');
