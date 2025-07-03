@@ -111,6 +111,8 @@ int URI_FUNC(CopyUriMm)(URI_TYPE(Uri) * destUri,
 
 	URI_CHECK_MEMORY_MANAGER(memory); /* may return */
 
+	URI_FUNC(ResetUri)(destUri);
+
 	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->scheme, &sourceUri->scheme, URI_FALSE, memory) == URI_FALSE) {
 		return URI_ERROR_MALLOC;
 	}
