@@ -149,7 +149,8 @@ TEST(CopyUriSuite, SuccessIpFuture) {
 
 	ASSERT_TRUE(destUri.hostData.ip4 == NULL);
 	ASSERT_TRUE(destUri.hostData.ip6 == NULL);
-	ASSERT_EQ(0, strncmp(destUri.hostText.first, "v7.host", strlen("v7.host")));
+	ASSERT_TRUE(destUri.hostText.first == destUri.hostData.ipFuture.first);
+	ASSERT_TRUE(destUri.hostText.afterLast == destUri.hostData.ipFuture.afterLast);
 
 	uriFreeUriMembersA(&destUri);
 }
