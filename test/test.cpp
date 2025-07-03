@@ -2300,6 +2300,12 @@ TEST(FreeUriMembersSuite, MultiFreeWorksFine) {
 	uriFreeUriMembersA(&uri);  // second time
 }
 
+TEST(FreeUriMembersSuite, ZerosFreeWorksFine) {
+	UriUriA uri;
+	memset(&uri, 0, sizeof(uri));
+	uriFreeUriMembersA(&uri);
+}
+
 namespace {
 	void testFreeUriMembersFreesHostText(const char *const uriFirst) {  // issue #121
 		const char *const uriAfterLast = uriFirst + strlen(uriFirst);
