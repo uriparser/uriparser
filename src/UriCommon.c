@@ -490,11 +490,15 @@ URI_CHAR URI_FUNC(HexToLetterEx)(unsigned int value, UriBool uppercase) {
 
 /* Checks if a URI has the host component set. */
 UriBool URI_FUNC(HasHost)(const URI_TYPE(Uri) * uri) {
+	/* NOTE: .hostData.ipFuture.first is not being checked,   *
+	 *       because we do check .hostText.first and          *
+	 *       .hostData.ipFuture.first has to be identical to  *
+	 *       .hostText.first if set, and hence there is       *
+	 *       no more information to be gained.                */
 	return (uri != NULL)
 			&& ((uri->hostText.first != NULL)
 				|| (uri->hostData.ip4 != NULL)
 				|| (uri->hostData.ip6 != NULL)
-				|| (uri->hostData.ipFuture.first != NULL)
 			);
 }
 
