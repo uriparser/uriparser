@@ -155,7 +155,7 @@ int URI_FUNC(CopyUriMm)(URI_TYPE(Uri) * destUri,
 		*(destUri->hostData.ip6) = *(sourceUri->hostData.ip6);
 	}
 
-	if (sourceUri->hostData.ipFuture.first != NULL && sourceUri->hostText.first == sourceUri->hostData.ipFuture.first) {
+	if (sourceUri->hostData.ipFuture.first != NULL) {
 		destUri->hostData.ipFuture.first = destUri->hostText.first;
 		destUri->hostData.ipFuture.afterLast = destUri->hostText.afterLast;
 	} else if (URI_FUNC(CopyRangeAsNeeded)(&destUri->hostData.ipFuture, &sourceUri->hostData.ipFuture, URI_FALSE, memory) == URI_FALSE) {
