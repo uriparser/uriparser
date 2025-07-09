@@ -828,7 +828,15 @@ TEST(UriSuite, TestUriHostEmpty) {
 }
 
 TEST(UriSuite, TestUriHostIpFuture) {
-		// TODO
+		UriUriA uri;
+		//                          0 2  01  0       8  01
+		const char * const input = "//" "[" "v7.hello" "]";
+		ASSERT_EQ(uriParseSingleUriA(&uri, input, NULL), URI_SUCCESS);
+		ASSERT_EQ(uri.hostText.first, input + 2 + 1);
+		ASSERT_EQ(uri.hostText.afterLast, input + 2 + 1 + 8);
+		ASSERT_EQ(uri.hostData.ipFuture.first, uri.hostText.first);
+		ASSERT_EQ(uri.hostData.ipFuture.afterLast, uri.hostText.afterLast);
+		uriFreeUriMembersA(&uri);
 }
 
 namespace {

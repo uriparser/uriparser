@@ -134,7 +134,11 @@ typedef struct URI_TYPE(PathSegmentStruct) {
 typedef struct URI_TYPE(HostDataStruct) {
 	UriIp4 * ip4; /**< IPv4 address */
 	UriIp6 * ip6; /**< IPv6 address */
-	URI_TYPE(TextRange) ipFuture; /**< IPvFuture address */
+	URI_TYPE(TextRange) ipFuture; /**< IPvFuture address
+		@note
+		With non-<c>NULL</c> members in UriUriStructA.hostData context,
+		this text range's pointers must be <em>idential</em> to those
+		of UriUriStructA.hostText at all times. */
 } URI_TYPE(HostData); /**< @copydoc UriHostDataStructA */
 
 
