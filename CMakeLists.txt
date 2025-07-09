@@ -166,6 +166,7 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriQuery.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriRecompose.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriResolve.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetter.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriShorten.c
 )
 
@@ -287,6 +288,7 @@ if(URIPARSER_BUILD_TESTS)
 
     add_executable(testrunner
         ${CMAKE_CURRENT_SOURCE_DIR}/test/copy.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/setter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/FourSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp
