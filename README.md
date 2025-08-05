@@ -11,7 +11,7 @@ written in C89 ("ANSI C").
 uriparser is cross-platform,
 fast,
 supports both `char` and `wchar_t`, and
-is licensed under the [New BSD license](https://github.com/uriparser/uriparser/blob/master/COPYING).
+is licensed under the [BSD-3-Clause license](https://spdx.org/licenses/BSD-3-Clause.html).
 
 To learn more about uriparser,
 please check out [https://uriparser.github.io/](https://uriparser.github.io/).
