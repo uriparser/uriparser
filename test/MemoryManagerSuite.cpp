@@ -75,6 +75,10 @@ public:
 		return &(this->memoryManager);
 	}
 
+	unsigned int getCallCountAlloc() const {
+		return this->callCountAlloc;
+	}
+
 	unsigned int getCallCountFree() const {
 		return this->callCountFree;
 	}
