@@ -365,6 +365,24 @@ TEST(FailingMemoryManagerSuite, FreeUriMembersMm) {
 	uriFreeUriMembersA(&uri);
 }
 
+
+
+TEST(FailingMemoryManagerSuite, SetUserInfoMm) {
+	UriUriA uri = parse("scheme://host/");
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "user:password";
+	const char * const afterLast = first + strlen(first);
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	ASSERT_EQ(uriSetUserInfoMmA(&uri, first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+
+	uriFreeUriMembersA(&uri);
+}
+
+
+
 namespace {
 	void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(const char * uriString,
 															unsigned int mask,

@@ -302,6 +302,7 @@ if(URIPARSER_BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/test/FourSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetUserInfo.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/VersionSuite.cpp
 
         # These library code files have non-public symbols that the test suite
