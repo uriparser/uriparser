@@ -148,6 +148,9 @@ typedef int UriBool; /**< Boolean type */
 /* Error specific to uriTestMemoryManager */
 #define URI_ERROR_MEMORY_MANAGER_FAULTY   11 /* [>=0.9.0] The UriMemoryManager given did not pass the test suite */
 
+/* Error specific to uriSetUserInfo */
+#define URI_ERROR_SETUSERINFO_HOST_NOT_SET 12 /* [>=0.9.9] The %URI given does not have the host set */
+
 
 #ifndef URI_DOXYGEN
 # include <stdio.h> /* For NULL, snprintf */
