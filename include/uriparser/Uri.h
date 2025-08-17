@@ -1190,6 +1190,23 @@ URI_PUBLIC int URI_FUNC(MakeOwnerMm)(URI_TYPE(Uri) * uri,
 
 
 /**
+ * Determines if the given text range contains a well-formed port text
+ * according to RFC 3986 or not.
+ *
+ * @param first      <b>IN</b>: Pointer to first character
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
+ * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
+ *
+ * @see uriIsWellFormedUserInfoA
+ * @see uriSetPortTextA
+ * @see uriSetPortTextMmA
+ * @since 0.9.9
+ */
+URI_PUBLIC UriBool URI_FUNC(IsWellFormedPort)(const URI_CHAR * first, const URI_CHAR * afterLast);
+
+
+
+/**
  * Determines if the given text range contains a well-formed user info
  * according to RFC 3986 or not.
  *
@@ -1197,11 +1214,68 @@ URI_PUBLIC int URI_FUNC(MakeOwnerMm)(URI_TYPE(Uri) * uri,
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
  * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
  *
+ * @see uriIsWellFormedPortA
  * @see uriSetUserInfoA
  * @see uriSetUserInfoMmA
  * @since 0.9.9
  */
 URI_PUBLIC UriBool URI_FUNC(IsWellFormedUserInfo)(const URI_CHAR * first, const URI_CHAR * afterLast);
+
+
+
+/**
+ * Sets the port text of the given %URI to the given value.
+ *
+ * The %URI must have a non-<c>NULL</c> host set.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * Uses default libc-based memory manager.
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedPortA
+ * @see uriSetPortTextMmA
+ * @see uriSetUserInfoA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetPortText)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast);
+
+
+
+/**
+ * Sets the port text of the given %URI to the given value.
+ *
+ * The %URI must have a non-<c>NULL</c> host set.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @param memory     <b>IN</b>: Memory manager to use, <c>NULL</c> for default libc
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedPortA
+ * @see uriSetPortTextA
+ * @see uriSetUserInfoMmA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetPortTextMm)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory);
 
 
 
@@ -1223,6 +1297,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedUserInfo)(const URI_CHAR * first, const 
  * @return           Error code or 0 on success
  *
  * @see uriIsWellFormedUserInfoA
+ * @see uriSetPortTextA
  * @see uriSetUserInfoMmA
  * @since 0.9.9
  */
@@ -1249,6 +1324,7 @@ URI_PUBLIC int URI_FUNC(SetUserInfo)(URI_TYPE(Uri) * uri,
  * @return           Error code or 0 on success
  *
  * @see uriIsWellFormedUserInfoA
+ * @see uriSetPortTextMmA
  * @see uriSetUserInfoA
  * @since 0.9.9
  */
