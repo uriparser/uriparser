@@ -167,6 +167,7 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriRecompose.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriResolve.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetPort.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetQuery.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetUserInfo.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriShorten.c
 )
