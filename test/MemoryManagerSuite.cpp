@@ -367,6 +367,22 @@ TEST(FailingMemoryManagerSuite, FreeUriMembersMm) {
 
 
 
+TEST(FailingMemoryManagerSuite, SetPortTextMm) {
+	UriUriA uri = parse("https://host/");
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "443";
+	const char * const afterLast = first + strlen(first);
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	ASSERT_EQ(uriSetPortTextMmA(&uri, first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+
+	uriFreeUriMembersA(&uri);
+}
+
+
+
 TEST(FailingMemoryManagerSuite, SetUserInfoMm) {
 	UriUriA uri = parse("scheme://host/");
 	FailingMemoryManager failingMemoryManager;
