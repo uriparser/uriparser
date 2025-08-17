@@ -303,6 +303,7 @@ if(URIPARSER_BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetFragment.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostRegName.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetPort.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetQuery.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetUserInfo.cpp
