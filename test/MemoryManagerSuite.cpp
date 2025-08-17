@@ -383,6 +383,22 @@ TEST(FailingMemoryManagerSuite, SetPortTextMm) {
 
 
 
+TEST(FailingMemoryManagerSuite, SetQueryMm) {
+	UriUriA uri = parse("scheme://host/");
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "k1=v1";
+	const char * const afterLast = first + strlen(first);
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	ASSERT_EQ(uriSetQueryMmA(&uri, first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+
+	uriFreeUriMembersA(&uri);
+}
+
+
+
 TEST(FailingMemoryManagerSuite, SetUserInfoMm) {
 	UriUriA uri = parse("scheme://host/");
 	FailingMemoryManager failingMemoryManager;
