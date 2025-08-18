@@ -380,6 +380,19 @@ TEST(FailingMemoryManagerSuite, IsWellFormedHostIp6Mm) {
 
 
 
+TEST(FailingMemoryManagerSuite, IsWellFormedHostIpFutureMm) {
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "v7.host";
+	const char * const afterLast = first + strlen(first);
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	EXPECT_EQ(uriIsWellFormedHostIpFutureMmA(first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+}
+
+
+
 TEST(FailingMemoryManagerSuite, SetPortTextMm) {
 	UriUriA uri = parse("https://host/");
 	FailingMemoryManager failingMemoryManager;
