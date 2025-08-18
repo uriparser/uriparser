@@ -1203,6 +1203,7 @@ URI_PUBLIC int URI_FUNC(MakeOwnerMm)(URI_TYPE(Uri) * uri,
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @see uriSetFragmentA
  * @see uriSetFragmentMmA
@@ -1226,6 +1227,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedFragment)(const URI_CHAR * first, const 
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @since 0.9.9
  */
@@ -1250,6 +1252,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostIp4)(const URI_CHAR * first, const U
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @since 0.9.9
  */
@@ -1273,6 +1276,7 @@ int URI_FUNC(IsWellFormedHostIp6)(const URI_CHAR * first, const URI_CHAR * after
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @since 0.9.9
  */
@@ -1297,6 +1301,7 @@ int URI_FUNC(IsWellFormedHostIp6Mm)(const URI_CHAR * first, const URI_CHAR * aft
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @since 0.9.9
  */
@@ -1320,6 +1325,7 @@ int URI_FUNC(IsWellFormedHostIpFuture)(const URI_CHAR * first, const URI_CHAR * 
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @since 0.9.9
  */
@@ -1341,6 +1347,7 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first, const URI_CHAR 
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @since 0.9.9
  */
@@ -1362,6 +1369,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostRegName)(const URI_CHAR * first, con
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @see uriSetPortTextA
  * @see uriSetPortTextMmA
@@ -1385,12 +1393,37 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedPort)(const URI_CHAR * first, const URI_
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
+ * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
  * @see uriSetQueryA
  * @see uriSetQueryMmA
  * @since 0.9.9
  */
 URI_PUBLIC UriBool URI_FUNC(IsWellFormedQuery)(const URI_CHAR * first, const URI_CHAR * afterLast);
+
+
+/**
+ * Determines if the given text range contains a well-formed scheme
+ * according to RFC 3986 or not.
+ *
+ * @param first      <b>IN</b>: Pointer to first character
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
+ * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
+ *
+ * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
+ * @see uriIsWellFormedHostIpFutureA
+ * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPortA
+ * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
+ * @see uriIsWellFormedUserInfoA
+ * @see uriSetSchemeA
+ * @see uriSetSchemeMmA
+ * @since 0.9.9
+ */
+URI_PUBLIC UriBool URI_FUNC(IsWellFormedScheme)(const URI_CHAR * first, const URI_CHAR * afterLast);
 
 
 
@@ -1409,6 +1442,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedQuery)(const URI_CHAR * first, const URI
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
  * @see uriSetUserInfoA
  * @see uriSetUserInfoMmA
  * @since 0.9.9
@@ -1436,6 +1470,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedUserInfo)(const URI_CHAR * first, const 
  * @see uriSetFragmentMmA
  * @see uriSetPortTextA
  * @see uriSetQueryA
+ * @see uriSetSchemeA
  * @see uriSetUserInfoA
  * @since 0.9.9
  */
@@ -1463,6 +1498,7 @@ URI_PUBLIC int URI_FUNC(SetFragment)(URI_TYPE(Uri) * uri,
  * @see uriSetFragmentA
  * @see uriSetPortTextMmA
  * @see uriSetQueryMmA
+ * @see uriSetSchemeMmA
  * @see uriSetUserInfoMmA
  * @since 0.9.9
  */
@@ -1494,6 +1530,7 @@ URI_PUBLIC int URI_FUNC(SetFragmentMm)(URI_TYPE(Uri) * uri,
  * @see uriSetFragmentA
  * @see uriSetPortTextMmA
  * @see uriSetQueryA
+ * @see uriSetSchemeA
  * @see uriSetUserInfoA
  * @since 0.9.9
  */
@@ -1523,6 +1560,7 @@ URI_PUBLIC int URI_FUNC(SetPortText)(URI_TYPE(Uri) * uri,
  * @see uriSetFragmentMmA
  * @see uriSetPortTextA
  * @see uriSetQueryMmA
+ * @see uriSetSchemeMmA
  * @see uriSetUserInfoMmA
  * @since 0.9.9
  */
@@ -1552,6 +1590,7 @@ URI_PUBLIC int URI_FUNC(SetPortTextMm)(URI_TYPE(Uri) * uri,
  * @see uriSetFragmentA
  * @see uriSetPortTextA
  * @see uriSetQueryMmA
+ * @see uriSetSchemeA
  * @see uriSetUserInfoA
  * @since 0.9.9
  */
@@ -1579,10 +1618,69 @@ URI_PUBLIC int URI_FUNC(SetQuery)(URI_TYPE(Uri) * uri,
  * @see uriSetFragmentMmA
  * @see uriSetPortTextMmA
  * @see uriSetQueryA
+ * @see uriSetSchemeMmA
  * @see uriSetUserInfoMmA
  * @since 0.9.9
  */
 URI_PUBLIC int URI_FUNC(SetQueryMm)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory);
+
+
+
+/**
+ * Sets the scheme of the given %URI to the given value.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * Uses default libc-based memory manager.
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedSchemeA
+ * @see uriSetFragmentA
+ * @see uriSetPortTextA
+ * @see uriSetQueryA
+ * @see uriSetSchemeMmA
+ * @see uriSetUserInfoA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetScheme)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast);
+
+
+
+/**
+ * Sets the scheme of the given %URI to the given value.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @param memory     <b>IN</b>: Memory manager to use, <c>NULL</c> for default libc
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedSchemeA
+ * @see uriSetFragmentMmA
+ * @see uriSetPortTextMmA
+ * @see uriSetQueryMmA
+ * @see uriSetSchemeA
+ * @see uriSetUserInfoMmA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetSchemeMm)(URI_TYPE(Uri) * uri,
 		const URI_CHAR * first,
 		const URI_CHAR * afterLast,
 		UriMemoryManager * memory);
@@ -1610,6 +1708,7 @@ URI_PUBLIC int URI_FUNC(SetQueryMm)(URI_TYPE(Uri) * uri,
  * @see uriSetFragmentA
  * @see uriSetPortTextA
  * @see uriSetQueryA
+ * @see uriSetSchemeA
  * @see uriSetUserInfoMmA
  * @since 0.9.9
  */
@@ -1639,6 +1738,7 @@ URI_PUBLIC int URI_FUNC(SetUserInfo)(URI_TYPE(Uri) * uri,
  * @see uriSetFragmentMmA
  * @see uriSetPortTextMmA
  * @see uriSetQueryMmA
+ * @see uriSetSchemeMmA
  * @see uriSetUserInfoA
  * @since 0.9.9
  */
