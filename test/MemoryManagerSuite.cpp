@@ -367,6 +367,19 @@ TEST(FailingMemoryManagerSuite, FreeUriMembersMm) {
 
 
 
+TEST(FailingMemoryManagerSuite, IsWellFormedHostIp6Mm) {
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "::1";
+	const char * const afterLast = first + strlen(first);
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	EXPECT_EQ(uriIsWellFormedHostIp6MmA(first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+}
+
+
+
 TEST(FailingMemoryManagerSuite, SetPortTextMm) {
 	UriUriA uri = parse("https://host/");
 	FailingMemoryManager failingMemoryManager;
