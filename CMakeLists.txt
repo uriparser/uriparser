@@ -169,6 +169,7 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetFragment.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostIp4.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostIp6.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostIpFuture.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostRegName.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetPort.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetQuery.c
