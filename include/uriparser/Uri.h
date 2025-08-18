@@ -1198,6 +1198,7 @@ URI_PUBLIC int URI_FUNC(MakeOwnerMm)(URI_TYPE(Uri) * uri,
  * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
  *
  * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
@@ -1219,6 +1220,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedFragment)(const URI_CHAR * first, const 
  * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
  *
  * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
@@ -1226,6 +1228,51 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedFragment)(const URI_CHAR * first, const 
  * @since 0.9.9
  */
 URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostIp4)(const URI_CHAR * first, const URI_CHAR * afterLast);
+
+
+
+/**
+ * Determines if the given text range contains a well-formed IPv6 address
+ * according to RFC 3986 or not.
+ *
+ * Uses default libc-based memory manager.
+ *
+ * @param first      <b>IN</b>: Pointer to first character
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
+ * @return           <c>URI_SUCCESS</c> if non-<c>NULL</c> and well-formed, else an error code
+ *
+ * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6MmA
+ * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPortA
+ * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedUserInfoA
+ * @since 0.9.9
+ */
+int URI_FUNC(IsWellFormedHostIp6)(const URI_CHAR * first, const URI_CHAR * afterLast);
+
+
+
+/**
+ * Determines if the given text range contains a well-formed IPv6 address
+ * according to RFC 3986 or not.
+ *
+ * @param first      <b>IN</b>: Pointer to first character
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
+ * @param memory     <b>IN</b>: Memory manager to use, <c>NULL</c> for default libc
+ * @return           <c>URI_SUCCESS</c> if non-<c>NULL</c> and well-formed, else an error code
+ *
+ * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
+ * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPortA
+ * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedUserInfoA
+ * @since 0.9.9
+ */
+int URI_FUNC(IsWellFormedHostIp6Mm)(const URI_CHAR * first, const URI_CHAR * afterLast, UriMemoryManager * memory);
 
 
 
@@ -1239,6 +1286,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostIp4)(const URI_CHAR * first, const U
  *
  * @see uriIsWellFormedFragmentA
  * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedUserInfoA
@@ -1258,6 +1306,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostRegName)(const URI_CHAR * first, con
  *
  * @see uriIsWellFormedFragmentA
  * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedUserInfoA
@@ -1279,6 +1328,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedPort)(const URI_CHAR * first, const URI_
  *
  * @see uriIsWellFormedFragmentA
  * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedUserInfoA
@@ -1300,6 +1350,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedQuery)(const URI_CHAR * first, const URI
  *
  * @see uriIsWellFormedFragmentA
  * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
