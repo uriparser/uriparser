@@ -309,6 +309,7 @@ if(URIPARSER_BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostRegName.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetPort.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetQuery.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetScheme.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetUserInfo.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/VersionSuite.cpp
 
