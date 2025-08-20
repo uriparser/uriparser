@@ -109,6 +109,9 @@ int main(int argc, char *argv[]) {
 				inet_ntop(AF_INET6, uri.hostData.ip6->data, ipstr, sizeof ipstr);
 				printf("hostData.ip6: %s\n", ipstr);
 			}
+			if (uri.hostData.ipFuture.first) {
+				printf("hostData.ipFuture: %.*s\n", RANGE(uri.hostData.ipFuture));
+			}
 			if (uri.portText.first) {
 				printf("portText:     %.*s\n", RANGE(uri.portText));
 			}
