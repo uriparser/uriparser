@@ -1243,6 +1243,7 @@ URI_PUBLIC int URI_FUNC(MakeOwnerMm)(URI_TYPE(Uri) * uri,
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1267,6 +1268,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedFragment)(const URI_CHAR * first, const 
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1292,6 +1294,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostIp4)(const URI_CHAR * first, const U
  * @see uriIsWellFormedHostIp6MmA
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1318,6 +1321,7 @@ int URI_FUNC(IsWellFormedHostIp6)(const URI_CHAR * first, const URI_CHAR * after
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureMmA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1343,6 +1347,7 @@ int URI_FUNC(IsWellFormedHostIp6Mm)(const URI_CHAR * first, const URI_CHAR * aft
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureMmA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1367,6 +1372,7 @@ int URI_FUNC(IsWellFormedHostIpFuture)(const URI_CHAR * first, const URI_CHAR * 
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1389,6 +1395,7 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first, const URI_CHAR 
  * @see uriIsWellFormedHostIp4A
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1398,6 +1405,33 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first, const URI_CHAR 
  * @since 0.9.9
  */
 URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostRegName)(const URI_CHAR * first, const URI_CHAR * afterLast);
+
+
+
+/**
+ * Determines if the given text range contains a well-formed path
+ * according to RFC 3986 or not.
+ *
+ * @param first      <b>IN</b>: Pointer to first character
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
+ * @param hasHost    <b>IN</b>: Wether the target %URI has a non-<c>NULL</c> host set or not
+ * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
+ *
+ * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
+ * @see uriIsWellFormedHostIpFutureA
+ * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
+ * @see uriIsWellFormedPortA
+ * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedSchemeA
+ * @see uriIsWellFormedUserInfoA
+ * @see uriSetPathA
+ * @see uriSetPathMmA
+ * @since 0.9.9
+ */
+URI_PUBLIC UriBool URI_FUNC(IsWellFormedPath)(const URI_CHAR * first, const URI_CHAR * afterLast, UriBool hasHost);
 
 
 
@@ -1414,6 +1448,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostRegName)(const URI_CHAR * first, con
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
@@ -1438,6 +1473,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedPort)(const URI_CHAR * first, const URI_
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
@@ -1461,6 +1497,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedQuery)(const URI_CHAR * first, const URI
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1486,6 +1523,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedScheme)(const URI_CHAR * first, const UR
  * @see uriIsWellFormedHostIp6A
  * @see uriIsWellFormedHostIpFutureA
  * @see uriIsWellFormedHostRegNameA
+ * @see uriIsWellFormedPathA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
@@ -1611,6 +1649,75 @@ URI_PUBLIC int URI_FUNC(SetHostRegName)(URI_TYPE(Uri) * uri,
  * @since 0.9.9
  */
 URI_PUBLIC int URI_FUNC(SetHostRegNameMm)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory);
+
+
+
+
+/**
+ * Sets the path of the given %URI to the given value.
+ *
+ * Non-<c>NULL</c> values must start with a leading slash for %URIs that have a host.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * Uses default libc-based memory manager.
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedPathA
+ * @see uriSetFragmentA
+ * @see uriSetHostRegNameA
+ * @see uriSetPathMmA
+ * @see uriSetPortTextA
+ * @see uriSetQueryA
+ * @see uriSetSchemeA
+ * @see uriSetUserInfoA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetPath)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast);
+
+
+
+/**
+ * Sets the path of the given %URI to the given value.
+ *
+ * Non-<c>NULL</c> values must start with a leading slash for %URIs that have a host.
+ *
+ * The %URI must have a non-<c>NULL</c> host set.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @param memory     <b>IN</b>: Memory manager to use, <c>NULL</c> for default libc
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedPathA
+ * @see uriSetFragmentMmA
+ * @see uriSetHostRegNameMmA
+ * @see uriSetPathA
+ * @see uriSetPortTextMmA
+ * @see uriSetQueryMmA
+ * @see uriSetSchemeMmA
+ * @see uriSetUserInfoMmA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetPathMm)(URI_TYPE(Uri) * uri,
 		const URI_CHAR * first,
 		const URI_CHAR * afterLast,
 		UriMemoryManager * memory);
