@@ -2330,20 +2330,7 @@ int URI_FUNC(FreeUriMembersMm)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 	}
 
 	/* Path */
-	if (uri->pathHead != NULL) {
-		URI_TYPE(PathSegment) * segWalk = uri->pathHead;
-		while (segWalk != NULL) {
-			URI_TYPE(PathSegment) * const next = segWalk->next;
-			if (uri->owner && (segWalk->text.first != NULL)
-					&& (segWalk->text.first < segWalk->text.afterLast)) {
-				memory->free(memory, (URI_CHAR *)segWalk->text.first);
-			}
-			memory->free(memory, segWalk);
-			segWalk = next;
-		}
-		uri->pathHead = NULL;
-		uri->pathTail = NULL;
-	}
+	URI_FUNC(FreeUriPath)(uri, memory);
 
 	if (uri->owner) {
 		/* Query */

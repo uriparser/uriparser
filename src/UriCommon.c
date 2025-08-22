@@ -87,6 +87,30 @@ void URI_FUNC(ResetUri)(URI_TYPE(Uri) * uri) {
 
 
 
+int URI_FUNC(FreeUriPath)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
+	assert(uri != NULL);
+	assert(memory != NULL);
+
+	if (uri->pathHead != NULL) {
+		URI_TYPE(PathSegment) * segWalk = uri->pathHead;
+		while (segWalk != NULL) {
+			URI_TYPE(PathSegment) * const next = segWalk->next;
+			if (uri->owner && (segWalk->text.first != NULL)
+					&& (segWalk->text.first < segWalk->text.afterLast)) {
+				memory->free(memory, (URI_CHAR *)segWalk->text.first);
+			}
+			memory->free(memory, segWalk);
+			segWalk = next;
+		}
+		uri->pathHead = NULL;
+		uri->pathTail = NULL;
+	}
+
+	return URI_SUCCESS;
+}
+
+
+
 /* Compares two text ranges for equal text content */
 int URI_FUNC(CompareRange)(
 		const URI_TYPE(TextRange) * a,

@@ -78,6 +78,8 @@ extern const URI_CHAR * const URI_FUNC(ConstParent);
 
 void URI_FUNC(ResetUri)(URI_TYPE(Uri) * uri);
 
+int URI_FUNC(FreeUriPath)(URI_TYPE(Uri) * uri, UriMemoryManager * memory);
+
 int URI_FUNC(CompareRange)(
 		const URI_TYPE(TextRange) * a,
 		const URI_TYPE(TextRange) * b);
