@@ -722,6 +722,39 @@ UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri,
 
 
 
+/* When dropping a host from a URI without a scheme, an absolute path
+ * and and empty first path segment, a consecutive reparse would rightfully
+ * mis-classify the first path segment as a host marker due to the "//".
+ * To protect against this case, we prepend an artifical "." segment
+ * to the path in here; the function is called after the host has
+ * just been dropped.
+ *
+ * 0. We start with parsed URI "//host//path1/path2".
+ * 1. We drop the host naively and yield "//path1/path2".
+ * 2. We insert "./" and yield unambiguous "/.//path1/path2".
+ *
+ * Returns URI_TRUE for (a) nothing to do or (b) successful changes.
+ * Returns URI_FALSE to signal out-of-memory.
+ */
+UriBool URI_FUNC(EnsureThatPathIsNotMistakenForHost)(URI_TYPE(Uri) * uri,
+		UriMemoryManager * memory) {
+	assert(uri != NULL);
+	assert(memory != NULL);
+
+	if ((URI_FUNC(HasHost)(uri) == URI_TRUE)
+			|| (uri->absolutePath == URI_FALSE)
+			|| (uri->pathHead == NULL)
+			|| (uri->pathHead == uri->pathTail)  /* i.e. no second slash */
+			|| (uri->pathHead->text.first != uri->pathHead->text.afterLast)) {
+		return URI_TRUE;  /* i.e. nothing to do */
+	}
+
+	/* Insert "." segment in front */
+	return URI_FUNC(PrependNewDotSegment)(uri, memory);
+}
+
+
+
 void URI_FUNC(FixEmptyTrailSegment)(URI_TYPE(Uri) * uri,
 		UriMemoryManager * memory) {
 	/* Fix path if only one empty segment */
