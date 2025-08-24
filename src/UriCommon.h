@@ -101,6 +101,7 @@ UriBool URI_FUNC(CopyAuthority)(URI_TYPE(Uri) * dest,
 		const URI_TYPE(Uri) * source, UriMemoryManager * memory);
 
 UriBool URI_FUNC(FixAmbiguity)(URI_TYPE(Uri) * uri, UriMemoryManager * memory);
+UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri, UriMemoryManager * memory);
 void URI_FUNC(FixEmptyTrailSegment)(URI_TYPE(Uri) * uri,
 		UriMemoryManager * memory);
 

@@ -68,6 +68,10 @@
 
 
 
+#include <assert.h>
+
+
+
 /*extern*/ const URI_CHAR * const URI_FUNC(SafeToPointTo) = _UT("X");
 /*extern*/ const URI_CHAR * const URI_FUNC(ConstPwd) = _UT(".");
 /*extern*/ const URI_CHAR * const URI_FUNC(ConstParent) = _UT("..");
@@ -623,6 +627,97 @@ UriBool URI_FUNC(FixAmbiguity)(URI_TYPE(Uri) * uri,
 	segment->text.afterLast = URI_FUNC(ConstPwd) + 1;
 	uri->pathHead = segment;
 	return URI_TRUE;
+}
+
+
+
+static UriBool URI_FUNC(PrependNewDotSegment)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
+	assert(uri != NULL);
+	assert(memory != NULL);
+
+	{
+		URI_TYPE(PathSegment) * const segment = memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
+
+		if (segment == NULL) {
+			return URI_FALSE;  /* i.e. raise malloc error */
+		}
+
+		segment->next = uri->pathHead;
+
+		{
+			URI_TYPE(TextRange) dotRange;
+			dotRange.first = URI_FUNC(ConstPwd);
+			dotRange.afterLast = URI_FUNC(ConstPwd) + 1;
+
+			if (uri->owner == URI_TRUE) {
+				if (URI_FUNC(CopyRange)(&(segment->text), &dotRange, memory) == URI_FALSE) {
+					memory->free(memory, segment);
+					return URI_FALSE;  /* i.e. raise malloc error */
+				}
+			} else {
+				segment->text = dotRange;  /* copies all members */
+			}
+		}
+
+		uri->pathHead = segment;
+	}
+
+	return URI_TRUE;
+}
+
+
+
+/* When dropping a scheme from a URI without a host and with a colon (":")
+ * in the first path segment, a consecutive reparse would rightfully
+ * mis-classify the first path segment as a scheme due to the colon.
+ * To protect against this case, we prepend an artifical "." segment
+ * to the path in here; the function is called after the scheme has
+ * just been dropped.
+ *
+ * 0. We start with parsed URI "scheme:path1:/path2/path3".
+ * 1. We drop the scheme naively and yield "path1:/path2/path3".
+ * 2. We prepend "." and yield unambiguous "./path1:/path2/path3".
+ *
+ * From the view of the RFC 3986 grammar, this is replacing rule path-rootless
+ * by path-noscheme content.
+ *
+ * Returns URI_TRUE for (a) nothing to do or (b) successful changes.
+ * Returns URI_FALSE to signal out-of-memory.
+ */
+UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri,
+		UriMemoryManager * memory) {
+	assert(uri != NULL);
+	assert(memory != NULL);
+
+	if ((uri->absolutePath == URI_TRUE)
+			|| (uri->pathHead == NULL)
+			|| (uri->scheme.first != NULL)
+			|| URI_FUNC(HasHost)(uri)) {
+		return URI_TRUE;  /* i.e. nothing to do */
+	}
+
+	/* Check for troublesome first path segment containing a colon */
+	{
+		UriBool colonFound = URI_FALSE;
+		const URI_CHAR * walker = uri->pathHead->text.first;
+
+		while (walker < uri->pathHead->text.afterLast) {
+			if (walker[0] == _UT(':')) {
+				colonFound = URI_TRUE;
+				break;
+			}
+			walker++;
+		}
+
+		assert((walker == uri->pathHead->text.afterLast) || (colonFound == URI_TRUE));
+
+		if (colonFound == URI_FALSE) {
+			return URI_TRUE;  /* i.e. nothing to do */
+		}
+	}
+
+	/* Insert "." segment in front */
+	return URI_FUNC(PrependNewDotSegment)(uri, memory);
 }
 
 
