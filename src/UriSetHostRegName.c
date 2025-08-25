@@ -63,6 +63,8 @@
 #ifndef URI_DOXYGEN
 # include <uriparser/Uri.h>
 # include "UriMemory.h"
+# include "UriSetHostBase.h"
+# include "UriSetHostCommon.h"
 #endif
 
 
@@ -220,6 +222,23 @@ UriBool URI_FUNC(IsWellFormedHostRegName)(const URI_CHAR * first, const URI_CHAR
 		first++;
 	}
 	return URI_TRUE;
+}
+
+
+
+int URI_FUNC(SetHostRegNameMm)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory) {
+	return URI_FUNC(InternalSetHostMm)(uri, URI_HOST_TYPE_REGNAME, first, afterLast, memory);
+}
+
+
+
+int URI_FUNC(SetHostRegName)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast) {
+	return URI_FUNC(SetHostRegNameMm)(uri, first, afterLast, NULL);
 }
 
 

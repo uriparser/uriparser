@@ -154,6 +154,11 @@ typedef int UriBool; /**< Boolean type */
 /* Error specific to uriSetPort */
 #define URI_ERROR_SETPORT_HOST_NOT_SET     13 /* [>=0.9.9] The %URI given does not have the host set */
 
+/* Error specific to uriSetHost* */
+#define URI_ERROR_SETHOST_USERINFO_SET     14 /* [>=0.9.9] The %URI given does have user info set */
+#define URI_ERROR_SETHOST_PORT_SET         15 /* [>=0.9.9] The %URI given does have a port set */
+
+
 
 #ifndef URI_DOXYGEN
 # include <stdio.h> /* For NULL, snprintf */
