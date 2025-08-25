@@ -63,6 +63,9 @@
 #ifndef URI_DOXYGEN
 # include <uriparser/Uri.h>
 # include <uriparser/UriIp4.h>
+# include "UriMemory.h"
+# include "UriSetHostBase.h"
+# include "UriSetHostCommon.h"
 #endif
 
 
@@ -78,6 +81,23 @@ UriBool URI_FUNC(IsWellFormedHostIp4)(const URI_CHAR * first, const URI_CHAR * a
 				? URI_TRUE
 				: URI_FALSE;
 	}
+}
+
+
+
+int URI_FUNC(SetHostIp4Mm)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory) {
+	return URI_FUNC(InternalSetHostMm)(uri, URI_HOST_TYPE_IP4, first, afterLast, memory);
+}
+
+
+
+int URI_FUNC(SetHostIp4)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast) {
+	return URI_FUNC(SetHostIp4Mm)(uri, first, afterLast, NULL);
 }
 
 

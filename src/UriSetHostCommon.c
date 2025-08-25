@@ -68,6 +68,7 @@
 
 #ifndef URI_DOXYGEN
 # include <uriparser/Uri.h>
+# include <uriparser/UriIp4.h>
 # include "UriCommon.h"
 # include "UriMemory.h"
 # include "UriSetHostBase.h"
@@ -106,6 +107,11 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri,
 	/* Syntax-check the new value */
 	if (first != NULL) {
 		switch (hostType) {
+			case URI_HOST_TYPE_IP4:
+				if (URI_FUNC(IsWellFormedHostIp4)(first, afterLast) == URI_FALSE) {
+					return URI_ERROR_SYNTAX;
+				}
+				break;
 			case URI_HOST_TYPE_REGNAME:
 				if (URI_FUNC(IsWellFormedHostRegName)(first, afterLast) == URI_FALSE) {
 					return URI_ERROR_SYNTAX;
@@ -190,6 +196,23 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri,
 
 		/* Fill .hostData as needed */
 		switch (hostType) {
+			case URI_HOST_TYPE_IP4:
+				{
+					uri->hostData.ip4 = memory->malloc(memory, sizeof(UriIp4));
+					if (uri->hostData.ip4 == NULL) {
+						return URI_ERROR_MALLOC;
+					}
+
+					{
+						const int res = URI_FUNC(ParseIpFourAddress)(uri->hostData.ip4->data, first, afterLast);
+#if defined(NDEBUG)
+						(void)res;  /* i.e. mark as unused */
+#else
+						assert(res == URI_SUCCESS);  /* because checked for well-formedness earlier */
+#endif
+					}
+				}
+				break;
 			case URI_HOST_TYPE_REGNAME:
 				break;
 			default:
