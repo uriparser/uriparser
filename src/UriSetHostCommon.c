@@ -112,6 +112,15 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri,
 					return URI_ERROR_SYNTAX;
 				}
 				break;
+			case URI_HOST_TYPE_IPFUTURE:
+				{
+					const int res = URI_FUNC(IsWellFormedHostIpFutureMm)(first, afterLast, memory);
+					assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX) || (res == URI_ERROR_MALLOC));
+					if (res != URI_SUCCESS) {
+						return res;
+					}
+				}
+				break;
 			case URI_HOST_TYPE_REGNAME:
 				if (URI_FUNC(IsWellFormedHostRegName)(first, afterLast) == URI_FALSE) {
 					return URI_ERROR_SYNTAX;
@@ -212,6 +221,10 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri,
 #endif
 					}
 				}
+				break;
+			case URI_HOST_TYPE_IPFUTURE:
+				uri->hostData.ipFuture.first = uri->hostText.first;
+				uri->hostData.ipFuture.afterLast = uri->hostText.afterLast;
 				break;
 			case URI_HOST_TYPE_REGNAME:
 				break;
