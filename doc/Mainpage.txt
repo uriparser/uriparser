@@ -154,7 +154,7 @@
  * 		free(absUri);
  * 		...
  * 	}
- * 	/COMMENT_HACK* absUri is "file:///E:/Documents%20and%20Settings" now *COMMENT_HACK/
+ * 	/COMMENT_HACK* absUri is "file:///E://Documents%20and%20Settings" now *COMMENT_HACK/
  * 	...
  * 	free(absUri);
  * @endcode
