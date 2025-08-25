@@ -63,6 +63,8 @@
 #ifndef URI_DOXYGEN
 # include <uriparser/Uri.h>
 # include "UriMemory.h"
+# include "UriSetHostBase.h"
+# include "UriSetHostCommon.h"
 #endif
 
 
@@ -156,6 +158,23 @@ int URI_FUNC(IsWellFormedHostIp6Mm)(const URI_CHAR * first, const URI_CHAR * aft
 
 int URI_FUNC(IsWellFormedHostIp6)(const URI_CHAR * first, const URI_CHAR * afterLast) {
 	return URI_FUNC(IsWellFormedHostIp6Mm)(first, afterLast, NULL);
+}
+
+
+
+int URI_FUNC(SetHostIp6Mm)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory) {
+	return URI_FUNC(InternalSetHostMm)(uri, URI_HOST_TYPE_IP6, first, afterLast, memory);
+}
+
+
+
+int URI_FUNC(SetHostIp6)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast) {
+	return URI_FUNC(SetHostIp6Mm)(uri, first, afterLast, NULL);
 }
 
 
