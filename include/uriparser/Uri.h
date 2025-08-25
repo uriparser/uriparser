@@ -218,6 +218,48 @@ URI_PUBLIC UriBool URI_FUNC(HasHost)(const URI_TYPE(Uri) * uri);
 
 
 /**
+ * Converts an IPv6 text representation into 16 bytes.
+ *
+ * Uses default libc-based memory manager.
+ *
+ * @param output       <b>OUT</b>: Output destination, can be <c>NULL</c>
+ * @param first        <b>IN</b>: First character of IPv6 text to parse
+ * @param afterLast    <b>IN</b>: Position to stop parsing at
+ * @return Error code or <c>URI_SUCCESS</c> on success
+ *
+ * @see uriParseIpFourAddressA
+ * @see uriParseIpSixAddressMmA
+ * @see uriIsWellFormedHostIp6A
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(ParseIpSixAddress)(UriIp6 * output,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast);
+
+
+
+/**
+ * Converts an IPv6 text representation into 16 bytes.
+ *
+ * @param output       <b>OUT</b>: Output destination, can be <c>NULL</c>
+ * @param first        <b>IN</b>: First character of IPv6 text to parse
+ * @param afterLast    <b>IN</b>: Position to stop parsing at
+ * @param memory       <b>IN</b>: Memory manager to use, <c>NULL</c> for default libc
+ * @return Error code or <c>URI_SUCCESS</c> on success
+ *
+ * @see uriParseIpFourAddressA
+ * @see uriParseIpSixAddressA
+ * @see uriIsWellFormedHostIp6MmA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(ParseIpSixAddressMm)(UriIp6 * output,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory);
+
+
+
+/**
  * Parses a RFC 3986 %URI.
  * Uses default libc-based memory manager.
  *
@@ -1254,6 +1296,8 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostIp4)(const URI_CHAR * first, const U
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedSchemeA
  * @see uriIsWellFormedUserInfoA
+ * @see uriParseIpSixAddressA
+ * @see uriParseIpSixAddressMmA
  * @since 0.9.9
  */
 int URI_FUNC(IsWellFormedHostIp6)(const URI_CHAR * first, const URI_CHAR * afterLast);

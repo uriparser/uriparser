@@ -94,6 +94,9 @@ extern "C" {
  * @param first        First character of IPv4 text to parse
  * @param afterLast    Position to stop parsing at
  * @return Error code or 0 on success
+ *
+ * @see uriParseIpSixAddressA
+ * @see uriParseIpSixAddressMmA
  */
 URI_PUBLIC int URI_FUNC(ParseIpFourAddress)(unsigned char * octetOutput,
 		const URI_CHAR * first, const URI_CHAR * afterLast);

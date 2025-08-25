@@ -76,7 +76,11 @@
 
 
 
-int URI_FUNC(IsWellFormedHostIp6Mm)(const URI_CHAR * first, const URI_CHAR * afterLast, UriMemoryManager * memory) {
+int URI_FUNC(ParseIpSixAddressMm)(UriIp6 * output,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory) {
+	/* NOTE: output is allowed to be NULL */
 	if ((first == NULL) || (afterLast == NULL)) {
 		return URI_ERROR_NULL;
 	}
@@ -121,12 +125,31 @@ int URI_FUNC(IsWellFormedHostIp6Mm)(const URI_CHAR * first, const URI_CHAR * aft
 
 			if (res == URI_SUCCESS) {
 				assert(uri.hostData.ip6 != NULL);
+
+				if (output != NULL) {
+					memcpy(output->data, uri.hostData.ip6->data, sizeof(output->data));
+				}
+
 				URI_FUNC(FreeUriMembersMm)(&uri, memory);
 			}
 
 			return res;
 		}
 	}
+}
+
+
+
+int URI_FUNC(ParseIpSixAddress)(UriIp6 * output,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast) {
+	return URI_FUNC(ParseIpSixAddressMm)(output, first, afterLast, NULL);
+}
+
+
+
+int URI_FUNC(IsWellFormedHostIp6Mm)(const URI_CHAR * first, const URI_CHAR * afterLast, UriMemoryManager * memory) {
+    return URI_FUNC(ParseIpSixAddressMm)(NULL, first, afterLast, memory);
 }
 
 
