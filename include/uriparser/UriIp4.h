@@ -88,7 +88,7 @@ extern "C" {
 
 
 /**
- * Converts a IPv4 text representation into four bytes.
+ * Converts an IPv4 text representation into four bytes.
  *
  * @param octetOutput  Output destination
  * @param first        First character of IPv4 text to parse
