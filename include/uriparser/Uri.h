@@ -1197,6 +1197,7 @@ URI_PUBLIC int URI_FUNC(MakeOwnerMm)(URI_TYPE(Uri) * uri,
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
  * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
  *
+ * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedUserInfoA
@@ -1209,6 +1210,24 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedFragment)(const URI_CHAR * first, const 
 
 
 /**
+ * Determines if the given text range contains a well-formed registered host name
+ * according to RFC 3986 or not.
+ *
+ * @param first      <b>IN</b>: Pointer to first character
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in
+ * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
+ *
+ * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedPortA
+ * @see uriIsWellFormedQueryA
+ * @see uriIsWellFormedUserInfoA
+ * @since 0.9.9
+ */
+URI_PUBLIC UriBool URI_FUNC(IsWellFormedHostRegName)(const URI_CHAR * first, const URI_CHAR * afterLast);
+
+
+
+/**
  * Determines if the given text range contains a well-formed port text
  * according to RFC 3986 or not.
  *
@@ -1217,6 +1236,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedFragment)(const URI_CHAR * first, const 
  * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
  *
  * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedQueryA
  * @see uriIsWellFormedUserInfoA
  * @see uriSetPortTextA
@@ -1236,6 +1256,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedPort)(const URI_CHAR * first, const URI_
  * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
  *
  * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedUserInfoA
  * @see uriSetQueryA
@@ -1255,6 +1276,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedQuery)(const URI_CHAR * first, const URI
  * @return           <c>URI_TRUE</c> if non-<c>NULL</c> and well-formed, else <c>URI_FALSE</c>
  *
  * @see uriIsWellFormedFragmentA
+ * @see uriIsWellFormedHostRegNameA
  * @see uriIsWellFormedPortA
  * @see uriIsWellFormedQueryA
  * @see uriSetUserInfoA
