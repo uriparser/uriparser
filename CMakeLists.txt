@@ -305,6 +305,7 @@ if(URIPARSER_BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetFragment.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostAuto.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostIp4.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostIp6.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostIpFuture.cpp
