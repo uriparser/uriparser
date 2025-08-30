@@ -95,10 +95,12 @@ int URI_FUNC(FreeUriPath)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 		URI_TYPE(PathSegment) * segWalk = uri->pathHead;
 		while (segWalk != NULL) {
 			URI_TYPE(PathSegment) * const next = segWalk->next;
-			if (uri->owner && (segWalk->text.first != NULL)
-					&& (segWalk->text.first < segWalk->text.afterLast)) {
+			if ((uri->owner == URI_TRUE) && (segWalk->text.first != segWalk->text.afterLast)) {
 				memory->free(memory, (URI_CHAR *)segWalk->text.first);
 			}
+			segWalk->text.first = NULL;
+			segWalk->text.afterLast = NULL;
+			segWalk->next = NULL;
 			memory->free(memory, segWalk);
 			segWalk = next;
 		}
