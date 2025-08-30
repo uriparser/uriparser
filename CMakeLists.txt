@@ -167,6 +167,7 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriRecompose.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriResolve.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetFragment.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostAuto.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostBase.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostCommon.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostCommon.h

@@ -1558,6 +1558,7 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedUserInfo)(const URI_CHAR * first, const 
  *
  * @see uriIsWellFormedFragmentA
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -1590,6 +1591,7 @@ URI_PUBLIC int URI_FUNC(SetFragment)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedFragmentA
  * @see uriSetFragmentA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
@@ -1622,8 +1624,87 @@ URI_PUBLIC int URI_FUNC(SetFragmentMm)(URI_TYPE(Uri) * uri,
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
  * @return           Error code or 0 on success
  *
+ * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
+ * @see uriIsWellFormedHostIp6MmA
+ * @see uriIsWellFormedHostIpFutureA
+ * @see uriIsWellFormedHostIpFutureMmA
  * @see uriIsWellFormedHostRegNameA
  * @see uriSetFragmentA
+ * @see uriSetHostAutoMmA
+ * @see uriSetHostIp4A
+ * @see uriSetHostIp6A
+ * @see uriSetHostIpFutureA
+ * @see uriSetHostRegNameA
+ * @see uriSetPortTextA
+ * @see uriSetQueryA
+ * @see uriSetSchemeA
+ * @see uriSetUserInfoA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetHostAuto)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast);
+
+
+
+/**
+ * Sets the host of the given %URI to the given value.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @param memory     <b>IN</b>: Memory manager to use, <c>NULL</c> for default libc
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedHostIp4A
+ * @see uriIsWellFormedHostIp6A
+ * @see uriIsWellFormedHostIp6MmA
+ * @see uriIsWellFormedHostIpFutureA
+ * @see uriIsWellFormedHostIpFutureMmA
+ * @see uriIsWellFormedHostRegNameA
+ * @see uriSetFragmentMmA
+ * @see uriSetHostAutoA
+ * @see uriSetHostIp4MmA
+ * @see uriSetHostIp6MmA
+ * @see uriSetHostIpFutureMmA
+ * @see uriSetHostRegNameMmA
+ * @see uriSetPortTextMmA
+ * @see uriSetQueryMmA
+ * @see uriSetSchemeMmA
+ * @see uriSetUserInfoMmA
+ * @since 0.9.9
+ */
+URI_PUBLIC int URI_FUNC(SetHostAutoMm)(URI_TYPE(Uri) * uri,
+		const URI_CHAR * first,
+		const URI_CHAR * afterLast,
+		UriMemoryManager * memory);
+
+
+
+/**
+ * Sets the host of the given %URI to the given value.
+ *
+ * Parameters <c>first</c> and <c>afterLast</c> must both be <c>NULL</c>
+ * or non-<c>NULL</c> at the same time.
+ *
+ * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * Uses default libc-based memory manager.
+ *
+ * @param uri        <b>INOUT</b>: %URI to modify
+ * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
+ * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
+ * @return           Error code or 0 on success
+ *
+ * @see uriIsWellFormedHostRegNameA
+ * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -1656,6 +1737,7 @@ URI_PUBLIC int URI_FUNC(SetHostRegName)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedHostRegNameA
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
@@ -1690,6 +1772,7 @@ URI_PUBLIC int URI_FUNC(SetHostRegNameMm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedHostIp4A
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -1722,6 +1805,7 @@ URI_PUBLIC int URI_FUNC(SetHostIp4)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedHostIp4A
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
@@ -1756,6 +1840,7 @@ URI_PUBLIC int URI_FUNC(SetHostIp4Mm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedHostIp6A
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureA
@@ -1788,6 +1873,7 @@ URI_PUBLIC int URI_FUNC(SetHostIp6)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedHostIp6A
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureMmA
@@ -1822,6 +1908,7 @@ URI_PUBLIC int URI_FUNC(SetHostIp6Mm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedHostIp4A
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureMmA
@@ -1854,6 +1941,7 @@ URI_PUBLIC int URI_FUNC(SetHostIpFuture)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedHostIp4A
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureA
@@ -1890,6 +1978,7 @@ URI_PUBLIC int URI_FUNC(SetHostIpFutureMm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedPathA
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -1927,6 +2016,7 @@ URI_PUBLIC int URI_FUNC(SetPath)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedPathA
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
@@ -1964,6 +2054,7 @@ URI_PUBLIC int URI_FUNC(SetPathMm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedPortA
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -1998,6 +2089,7 @@ URI_PUBLIC int URI_FUNC(SetPortText)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedPortA
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
@@ -2032,6 +2124,7 @@ URI_PUBLIC int URI_FUNC(SetPortTextMm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedQueryA
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -2064,6 +2157,7 @@ URI_PUBLIC int URI_FUNC(SetQuery)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedQueryA
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
@@ -2098,6 +2192,7 @@ URI_PUBLIC int URI_FUNC(SetQueryMm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedSchemeA
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -2130,6 +2225,7 @@ URI_PUBLIC int URI_FUNC(SetScheme)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedSchemeA
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
@@ -2166,6 +2262,7 @@ URI_PUBLIC int URI_FUNC(SetSchemeMm)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedUserInfoA
  * @see uriSetFragmentA
+ * @see uriSetHostAutoA
  * @see uriSetHostIp4A
  * @see uriSetHostIp6A
  * @see uriSetHostIpFutureA
@@ -2200,6 +2297,7 @@ URI_PUBLIC int URI_FUNC(SetUserInfo)(URI_TYPE(Uri) * uri,
  *
  * @see uriIsWellFormedUserInfoA
  * @see uriSetFragmentMmA
+ * @see uriSetHostAutoMmA
  * @see uriSetHostIp4MmA
  * @see uriSetHostIp6MmA
  * @see uriSetHostIpFutureMmA
