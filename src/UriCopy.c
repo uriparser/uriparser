@@ -119,7 +119,7 @@ int URI_FUNC(CopyUriMm)(URI_TYPE(Uri) * destUri,
 
 	revertMask |= URI_NORMALIZE_SCHEME;
 
-	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->userInfo, &sourceUri->userInfo, URI_FALSE, memory) == URI_FALSE) {
+	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->userInfo, &sourceUri->userInfo, URI_TRUE, memory) == URI_FALSE) {
 		URI_FUNC(PreventLeakageAfterCopy)(destUri, revertMask, memory);
 		return URI_ERROR_MALLOC;
 	}
@@ -163,7 +163,7 @@ int URI_FUNC(CopyUriMm)(URI_TYPE(Uri) * destUri,
 		return URI_ERROR_MALLOC;
 	}
 
-	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->portText, &sourceUri->portText, URI_FALSE, memory) == URI_FALSE) {
+	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->portText, &sourceUri->portText, URI_TRUE, memory) == URI_FALSE) {
 		URI_FUNC(PreventLeakageAfterCopy)(destUri, revertMask, memory);
 		return URI_ERROR_MALLOC;
 	}
@@ -210,14 +210,14 @@ int URI_FUNC(CopyUriMm)(URI_TYPE(Uri) * destUri,
 		}
 	}
 
-	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->query, &sourceUri->query, URI_FALSE, memory) == URI_FALSE) {
+	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->query, &sourceUri->query, URI_TRUE, memory) == URI_FALSE) {
 		URI_FUNC(PreventLeakageAfterCopy)(destUri, revertMask, memory);
 		return URI_ERROR_MALLOC;
 	}
 
 	revertMask |= URI_NORMALIZE_QUERY;
 
-	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->fragment, &sourceUri->fragment, URI_FALSE, memory) == URI_FALSE) {
+	if (URI_FUNC(CopyRangeAsNeeded)(&destUri->fragment, &sourceUri->fragment, URI_TRUE, memory) == URI_FALSE) {
 		URI_FUNC(PreventLeakageAfterCopy)(destUri, revertMask, memory);
 		return URI_ERROR_MALLOC;
 	}

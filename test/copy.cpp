@@ -154,3 +154,47 @@ TEST(CopyUriSuite, SuccessIpFuture) {
 
 	uriFreeUriMembersA(&destUri);
 }
+
+TEST(CopyUriSuite, SuccessEmptyPort) {
+	UriUriA destUri;
+	testCopyUri(&destUri, "http://example.com:/");
+
+	ASSERT_TRUE(destUri.portText.first != NULL);
+	ASSERT_TRUE(destUri.portText.afterLast != NULL);
+	ASSERT_EQ(destUri.portText.first, destUri.portText.afterLast);
+
+	uriFreeUriMembersA(&destUri);
+}
+
+TEST(CopyUriSuite, SuccessEmptyUserInfo) {
+	UriUriA destUri;
+	testCopyUri(&destUri, "http://@example.com/");
+
+	ASSERT_TRUE(destUri.userInfo.first != NULL);
+	ASSERT_TRUE(destUri.userInfo.afterLast != NULL);
+	ASSERT_EQ(destUri.userInfo.first, destUri.userInfo.afterLast);
+
+	uriFreeUriMembersA(&destUri);
+}
+
+TEST(CopyUriSuite, SuccessEmptyQuery) {
+	UriUriA destUri;
+	testCopyUri(&destUri, "http://example.com/?");
+
+	ASSERT_TRUE(destUri.query.first != NULL);
+	ASSERT_TRUE(destUri.query.afterLast != NULL);
+	ASSERT_EQ(destUri.query.first, destUri.query.afterLast);
+
+	uriFreeUriMembersA(&destUri);
+}
+
+TEST(CopyUriSuite, SuccessEmptyFragment) {
+	UriUriA destUri;
+	testCopyUri(&destUri, "http://example.com/#");
+
+	ASSERT_TRUE(destUri.fragment.first != NULL);
+	ASSERT_TRUE(destUri.fragment.afterLast != NULL);
+	ASSERT_EQ(destUri.fragment.first, destUri.fragment.afterLast);
+
+	uriFreeUriMembersA(&destUri);
+}
