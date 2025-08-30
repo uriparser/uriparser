@@ -137,11 +137,11 @@ UriBool URI_FUNC(CopyRange)(URI_TYPE(TextRange) * destRange,
 
 
 UriBool URI_FUNC(CopyRangeAsNeeded)(URI_TYPE(TextRange) * destRange,
-		const URI_TYPE(TextRange) * sourceRange, UriBool useSafe, UriMemoryManager * memory) {
+		const URI_TYPE(TextRange) * sourceRange, UriMemoryManager * memory) {
 	if (sourceRange->first == NULL) {
 		destRange->first = NULL;
 		destRange->afterLast = NULL;
-	} else if (sourceRange->first == sourceRange->afterLast && useSafe) {
+	} else if (sourceRange->first == sourceRange->afterLast) {
 		destRange->first = URI_FUNC(SafeToPointTo);
 		destRange->afterLast = URI_FUNC(SafeToPointTo);
 	} else {
