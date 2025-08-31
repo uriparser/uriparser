@@ -37,6 +37,6 @@ TEST(VersionSuite, EnsureVersionDefinesInSync) {
 
 TEST(VersionSuite, EnsureRuntimeVersionAsExpected) {
 	// NOTE: This needs a bump for every release
-	EXPECT_STREQ(uriBaseRuntimeVersionA(),  "0.9.8");
-	EXPECT_STREQ(uriBaseRuntimeVersionW(), L"0.9.8");
+	EXPECT_STREQ(uriBaseRuntimeVersionA(),  "0.9.9");
+	EXPECT_STREQ(uriBaseRuntimeVersionW(), L"0.9.9");
 }
