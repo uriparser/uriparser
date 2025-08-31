@@ -1549,6 +1549,10 @@ URI_PUBLIC UriBool URI_FUNC(IsWellFormedUserInfo)(const URI_CHAR * first, const 
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -1583,6 +1587,10 @@ URI_PUBLIC int URI_FUNC(SetFragment)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
@@ -1616,6 +1624,10 @@ URI_PUBLIC int URI_FUNC(SetFragmentMm)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * Uses default libc-based memory manager.
  *
@@ -1656,6 +1668,10 @@ URI_PUBLIC int URI_FUNC(SetHostAuto)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
@@ -1695,6 +1711,10 @@ URI_PUBLIC int URI_FUNC(SetHostAutoMm)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -1728,6 +1748,10 @@ URI_PUBLIC int URI_FUNC(SetHostRegName)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
@@ -1763,6 +1787,10 @@ URI_PUBLIC int URI_FUNC(SetHostRegNameMm)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -1796,6 +1824,10 @@ URI_PUBLIC int URI_FUNC(SetHostIp4)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
@@ -1831,6 +1863,10 @@ URI_PUBLIC int URI_FUNC(SetHostIp4Mm)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -1864,6 +1900,10 @@ URI_PUBLIC int URI_FUNC(SetHostIp6)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
@@ -1899,6 +1939,10 @@ URI_PUBLIC int URI_FUNC(SetHostIp6Mm)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -1932,6 +1976,10 @@ URI_PUBLIC int URI_FUNC(SetHostIpFuture)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
@@ -1968,6 +2016,10 @@ URI_PUBLIC int URI_FUNC(SetHostIpFutureMm)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * Uses default libc-based memory manager.
  *
@@ -2008,6 +2060,10 @@ URI_PUBLIC int URI_FUNC(SetPath)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
@@ -2045,6 +2101,10 @@ URI_PUBLIC int URI_FUNC(SetPathMm)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -2081,6 +2141,10 @@ URI_PUBLIC int URI_FUNC(SetPortText)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
@@ -2114,6 +2178,10 @@ URI_PUBLIC int URI_FUNC(SetPortTextMm)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * Uses default libc-based memory manager.
  *
@@ -2149,6 +2217,10 @@ URI_PUBLIC int URI_FUNC(SetQuery)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
  * @param afterLast  <b>IN</b>: Pointer to character after the last one still in, can be <c>NULL</c>
@@ -2183,6 +2255,10 @@ URI_PUBLIC int URI_FUNC(SetQueryMm)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -2216,6 +2292,10 @@ URI_PUBLIC int URI_FUNC(SetScheme)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
@@ -2253,6 +2333,10 @@ URI_PUBLIC int URI_FUNC(SetSchemeMm)(URI_TYPE(Uri) * uri,
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
  *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
+ *
  * Uses default libc-based memory manager.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
@@ -2288,6 +2372,10 @@ URI_PUBLIC int URI_FUNC(SetUserInfo)(URI_TYPE(Uri) * uri,
  * or non-<c>NULL</c> at the same time.
  *
  * The function may make the %URI own its memory if needed (if it is not already owned).
+ *
+ * For all return values but <c>URI_ERROR_MALLOC</c>, all-or-nothing behavior
+ * can be expected, e.g. trying to apply a malformed value will leave the
+ * %URI unchanged.
  *
  * @param uri        <b>INOUT</b>: %URI to modify
  * @param first      <b>IN</b>: Pointer to first character, can be <c>NULL</c>
