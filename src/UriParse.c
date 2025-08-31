@@ -480,7 +480,7 @@ static const URI_CHAR * URI_FUNC(ParseIpFuture)(URI_TYPE(ParserState) * state,
 	case _UT('v'):
 	case _UT('V'):
 	*/
-		if (first + 1 >= afterLast) {
+		if (afterLast - first < 2) {
 			URI_FUNC(StopSyntax)(state, afterLast, memory);
 			return NULL;
 		}
@@ -755,7 +755,7 @@ static const URI_CHAR * URI_FUNC(ParseIPv6address2)(
 						}
 
 						/* "::"? */
-						if (first + 1 >= afterLast) {
+						if (afterLast - first < 2) {
 							URI_FUNC(StopSyntax)(state, afterLast, memory);
 							return NULL;
 						}
@@ -773,7 +773,7 @@ static const URI_CHAR * URI_FUNC(ParseIPv6address2)(
 							setZipper = 1;
 
 							/* ":::+"? */
-							if (first + 1 >= afterLast) {
+							if (afterLast - first < 2) {
 								URI_FUNC(StopSyntax)(state, afterLast, memory);
 								return NULL; /* No ']' yet */
 							}
@@ -1583,14 +1583,14 @@ static const URI_CHAR * URI_FUNC(ParsePctEncoded)(
 	switch (*first) {
 	case _UT('%'):
 	*/
-		if (first + 1 >= afterLast) {
+		if (afterLast - first < 2) {
 			URI_FUNC(StopSyntax)(state, afterLast, memory);
 			return NULL;
 		}
 
 		switch (first[1]) {
 		case URI_SET_HEXDIG:
-			if (first + 2 >= afterLast) {
+			if (afterLast - first < 3) {
 				URI_FUNC(StopSyntax)(state, afterLast, memory);
 				return NULL;
 			}
