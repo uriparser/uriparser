@@ -1742,10 +1742,10 @@ TEST(UriSuite, TestQueryStringEndingInEqualSignNonBug32) {
 		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_EQ(itemCount, 2);
 		ASSERT_TRUE(queryList != NULL);
-		ASSERT_EQ(strcmp(queryList->key, "firstname"), 0);
-		ASSERT_EQ(strcmp(queryList->value, "sdsd"), 0);
-		ASSERT_EQ(strcmp(queryList->next->key, "lastname"), 0);
-		ASSERT_EQ(strcmp(queryList->next->value, ""), 0);
+		EXPECT_STREQ(queryList->key, "firstname");
+		EXPECT_STREQ(queryList->value, "sdsd");
+		EXPECT_STREQ(queryList->next->key, "lastname");
+		EXPECT_STREQ(queryList->next->value, "");
 		ASSERT_TRUE(queryList->next->next == NULL);
 
 		uriFreeQueryListA(queryList);
@@ -1855,14 +1855,14 @@ namespace {
 		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(queryList != NULL);
 		ASSERT_EQ(itemCount, 1);
-		ASSERT_TRUE(!strcmp(queryList->key, unescapedKey));
-		ASSERT_TRUE(!strcmp(queryList->value, unescapedValue));
+		EXPECT_STREQ(queryList->key, unescapedKey);
+		EXPECT_STREQ(queryList->value, unescapedValue);
 
 		char * recomposed;
 		res = uriComposeQueryMallocA(&recomposed, queryList);
 		ASSERT_EQ(res, URI_SUCCESS);
 		ASSERT_TRUE(recomposed != NULL);
-		ASSERT_TRUE(!strcmp(recomposed, (fixed != NULL) ? fixed : pair));
+		EXPECT_STREQ(recomposed, (fixed != NULL) ? fixed : pair);
 		free(recomposed);
 		uriFreeQueryListA(queryList);
 	}
@@ -1885,14 +1885,14 @@ TEST(UriSuite, TestQueryDissectionBug3590761) {
 		ASSERT_TRUE(queryList != NULL);
 		ASSERT_EQ(itemCount, 3);
 
-		ASSERT_TRUE(!strcmp(queryList->key, "q"));
-		ASSERT_TRUE(!strcmp(queryList->value, "hello"));
+		EXPECT_STREQ(queryList->key, "q");
+		EXPECT_STREQ(queryList->value, "hello");
 
-		ASSERT_TRUE(!strcmp(queryList->next->key, "x"));
-		ASSERT_TRUE(!strcmp(queryList->next->value, ""));
+		EXPECT_STREQ(queryList->next->key, "x");
+		EXPECT_STREQ(queryList->next->value, "");
 
-		ASSERT_TRUE(!strcmp(queryList->next->next->key, "y"));
-		ASSERT_TRUE(!strcmp(queryList->next->next->value, ""));
+		EXPECT_STREQ(queryList->next->next->key, "y");
+		EXPECT_STREQ(queryList->next->next->value, "");
 
 		ASSERT_TRUE(! queryList->next->next->next);
 
@@ -1932,7 +1932,7 @@ TEST(UriSuite, TestQueryCompositionMathWriteGoogleAutofuzz113244572) {
 			ASSERT_TRUE(uriComposeQueryExA(dest, &first, sizeof(dest),
 					&charsWritten, spaceToPlus, normalizeBreaks)
 				== URI_SUCCESS);
-			ASSERT_TRUE(! strcmp(dest, expected));
+			EXPECT_STREQ(dest, expected);
 			ASSERT_EQ(charsWritten, strlen(expected) + 1);
 		}
 
@@ -2174,10 +2174,7 @@ namespace {
 		ASSERT_TRUE(buffer);
 		ASSERT_TRUE(uriToStringA(buffer, &dest, size + 1, &size)
 															== URI_SUCCESS);
-		if (strcmp(buffer, expected)) {
-			printf("Expected \"%s\" but got \"%s\"\n", expected, buffer);
-			ASSERT_TRUE(0);
-		}
+		EXPECT_STREQ(buffer, expected);
 		free(buffer);
 
 		uriFreeUriMembersA(&absSource);
@@ -2406,7 +2403,7 @@ TEST(MakeOwnerSuite, MakeOwner) {
 	char * const uriRemake = new char[charsRequired + 1];
 	EXPECT_TRUE(uriRemake != NULL);
 	EXPECT_EQ(uriToStringA(uriRemake, &uri, charsRequired + 1, NULL), URI_SUCCESS);
-	EXPECT_TRUE(! strcmp(uriString, uriRemake));
+	EXPECT_STREQ(uriString, uriRemake);
 	delete [] uriRemake;
 
 	uriFreeUriMembersA(&uri);
