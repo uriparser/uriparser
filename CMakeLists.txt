@@ -181,6 +181,7 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetScheme.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetUserInfo.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriShorten.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriVersion.c
 )
 
 add_library(uriparser
