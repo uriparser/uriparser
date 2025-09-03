@@ -166,6 +166,20 @@ set(LIBRARY_CODE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriQuery.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriRecompose.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriResolve.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetFragment.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostAuto.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostBase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostCommon.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostCommon.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostIp4.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostIp6.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostIpFuture.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetHostRegName.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetPath.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetPort.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetQuery.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetScheme.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UriSetUserInfo.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UriShorten.c
 )
 
@@ -290,6 +304,17 @@ if(URIPARSER_BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/test/FourSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/MemoryManagerSuite.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetFragment.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostAuto.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostIp4.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostIp6.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostIpFuture.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetHostRegName.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetPath.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetPort.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetQuery.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetScheme.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/SetUserInfo.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test/VersionSuite.cpp
 
         # These library code files have non-public symbols that the test suite

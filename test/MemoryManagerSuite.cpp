@@ -75,6 +75,10 @@ public:
 		return &(this->memoryManager);
 	}
 
+	unsigned int getCallCountAlloc() const {
+		return this->callCountAlloc;
+	}
+
 	unsigned int getCallCountFree() const {
 		return this->callCountFree;
 	}
@@ -360,6 +364,82 @@ TEST(FailingMemoryManagerSuite, FreeUriMembersMm) {
 	ASSERT_GE(failingMemoryManager.getCallCountFree(), 1U);
 	uriFreeUriMembersA(&uri);
 }
+
+
+
+TEST(FailingMemoryManagerSuite, IsWellFormedHostIp6Mm) {
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "::1";
+	const char * const afterLast = first + strlen(first);
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	EXPECT_EQ(uriIsWellFormedHostIp6MmA(first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+}
+
+
+
+TEST(FailingMemoryManagerSuite, IsWellFormedHostIpFutureMm) {
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "v7.host";
+	const char * const afterLast = first + strlen(first);
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	EXPECT_EQ(uriIsWellFormedHostIpFutureMmA(first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+}
+
+
+
+TEST(FailingMemoryManagerSuite, SetPortTextMm) {
+	UriUriA uri = parse("https://host/");
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "443";
+	const char * const afterLast = first + strlen(first);
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	ASSERT_EQ(uriSetPortTextMmA(&uri, first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+
+	uriFreeUriMembersA(&uri);
+}
+
+
+
+TEST(FailingMemoryManagerSuite, SetQueryMm) {
+	UriUriA uri = parse("scheme://host/");
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "k1=v1";
+	const char * const afterLast = first + strlen(first);
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	ASSERT_EQ(uriSetQueryMmA(&uri, first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+
+	uriFreeUriMembersA(&uri);
+}
+
+
+
+TEST(FailingMemoryManagerSuite, SetUserInfoMm) {
+	UriUriA uri = parse("scheme://host/");
+	FailingMemoryManager failingMemoryManager;
+	const char * const first = "user:password";
+	const char * const afterLast = first + strlen(first);
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
+
+	ASSERT_EQ(uriSetUserInfoMmA(&uri, first, afterLast, &failingMemoryManager), URI_ERROR_MALLOC);
+
+	ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
+
+	uriFreeUriMembersA(&uri);
+}
+
+
 
 namespace {
 	void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(const char * uriString,
