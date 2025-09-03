@@ -2,6 +2,110 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
+2025-09-03 -- 0.9.9
+
+  * Changed: Require CMake >=3.10.0 (GitHub #204)
+  * Fixed: Dissolve undefined behavior in parsing of URIs (GitHub #252)
+      Thanks to Tim Düsterhus for the report!
+  * Fixed: Normalized percent-encoded octets should have uppercase letters
+      in the host (GitHub #221, GitHub #222)
+      Thanks to Máté Kocsis for the pull request!
+  * Fixed: Fix documentation of uriEscape (GitHub #206, GitHub #207)
+  * Fixed: Docstring typo in ParseIpFourAddress (GitHub #254)
+  * Fixed: Documentation: Make Mainpage.txt bypass the C preprocessor
+      (GitHub #226, GitHub #227)
+  * Fixed: Documentation: Migrate Doxygen from ${CPP} to ${CC} -E (GitHub #192)
+  * Fixed: Fix macros URI_VER_SUFFIX_UNICODE and URI_VER_UNICODE (GitHub #258)
+      Thanks to Tim Düsterhus for the report and patch!
+  * Added: Support for copying Uri structures (GitHub #200, GitHub #230,
+      GitHub #237, GitHub #240, GitHub #250, GitHub #251)
+      Thanks to Máté Kocsis and to Tim Düsterhus!
+      New functions:
+        uriCopyUri[AW]
+        uriCopyUriMm[AW]
+  * Added: Add port normalization to NormalizeSyntax function (GitHub #231)
+  * Added: Add function HasHost to the public API (GitHub #234)
+      Thanks to Máté Kocsis for the pull request!
+      New functions:
+        uriHasHost[AW]
+  * Added: Support obtaining base runtime version (GitHub #219, GitHub #258)
+      New functions:
+        uriBaseRuntimeVersion[AW]
+  * Added: CMake: Add alias "uriparser::uriparser" (GitHub #197)
+  * Added: Integrate fuzzers from google/oss-fuzz repository and
+      improve those fuzzers on top (GitHub #209, GitHub #211, GitHub #212,
+      GitHub #214)
+      Thanks to @tyler92 for two of the related pull requests!
+  * Added: Support setting individual components of a UriUri[AW] structure
+      (GitHub #196, GitHub #249)
+      Part of this work was commissioned by the PHP Foundation.
+      Thanks to Máté Kocsis and Tim Düsterhus for the detailed review!
+      New functions:
+        uriIsWellFormedFragment[AW]
+        uriIsWellFormedHostIp4[AW]
+        uriIsWellFormedHostIp6[AW]
+        uriIsWellFormedHostIp6Mm[AW]
+        uriIsWellFormedHostIpFuture[AW]
+        uriIsWellFormedHostIpFutureMm[AW]
+        uriIsWellFormedHostRegName[AW]
+        uriIsWellFormedPath[AW]
+        uriIsWellFormedPort[AW]
+        uriIsWellFormedQuery[AW]
+        uriIsWellFormedScheme[AW]
+        uriIsWellFormedUserInfo[AW]
+        uriParseIpSixAddress[AW]
+        uriParseIpSixAddressMm[AW]
+        uriSetFragment[AW]
+        uriSetFragmentMm[AW]
+        uriSetHostAuto[AW]
+        uriSetHostAutoMm[AW]
+        uriSetHostIp4[AW]
+        uriSetHostIp4Mm[AW]
+        uriSetHostIp6[AW]
+        uriSetHostIp6Mm[AW]
+        uriSetHostIpFuture[AW]
+        uriSetHostIpFutureMm[AW]
+        uriSetHostRegName[AW]
+        uriSetHostRegNameMm[AW]
+        uriSetPath[AW]
+        uriSetPathMm[AW]
+        uriSetPortText[AW]
+        uriSetPortTextMm[AW]
+        uriSetQuery[AW]
+        uriSetQueryMm[AW]
+        uriSetScheme[AW]
+        uriSetSchemeMm[AW]
+        uriSetUserInfo[AW]
+        uriSetUserInfoMm[AW]
+  * Improved: CMake: Compile with -std=c90 by default (GitHub #232)
+  * Improved: Be consequent about and document .hostData.ipFuture .hostText
+      relation (GitHub #243)
+  * Improved: Document and cover FreeUriMembers after memset with zeros
+      (GitHub #238, GitHub #239)
+  * Improved: CLI tool "uriparse": Add missing hostData.ipFuture output
+      (GitHub #253)
+  * Improved: tests: Mass-replace ASSERT_TRUE([..] == [..]) by ASSERT_EQ
+      (GitHub #235)
+  * Improved: tests: Leverage assertion EXPECT_STREQ (GitHub #257)
+  * Improved: Percent encoding related code cleanup (GitHub #242)
+  * Improved: Documentation: Update some URLs to new HTTPS locations
+      Thanks to Hanno Böck for the pull request!
+      (GitHub #224)
+  * Improved: Documentation: Hide URI_PUBLIC (GitHub #236)
+  * Improved: Convert remaining DOS (CR/LF) newlines to Unix newlines
+      Thanks to Hanno Böck for the pull request!
+      (GitHub #225)
+  * Improved: Rename misleading variable doneMask to revertMask
+      (GitHub #233, GitHub #244)
+  * Improved: Make licensing easier to discover (GitHub #246)
+  * Changed: Documentation: For the Qt Compressed Help file, migrate from
+      naming ".qch" to "-doc.qch" (GitHub #191)
+  * Infrastructure: Update Clang from 18 to 20 (GitHub #217, GitHub #228)
+  * Infrastructure: Bump CI to Ubuntu 24.04 (GitHub #216)
+  * Infrastructure: Adapt to breaking changes in CI (GitHub #199, GitHub #204)
+  * Soname: 2:0:1 — see https://verbump.de/ for what these numbers do
+      (liburiparser.so.1.1.0)
+
 2024-05-05 -- 0.9.8
 
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -28,6 +132,7 @@ NOTE: uriparser is looking for help with a few things:
   * Infrastructure: Pin GitHub Actions to specific commits for security
       (GitHub #165)
   * Soname: 1:31:0 — see https://verbump.de/ for what these numbers do
+      (liburiparser.so.1.0.31)
 
 2022-10-05 -- 0.9.7
 
