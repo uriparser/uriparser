@@ -48,7 +48,8 @@
 
 
 /* Version helper macro */
-#define URI_ANSI_TO_UNICODE(x) L##x
+#define URI_ANSI_TO_UNICODE_HELPER(x)  L ## x
+#define URI_ANSI_TO_UNICODE(x)         URI_ANSI_TO_UNICODE_HELPER(x)
 
 
 
