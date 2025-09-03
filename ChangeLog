@@ -2,7 +2,7 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
-????-??-?? -- 0.9.9
+2025-09-03 -- 0.9.9
 
   * Changed: Require CMake >=3.10.0 (GitHub #204)
   * Fixed: Dissolve undefined behavior in parsing of URIs (GitHub #252)
