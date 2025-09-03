@@ -24,7 +24,7 @@
 
 
 #include "UriConfig.h"  // for PACKAGE_VERSION
-#include <uriparser/UriBase.h>
+#include <uriparser/Uri.h>
 
 
 TEST(VersionSuite, EnsureVersionDefinesInSync) {
@@ -33,4 +33,10 @@ TEST(VersionSuite, EnsureVersionDefinesInSync) {
 			URI_VER_MAJOR, URI_VER_MINOR, URI_VER_RELEASE, URI_VER_SUFFIX_ANSI);
 	ASSERT_NE(bytes_printed, -1);
 	EXPECT_STREQ(INSIDE_VERSION, PACKAGE_VERSION);
+}
+
+TEST(VersionSuite, EnsureRuntimeVersionAsExpected) {
+	// NOTE: This needs a bump for every release
+	EXPECT_STREQ(uriBaseRuntimeVersionA(),  "0.9.8");
+	EXPECT_STREQ(uriBaseRuntimeVersionW(), L"0.9.8");
 }
