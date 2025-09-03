@@ -2403,6 +2403,30 @@ URI_PUBLIC int URI_FUNC(SetUserInfoMm)(URI_TYPE(Uri) * uri,
 
 
 
+/**
+ * Obtain the base runtime version of uriparser.
+ *
+ * The string returned is based on the compile time version
+ * of uriparser.
+ *
+ * @note Distributors may have applied backports of security
+ *       fixes (potentially with adjusting packaging version but often
+ *       <em>without</em> adjusting runtime version)
+ *       or even fully custom patches. As a result, the version string
+ *       returned serves as nothing more than "based on that version",
+ *       it does not guarantee equivalence to vanilla upstream releases
+ *       or absence of additinal downstream patches.
+ *       It is nothing more than "a hint" and MUST NEVER be used to
+ *       make decisions on in application code at runtime.
+ *
+ * @return Pointer to a read-only zero terminated version string
+ *
+ * @since 0.9.9
+ */
+URI_PUBLIC const URI_CHAR * URI_FUNC(BaseRuntimeVersion)(void);
+
+
+
 #ifdef __cplusplus
 }
 #endif
