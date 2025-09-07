@@ -358,7 +358,7 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 								}
 								memory->free(memory, walker);
 							} else {
-								/* Re-use segment for "" path segment to represent trailing slash, update tail */
+								/* Reuse segment for "" path segment to represent trailing slash, update tail */
 								URI_TYPE(PathSegment) * const segment = walker;
 								if (pathOwned && (segment->text.first != segment->text.afterLast)) {
 									memory->free(memory, (URI_CHAR *)segment->text.first);
@@ -403,7 +403,7 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 								 * NEW: tail -> NULL */
 								uri->pathTail = NULL;
 							} else {
-								/* Re-use segment for "" path segment to represent trailing slash,
+								/* Reuse segment for "" path segment to represent trailing slash,
 								 * then update head and tail */
 								if (pathOwned && (walker->text.first != walker->text.afterLast)) {
 									memory->free(memory, (URI_CHAR *)walker->text.first);
@@ -696,7 +696,7 @@ static UriBool URI_FUNC(PrependNewDotSegment)(URI_TYPE(Uri) * uri, UriMemoryMana
 /* When dropping a scheme from a URI without a host and with a colon (":")
  * in the first path segment, a consecutive reparse would rightfully
  * mis-classify the first path segment as a scheme due to the colon.
- * To protect against this case, we prepend an artifical "." segment
+ * To protect against this case, we prepend an artificial "." segment
  * to the path in here; the function is called after the scheme has
  * just been dropped.
  *
@@ -751,7 +751,7 @@ UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri,
 /* When dropping a host from a URI without a scheme, an absolute path
  * and and empty first path segment, a consecutive reparse would rightfully
  * mis-classify the first path segment as a host marker due to the "//".
- * To protect against this case, we prepend an artifical "." segment
+ * To protect against this case, we prepend an artificial "." segment
  * to the path in here; the function is called after the host has
  * just been dropped.
  *

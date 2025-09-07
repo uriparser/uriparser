@@ -25,7 +25,7 @@ jobs:
               -fno-omit-frame-pointer
             ldflags: >-
               -fsanitize=address,undefined,leak
-          - name: MingGW on Linux
+          - name: MinGW on Linux
             cmake_args: >-
               -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc
               -DCMAKE_CXX_COMPILER=i686-w64-mingw32-g++

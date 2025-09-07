@@ -328,7 +328,7 @@ NOTE: uriparser is looking for help with a few things:
       Protect uriResetUri* against acting on NULL input
       Commit f58c25069cf4a986fe17a80c5b38687e31feb539
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  * Fixed: Be fully compliant to C89 (Gitub #28) and C++98 in test code
+  * Fixed: Be fully compliant to C89 (GitHub #28) and C++98 in test code
   * Fixed: Fix off-by-one in uriComposeQueryCharsRequired* and ...Ex*
       Reported space requirements were 1 byte bigger than necessary
   * Changed: Marked as deprecated:

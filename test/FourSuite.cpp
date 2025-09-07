@@ -106,7 +106,7 @@ TEST(FourSuite, AbsolutizeTestCases) {
 			"fred:///s//a/b/c",
 			"http:///s//a/b/c"};
 
-	// ref, base, exptected
+	// ref, base, expected
 
 	// http://lists.w3.org/Archives/Public/uri/2004Feb/0114.html
 	ASSERT_TRUE(testAddOrRemoveBaseHelper("../c", "foo:a/b", "foo:c"));
@@ -354,7 +354,7 @@ TEST(FourSuite, RelativizeTestCases) {
 	const bool REMOVE_MODE = false;
 	const bool DOMAIN_ROOT_MODE = true;
 
-	// to convert, base, exptected
+	// to convert, base, expected
 
 	ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://ex/a/d", "b/c", REMOVE_MODE));
 	ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/b/b/c", "s://ex/a/d", "/b/b/c", REMOVE_MODE, DOMAIN_ROOT_MODE));
