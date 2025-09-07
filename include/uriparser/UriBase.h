@@ -187,7 +187,7 @@ typedef struct UriIp6Struct {
 } UriIp6; /**< @copydoc UriIp6Struct */
 
 
-struct UriMemoryManagerStruct;  /* foward declaration to break loop */
+struct UriMemoryManagerStruct;  /* forward declaration to break loop */
 
 
 /**
