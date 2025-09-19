@@ -369,7 +369,7 @@ URI_PUBLIC void * uriEmulateReallocarray(UriMemoryManager * memory,
  * 5. and frees that memory.
  *
  * It is recommended to compile with AddressSanitizer enabled
- * to take full advantage of uriTestMemoryManager.
+ * to take full advantage of <c>uriTestMemoryManager</c>.
  *
  * @param memory  <b>IN</b>: Memory manager to use, should not be NULL
  * @return        Error code or 0 on success
