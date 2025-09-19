@@ -194,7 +194,7 @@ TEST(MemoryManagerCompletenessSuite, AllFunctionMembersRequired) {
 
 
 
-TEST(MemoryManagerCompletenessSuite, MallocAndFreeRequiredOnly) {
+TEST(MemoryManagerCompletionSuite, MallocAndFreeRequired) {
 	UriMemoryManager memory;
 	UriMemoryManager backend;
 
@@ -217,7 +217,7 @@ TEST(MemoryManagerTestingSuite, DefaultMemoryManager) {
 
 
 
-TEST(MemoryManagerTestingSuite, CompleteMemoryManager) {
+TEST(MemoryManagerCompletionSuite, MallocAndFreeSufficient) {
 	UriMemoryManager memory;
 	UriMemoryManager backend;
 
