@@ -377,15 +377,49 @@ URI_PUBLIC void * uriEmulateReallocarray(UriMemoryManager * memory,
  * It is recommended to compile with AddressSanitizer enabled
  * to take full advantage of <c>uriTestMemoryManager</c>.
  *
+ * For backwards-compatibility, <c>uriTestMemoryManager</c>
+ * does not challenge pointer alignment; please see
+ * <c>uriTestMemoryManagerEx</c> for that feature.
+ *
  * @param memory  <b>IN</b>: Memory manager to use, should not be NULL
  * @return        Error code or 0 on success
  *
  * @see uriEmulateCalloc
  * @see uriEmulateReallocarray
  * @see UriMemoryManager
+ * @see uriTestMemoryManagerEx
  * @since 0.9.0
  */
 URI_PUBLIC int uriTestMemoryManager(UriMemoryManager * memory);
+
+
+
+/**
+ * Run multiple tests against a given memory manager.
+ * For example, one test
+ * 1. allocates a small amount of memory,
+ * 2. writes some magic bytes to it,
+ * 3. reallocates it,
+ * 4. checks that previous values are still present,
+ * 5. and frees that memory.
+ *
+ * It is recommended to compile with both AddressSanitizer and
+ * UndefinedBehaviorSanitizer enabled to take full advantage of
+ * <c>uriTestMemoryManagerEx</c>. Note that environment variable
+ * <c>UBSAN_OPTIONS</c> may need adjustment to make UndefinedBehaviorSanitizer
+ * fatal (which by default it is not).
+ *
+ * @param memory              <b>IN</b>: Memory manager to use, should not be NULL
+ * @param challengeAlignment  <b>IN</b>: Whether to challenge pointer alignment
+ * @return                    Error code or 0 on success
+ *
+ * @see uriEmulateCalloc
+ * @see uriEmulateReallocarray
+ * @see UriMemoryManager
+ * @see uriTestMemoryManager
+ * @since 0.9.10
+ */
+URI_PUBLIC int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment);
 
 
 

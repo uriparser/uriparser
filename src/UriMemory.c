@@ -297,7 +297,7 @@ int uriCompleteMemoryManager(UriMemoryManager * memory,
 
 
 
-int uriTestMemoryManager(UriMemoryManager * memory) {
+int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment) {
 	const size_t mallocSize = 7;
 	const size_t callocNmemb = 3;
 	const size_t callocSize = 5;
@@ -465,7 +465,37 @@ int uriTestMemoryManager(UriMemoryManager * memory) {
 		buffer = NULL;
 	}
 
+	/* challenge pointer alignment */
+	if (challengeAlignment == URI_TRUE) {
+		long double * ptr = memory->malloc(memory, 4 * sizeof(long double));
+		if (ptr != NULL) {
+			ptr[0] = 0.0L;
+			ptr[1] = 1.1L;
+			ptr[2] = 2.2L;
+			ptr[3] = 3.3L;
+
+			{
+				long double * const ptrNew = memory->realloc(memory, ptr, 8 * sizeof(long double));
+				if (ptrNew != NULL) {
+					ptr = ptrNew;
+					ptr[4] = 4.4L;
+					ptr[5] = 5.5L;
+					ptr[6] = 6.6L;
+					ptr[7] = 7.7L;
+				}
+			}
+
+			memory->free(memory, ptr);
+		}
+	}
+
 	return URI_SUCCESS;
+}
+
+
+
+int uriTestMemoryManager(UriMemoryManager * memory) {
+    return uriTestMemoryManagerEx(memory, /*challengeAlignment=*/ URI_FALSE);
 }
 
 
