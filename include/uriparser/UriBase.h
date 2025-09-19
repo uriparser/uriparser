@@ -287,28 +287,34 @@ typedef enum UriResolutionOptionsEnum {
 
 
 /**
- * Wraps a memory manager backend that only provides malloc and free
- * to make a complete memory manager ready to be used.
+ * Wraps a memory manager backend that only provides <c>malloc(3)</c> and
+ * <c>free(3)</c> to make a complete memory manager ready to be used.
  *
  * The core feature of this wrapper is that you don't need to implement
- * realloc if you don't want to.  The wrapped memory manager uses
- * backend->malloc, memcpy, and backend->free and soieof(size_t) extra
- * bytes per allocation to emulate fallback realloc for you.
+ * <c>realloc(3)</c> if you don't want to.  The wrapped memory manager uses
+ * <c>backend-&gt;malloc</c>, <c>memcpy(3)</c>, and <c>backend-&gt;free</c> and
+ * (at least) <c>sizeof(size_t)</c> extra bytes per allocation to emulate
+ * fallback <c>realloc(3)</c> for you.
  *
- * memory->calloc is uriEmulateCalloc.
- * memory->free uses backend->free and handles the size header.
- * memory->malloc uses backend->malloc and adds a size header.
- * memory->realloc uses memory->malloc, memcpy, and memory->free and reads
- *                 the size header.
- * memory->reallocarray is uriEmulateReallocarray.
+ * <ul>
+ * <li><c>memory-&gt;calloc</c> is <c>uriEmulateCalloc</c>.</li>
+ * <li><c>memory-&gt;free</c> uses <c>backend-&gt;free</c>,
+ *     and handles the size header.</li>
+ * <li><c>memory-&gt;malloc</c> uses <c>backend-&gt;malloc</c>,
+ *     and adds a size header.</li>
+ * <li><c>memory-&gt;realloc</c> uses <c>memory-&gt;malloc</c>,
+ *     <c>memcpy(3)</c> and <c>memory-&gt;free</c>,
+ *     and reads the size header.</li>
+ * <li><c>memory-&gt;reallocarray</c> is <c>uriEmulateReallocarray</c>.</li>
+ * </ul>
  *
- * The internal workings behind memory->free, memory->malloc, and
- * memory->realloc may change so the functions exposed by these function
- * pointer sshould be consided internal and not public API.
+ * The internal workings behind <c>memory-&gt;free</c>, <c>memory-&gt;malloc</c>,
+ * and <c>memory-&gt;realloc</c> may change, and the functions exposed by these
+ * function pointers should be considered internal and not public API.
  *
  * @param memory   <b>OUT</b>: Where to write the wrapped memory manager to
  * @param backend  <b>IN</b>: Memory manager to use as a backend
- * @return          Error code or 0 on success
+ * @return         Error code or 0 on success
  *
  * @see uriEmulateCalloc
  * @see uriEmulateReallocarray
