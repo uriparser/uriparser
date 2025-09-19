@@ -212,7 +212,8 @@ TEST(MemoryManagerCompletionSuite, MallocAndFreeRequired) {
 
 
 TEST(MemoryManagerTestingSuite, DefaultMemoryManager) {
-	ASSERT_EQ(uriTestMemoryManager(&defaultMemoryManager), URI_SUCCESS);
+	ASSERT_EQ(uriTestMemoryManagerEx(&defaultMemoryManager, URI_TRUE),
+			URI_SUCCESS);
 }
 
 
@@ -228,7 +229,7 @@ TEST(MemoryManagerCompletionSuite, MallocAndFreeSufficient) {
 	ASSERT_EQ(uriCompleteMemoryManager(&memory, &backend),
 			URI_SUCCESS);
 
-	ASSERT_EQ(uriTestMemoryManager(&memory), URI_SUCCESS);
+	ASSERT_EQ(uriTestMemoryManagerEx(&memory, URI_TRUE), URI_SUCCESS);
 }
 
 
@@ -239,7 +240,7 @@ TEST(MemoryManagerTestingSuite, EmulateCalloc) {
 			sizeof(UriMemoryManager));
 	partialEmulationMemoryManager.calloc = uriEmulateCalloc;
 
-	ASSERT_EQ(uriTestMemoryManager(&partialEmulationMemoryManager),
+	ASSERT_EQ(uriTestMemoryManagerEx(&partialEmulationMemoryManager, URI_TRUE),
 			URI_SUCCESS);
 }
 
@@ -251,7 +252,7 @@ TEST(MemoryManagerTestingSuite, EmulateReallocarray) {
 			sizeof(UriMemoryManager));
 	partialEmulationMemoryManager.reallocarray = uriEmulateReallocarray;
 
-	ASSERT_EQ(uriTestMemoryManager(&partialEmulationMemoryManager),
+	ASSERT_EQ(uriTestMemoryManagerEx(&partialEmulationMemoryManager, URI_TRUE),
 			URI_SUCCESS);
 }
 
@@ -286,7 +287,7 @@ TEST(MemoryManagerTestingSuite, EmulateCallocAndReallocarray) {
 	partialEmulationMemoryManager.calloc = uriEmulateCalloc;
 	partialEmulationMemoryManager.reallocarray = uriEmulateReallocarray;
 
-	ASSERT_EQ(uriTestMemoryManager(&partialEmulationMemoryManager),
+	ASSERT_EQ(uriTestMemoryManagerEx(&partialEmulationMemoryManager, URI_TRUE),
 			URI_SUCCESS);
 }
 
