@@ -90,6 +90,14 @@ jobs:
 
         set -x -o pipefail
         cd "build/corpus_${fuzzer_name}/"
+
+        # Configure UBSan to show (non-default) stack traces for runtime errors
+        # NOTE: "halt_on_error=1" we don't need to add because of the
+        #       -fno-sanitize-recover=all for CFLAGS further up.
+        # NOTE: "abort_on_error=1" we don't need here because to CI,
+        #       a non-zero exit code is all that matters.
+        export UBSAN_OPTIONS='print_stacktrace=1'
+
         find . -type f | sort | xargs -n 1000 "../fuzz/${fuzzer_name}" "${fuzz_args[@]}"
         find . -type f | wc -l
 
