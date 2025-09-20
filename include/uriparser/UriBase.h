@@ -321,7 +321,7 @@ URI_PUBLIC int uriCompleteMemoryManager(UriMemoryManager * memory,
 
 
 /**
- * Offers emulation of calloc(3) based on memory->malloc and memset.
+ * Offers emulation of calloc(3) based on memory-&gt;malloc and memset.
  * See "man 3 calloc" as well.
  *
  * @param memory  <b>IN</b>: Memory manager to use, should not be NULL
@@ -340,11 +340,11 @@ URI_PUBLIC void * uriEmulateCalloc(UriMemoryManager * memory,
 
 
 /**
- * Offers emulation of reallocarray(3) based on memory->realloc.
+ * Offers emulation of reallocarray(3) based on memory-&gt;realloc.
  * See "man 3 reallocarray" as well.
  *
  * @param memory  <b>IN</b>: Memory manager to use, should not be NULL
- * @param ptr     <b>IN</b>: Pointer allocated using memory->malloc/... or NULL
+ * @param ptr     <b>IN</b>: Pointer allocated using memory-&gt;malloc/... or NULL
  * @param nmemb   <b>IN</b>: Number of elements to allocate
  * @param size    <b>IN</b>: Size in bytes per element
  * @return        Pointer to allocated memory or NULL
