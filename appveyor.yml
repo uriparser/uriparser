@@ -41,7 +41,7 @@ configuration:
 # - Release
 
 environment:
-  GTEST_VERSION: 1.10.0
+  GTEST_VERSION: 1.12.0
 
   # https://www.appveyor.com/docs/windows-images-software/
   matrix:
