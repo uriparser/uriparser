@@ -1646,6 +1646,13 @@ TEST(UriSuite, TestNormalizeCrashBug20080224) {
 		uriFreeUriMembersW(&testUri);
 }
 
+TEST(UriSuite, TestNormalizeBug262) {
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme:/.//foo/bar",
+			L"scheme:/.//foo/bar",
+			URI_NORMALIZE_PATH));
+}
+
 namespace {
 	void testFilenameUriConversionHelper(const wchar_t * filename,
 			const wchar_t * uriString, bool forUnix,

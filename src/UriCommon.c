@@ -210,12 +210,18 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 				 * and hence the dot segment is essential to that case and cannot be removed.
 				 */
 				removeSegment = URI_TRUE;
-				if (relative && (walker == uri->pathHead) && (walker->next != NULL)) {
-					const URI_CHAR * ch = walker->next->text.first;
-					for (; ch < walker->next->text.afterLast; ch++) {
-						if (*ch == _UT(':')) {
+				if ((walker == uri->pathHead) && (walker->next != NULL)) {
+					if (relative) {
+						const URI_CHAR * ch = walker->next->text.first;
+						for (; ch < walker->next->text.afterLast; ch++) {
+							if (*ch == _UT(':')) {
+								removeSegment = URI_FALSE;
+								break;
+							}
+						}
+					} else {
+						if (walker->next->text.first == walker->next->text.afterLast) {
 							removeSegment = URI_FALSE;
-							break;
 						}
 					}
 				}
