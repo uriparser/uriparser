@@ -237,7 +237,7 @@ static void * uriDecorateRealloc(UriMemoryManager * memory,
 	prevSize = *((size_t *)((char *)ptr - sizeof(size_t) - URI_MALLOC_PADDING));
 
 	/* Anything to do? */
-	if (size <= prevSize) {
+	if (size <= prevSize) { /* mull-ignore cxx_le_to_lt */
 		return ptr;
 	}
 
