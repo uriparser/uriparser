@@ -4,6 +4,16 @@ NOTE: uriparser is looking for help with a few things:
 
 ????-??-?? -- 0.9.10
 
+  * Fixed: Normalization of URIs with leading dot segments
+      produced ambiguous results in the sense that a reparse
+      after normalization would have misinterpreted path parts
+      as a host (GitHub #262, GitHub #265)
+      Examples of affected URIs:
+      - "scheme:/.//path1/path2"
+      - "/.//path1/path2"
+      - ".//path1/path2"
+      The fix is to not remove that dot segment.
+      Thanks to Ignace Nyamagana Butera and to Tim Düsterhus for the report!
   * Fixed: Insufficient pointer alignment from allocation wrappers
       used in the implementation of function uriCompleteMemoryManager.
       (GitHub #261)

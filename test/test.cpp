@@ -1646,6 +1646,59 @@ TEST(UriSuite, TestNormalizeCrashBug20080224) {
 		uriFreeUriMembersW(&testUri);
 }
 
+TEST(UriSuite, TestNormalizeBug262Fixed) {
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme:/.//foo/bar",
+			L"scheme:/.//foo/bar",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"/.//foo/bar",
+			L"/.//foo/bar",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L".//foo/bar",
+			L".//foo/bar",
+			URI_NORMALIZE_PATH));
+}
+
+TEST(UriSuite, TestNormalizeBug262Unchanged) {
+	// 3x same as TestNormalizeBug262Fixed above
+	// but with a single slash rather than double slashes
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme:/./foo/bar",
+			L"scheme:/foo/bar",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"/./foo/bar",
+			L"/foo/bar",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"./foo/bar",
+			L"foo/bar",
+			URI_NORMALIZE_PATH));
+
+	// 2x same as TestNormalizeBug262Fixed above
+	// but with a host added
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme://host/.//foo/bar",
+			L"scheme://host//foo/bar",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"//host/.//foo/bar",
+			L"//host//foo/bar",
+			URI_NORMALIZE_PATH));
+
+	// Second path segment containing a colon
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"scheme:./path1:/path2",
+			L"scheme:path1:/path2",
+			URI_NORMALIZE_PATH));
+	EXPECT_TRUE(testNormalizeSyntaxHelper(
+			L"./path1:/path2",
+			L"./path1:/path2",
+			URI_NORMALIZE_PATH));
+}
+
 namespace {
 	void testFilenameUriConversionHelper(const wchar_t * filename,
 			const wchar_t * uriString, bool forUnix,

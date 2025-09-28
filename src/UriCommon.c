@@ -208,14 +208,25 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri,
 				 *
 				 * For example, changing "./http://foo" into "http://foo" would change semantics
 				 * and hence the dot segment is essential to that case and cannot be removed.
+				 *
+				 * Other examples that would change semantics are:
+				 * - cutting "/.//" down to "//"
+				 * - cutting "scheme:/.//" down to "scheme://".
 				 */
 				removeSegment = URI_TRUE;
-				if (relative && (walker == uri->pathHead) && (walker->next != NULL)) {
-					const URI_CHAR * ch = walker->next->text.first;
-					for (; ch < walker->next->text.afterLast; ch++) {
-						if (*ch == _UT(':')) {
-							removeSegment = URI_FALSE;
-							break;
+				if ((walker == uri->pathHead) && (walker->next != NULL)) {
+					/* Detect case "/.//" (with or without scheme) */
+					if ((walker->next->text.first == walker->next->text.afterLast)
+							&& (URI_FUNC(HasHost)(uri) == URI_FALSE)) {
+						removeSegment = URI_FALSE;
+					/* Detect case "./withcolon:" */
+					} else if (relative) {
+						const URI_CHAR * ch = walker->next->text.first;
+						for (; ch < walker->next->text.afterLast; ch++) {
+							if (*ch == _UT(':')) {
+								removeSegment = URI_FALSE;
+								break;
+							}
 						}
 					}
 				}
