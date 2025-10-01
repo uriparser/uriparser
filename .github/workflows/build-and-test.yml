@@ -1,7 +1,7 @@
 # Copyright (C) 2021 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under the MIT license
 
-name: Build and test
+name: Build and test (Linux)
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build_and_test:
-    name: Build and test
+    name: Build and test (Linux)
     strategy:
       matrix:
         include:

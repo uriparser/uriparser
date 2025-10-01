@@ -1,5 +1,5 @@
-[![Build and test](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uriparseradmin/uriparser?svg=true)](https://ci.appveyor.com/project/uriparseradmin/uriparser)
+[![Build and test (Linux)](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml)
+[![Build and test (Windows)](https://github.com/uriparser/uriparser/actions/workflows/windows.yml/badge.svg)](https://github.com/uriparser/uriparser/actions/workflows/windows.yml)
 
 
 # uriparser

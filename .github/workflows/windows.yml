@@ -1,0 +1,98 @@
+# Copyright (C) 2025 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under the MIT license
+
+name: Build and test (Windows)
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '0 2 * * 5'  # Every Friday at 2am
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Build and test (Windows)
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Visual Studio 2022, 32 bit
+          - runs-on: windows-2025
+            cmake_generator: Visual Studio 17 2022
+            common_cmake_args: -A Win32
+
+          # Visual Studio 2022, 64 bit
+          - runs-on: windows-2025
+            cmake_generator: Visual Studio 17 2022
+            common_cmake_args: -A x64
+    runs-on: ${{ matrix.runs-on }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
+      COMMON_CMAKE_ARGS: ${{ matrix.common_cmake_args }}
+      GTEST_VERSION: 1.12.0
+    steps:
+
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+
+    - uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce  # v2
+
+    - name: Build dependency googletest
+      run: |-
+        set -x
+        curl -fsSL -o "release-${GTEST_VERSION}.zip" "https://github.com/google/googletest/archive/release-${GTEST_VERSION}.zip"
+        unzip -q "release-${GTEST_VERSION}.zip"
+
+        cd "googletest-release-${GTEST_VERSION}"
+        cmake \
+          -G "${CMAKE_GENERATOR}" \
+          -DCVF_VERSION="${GTEST_VERSION}" \
+          ${COMMON_CMAKE_ARGS}
+        cmake --build . --config Release -- -m
+
+        # Enrich folder to make FindGTest.cmake happy
+        mkdir -p googletest/lib
+        cp -v lib/Release/{gtest,gtest_main}.lib googletest/lib/
+
+    - name: Configure
+      run: |-
+        cmake_args=(
+          -G "${CMAKE_GENERATOR}"
+          # NOTE: GTEST_ROOT is relative to source CMakeLists.txt, not the build directory
+          -DGTEST_ROOT="googletest-release-${GTEST_VERSION}/googletest"
+          -DURIPARSER_BUILD_DOCS=OFF
+          -DURIPARSER_MSVC_STATIC_CRT=ON
+          -DURIPARSER_WARNINGS_AS_ERRORS=ON
+          -S .
+          -B build/
+          ${COMMON_CMAKE_ARGS}
+        )
+        set -x
+        cmake "${cmake_args[@]}"
+
+    - name: Build
+      run: |-
+        msbuild_args=(
+          -m
+          -property:Configuration=Release
+        )
+        set -x
+        cd build
+        MSBuild.exe "${msbuild_args[@]}" uriparser.sln
+
+    - name: Run tests
+      run: |-
+        ctest_args=(
+          --build-config Release
+          --output-on-failure
+          --parallel 2
+        )
+        set -x
+        cd build
+        ctest "${ctest_args[@]}"
