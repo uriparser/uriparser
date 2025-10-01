@@ -34,7 +34,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-cmake_minimum_required(VERSION 3.10.0)
+cmake_minimum_required(VERSION 3.15.0)
 
 project(uriparser
     VERSION
@@ -76,7 +76,7 @@ option(URIPARSER_BUILD_CHAR "Build code supporting data type 'char'" ON)
 option(URIPARSER_BUILD_WCHAR_T "Build code supporting data type 'wchar_t'" ON)
 option(URIPARSER_ENABLE_INSTALL "Enable installation of uriparser" ON)
 option(URIPARSER_WARNINGS_AS_ERRORS "Treat all compiler warnings as errors" OFF)
-set(URIPARSER_MSVC_RUNTIME "" CACHE STRING "Use of specific runtime library (/MT /MTd /MD /MDd) with MSVC")
+option(URIPARSER_MSVC_STATIC_CRT "Use /MT flag (static CRT) when compiling in MSVC" OFF)
 
 if(NOT URIPARSER_BUILD_CHAR AND NOT URIPARSER_BUILD_WCHAR_T)
     message(SEND_ERROR "One or more of URIPARSER_BUILD_CHAR and URIPARSER_BUILD_WCHAR_T needs to be enabled.")
@@ -99,14 +99,18 @@ else()
     set(_URIPARSER_STATIC_OR_SHARED STATIC)
 endif()
 
-macro(uriparser_apply_msvc_runtime_to ref)
-    string(REGEX REPLACE "/M[DT]d?" ${URIPARSER_MSVC_RUNTIME} ${ref} "${${ref}}")
-endmacro()
+if (MSVC)
+    cmake_policy(GET CMP0091 _policy_cmp0091_behavior)
+    if (NOT _policy_cmp0091_behavior STREQUAL NEW)
+        message(SEND_ERROR "Policy CMP0091 behavior is '${_policy_cmp0091_behavior}' rather than 'NEW', mis-compilation detected.")
+    endif()
 
-if(MSVC AND URIPARSER_MSVC_RUNTIME)
-    uriparser_apply_msvc_runtime_to(CMAKE_C_FLAGS)
-    uriparser_apply_msvc_runtime_to(CMAKE_C_FLAGS_DEBUG)
-    uriparser_apply_msvc_runtime_to(CMAKE_C_FLAGS_RELEASE)
+    message(STATUS "-- Using static CRT ${URIPARSER_MSVC_STATIC_CRT}")
+    if (URIPARSER_MSVC_STATIC_CRT)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")  # .. without suffix "DLL": static
+    else()
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")  # i.e. CMake default behavior: shared
+    endif()
 endif()
 
 macro(uriparser_install)

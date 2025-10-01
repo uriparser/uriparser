@@ -1,5 +1,5 @@
-[![Build and test](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uriparseradmin/uriparser?svg=true)](https://ci.appveyor.com/project/uriparseradmin/uriparser)
+[![Build and test (Linux)](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/uriparser/uriparser/actions/workflows/build-and-test.yml)
+[![Build and test (Windows)](https://github.com/uriparser/uriparser/actions/workflows/windows.yml/badge.svg)](https://github.com/uriparser/uriparser/actions/workflows/windows.yml)
 
 
 # uriparser
@@ -70,14 +70,11 @@ URIPARSER_BUILD_CHAR:BOOL=ON
 // Build API documentation (requires Doxygen, Graphviz, and (optional) Qt's qhelpgenerator)
 URIPARSER_BUILD_DOCS:BOOL=ON
 
-// Build test suite (requires GTest >=1.8.0)
-URIPARSER_BUILD_TESTS:BOOL=ON
-
 // Build fuzzers (requires Clang)
 URIPARSER_BUILD_FUZZERS:BOOL=OFF
 
-// Build fuzzers via OSS-Fuzz
-URIPARSER_OSSFUZZ_BUILD:BOOL=OFF
+// Build test suite (requires GTest >=1.8.0)
+URIPARSER_BUILD_TESTS:BOOL=ON
 
 // Build tools (e.g. CLI "uriparse")
 URIPARSER_BUILD_TOOLS:BOOL=ON
@@ -88,8 +85,11 @@ URIPARSER_BUILD_WCHAR_T:BOOL=ON
 // Enable installation of uriparser
 URIPARSER_ENABLE_INSTALL:BOOL=ON
 
-// Use of specific runtime library (/MT /MTd /MD /MDd) with MSVC
-URIPARSER_MSVC_RUNTIME:STRING=
+// Use /MT flag (static CRT) when compiling in MSVC
+URIPARSER_MSVC_STATIC_CRT:BOOL=OFF
+
+// Build fuzzers via OSS-Fuzz
+URIPARSER_OSSFUZZ_BUILD:BOOL=OFF
 
 // Build shared libraries (rather than static ones)
 URIPARSER_SHARED_LIBS:BOOL=ON
