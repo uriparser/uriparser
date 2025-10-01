@@ -47,12 +47,6 @@ jobs:
 
     - name: Build uriparser fuzzers
       run: |
-        set -x -o pipefail
-
-        type -P clang clang++
-        clang --version | head -n1
-        clang++ --version | head -n1
-
         args=(
             # Build nothing but fuzzers
             -DURIPARSER_BUILD_DOCS=OFF
@@ -63,11 +57,12 @@ jobs:
             -DURIPARSER_OSSFUZZ_BUILD=OFF
 
             # Tune compilation of fuzzers to use Clang with ASan and UBSan
-            -DCMAKE_C_COMPILER=clang
+            -DCMAKE_C_COMPILER=clang-21
             -DCMAKE_C_FLAGS='-Wall -Wextra -pedantic -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -fno-common'
             -DCMAKE_{EXE,MODULE,SHARED}_LINKER_FLAGS='-g -fsanitize=address,undefined'
             -DURIPARSER_WARNINGS_AS_ERRORS=ON
         )
+        set -x -o pipefail
         cmake "${args[@]}" -S . -B build
         make -C build VERBOSE=1 -j$(nproc)
 
