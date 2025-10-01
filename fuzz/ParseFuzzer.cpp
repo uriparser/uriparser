@@ -49,15 +49,14 @@ void Escapes(const UriString & uri) {
 	// and up to 3 bytes per character otherwise
 	std::vector<URI_CHAR> buf2(uri.size() * 3 + 1);
 
-	URI_CHAR * result;
-	result = URI_FUNC(Escape)(first, &buf1[0], URI_TRUE, URI_TRUE);
-	result = URI_FUNC(Escape)(first, &buf1[0], URI_FALSE, URI_TRUE);
+	URI_FUNC(Escape)(first, &buf1[0], URI_TRUE, URI_TRUE);
+	URI_FUNC(Escape)(first, &buf1[0], URI_FALSE, URI_TRUE);
 	if (buf1.data()) {
 		URI_FUNC(UnescapeInPlace)(&buf1[0]);
 	}
 
-	result = URI_FUNC(Escape)(first, &buf2[0], URI_TRUE, URI_FALSE);
-	result = URI_FUNC(Escape)(first, &buf2[0], URI_FALSE, URI_FALSE);
+	URI_FUNC(Escape)(first, &buf2[0], URI_TRUE, URI_FALSE);
+	URI_FUNC(Escape)(first, &buf2[0], URI_FALSE, URI_FALSE);
 	if (buf2.data()) {
 		URI_FUNC(UnescapeInPlace)(&buf2[0]);
 	}
