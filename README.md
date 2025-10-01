@@ -88,8 +88,8 @@ URIPARSER_BUILD_WCHAR_T:BOOL=ON
 // Enable installation of uriparser
 URIPARSER_ENABLE_INSTALL:BOOL=ON
 
-// Use of specific runtime library (/MT /MTd /MD /MDd) with MSVC
-URIPARSER_MSVC_RUNTIME:STRING=
+// Use /MT flag (static CRT) when compiling in MSVC
+URIPARSER_MSVC_STATIC_CRT:BOOL=OFF
 
 // Build shared libraries (rather than static ones)
 URIPARSER_SHARED_LIBS:BOOL=ON
