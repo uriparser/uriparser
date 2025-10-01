@@ -32,27 +32,21 @@ jobs:
     steps:
     - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
 
-    - name: Install Clang 20
+    - name: Install Clang 21
       run: |-
         set -x
         source /etc/os-release
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo add-apt-repository "deb https://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-20 main"
+        sudo add-apt-repository "deb https://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-21 main"
         sudo apt-get update  # due to new repository
         sudo apt-get install --yes --no-install-recommends -V \
-            clang-20 \
-            libclang-rt-20-dev \
-            llvm-20
-        echo /usr/lib/llvm-20/bin >>"${GITHUB_PATH}"
+            clang-21 \
+            libclang-rt-21-dev \
+            llvm-21
+        echo /usr/lib/llvm-21/bin >>"${GITHUB_PATH}"
 
     - name: Build uriparser fuzzers
       run: |
-        set -x -o pipefail
-
-        type -P clang clang++
-        clang --version | head -n1
-        clang++ --version | head -n1
-
         args=(
             # Build nothing but fuzzers
             -DURIPARSER_BUILD_DOCS=OFF
@@ -63,11 +57,12 @@ jobs:
             -DURIPARSER_OSSFUZZ_BUILD=OFF
 
             # Tune compilation of fuzzers to use Clang with ASan and UBSan
-            -DCMAKE_C_COMPILER=clang
+            -DCMAKE_C_COMPILER=clang-21
             -DCMAKE_C_FLAGS='-Wall -Wextra -pedantic -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -fno-common'
             -DCMAKE_{EXE,MODULE,SHARED}_LINKER_FLAGS='-g -fsanitize=address,undefined'
             -DURIPARSER_WARNINGS_AS_ERRORS=ON
         )
+        set -x -o pipefail
         cmake "${args[@]}" -S . -B build
         make -C build VERBOSE=1 -j$(nproc)
 
