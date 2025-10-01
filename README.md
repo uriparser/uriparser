@@ -70,14 +70,11 @@ URIPARSER_BUILD_CHAR:BOOL=ON
 // Build API documentation (requires Doxygen, Graphviz, and (optional) Qt's qhelpgenerator)
 URIPARSER_BUILD_DOCS:BOOL=ON
 
-// Build test suite (requires GTest >=1.8.0)
-URIPARSER_BUILD_TESTS:BOOL=ON
-
 // Build fuzzers (requires Clang)
 URIPARSER_BUILD_FUZZERS:BOOL=OFF
 
-// Build fuzzers via OSS-Fuzz
-URIPARSER_OSSFUZZ_BUILD:BOOL=OFF
+// Build test suite (requires GTest >=1.8.0)
+URIPARSER_BUILD_TESTS:BOOL=ON
 
 // Build tools (e.g. CLI "uriparse")
 URIPARSER_BUILD_TOOLS:BOOL=ON
@@ -90,6 +87,9 @@ URIPARSER_ENABLE_INSTALL:BOOL=ON
 
 // Use /MT flag (static CRT) when compiling in MSVC
 URIPARSER_MSVC_STATIC_CRT:BOOL=OFF
+
+// Build fuzzers via OSS-Fuzz
+URIPARSER_OSSFUZZ_BUILD:BOOL=OFF
 
 // Build shared libraries (rather than static ones)
 URIPARSER_SHARED_LIBS:BOOL=ON
