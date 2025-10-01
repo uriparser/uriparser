@@ -4,6 +4,7 @@ NOTE: uriparser is looking for help with a few things:
 
 ????-??-?? -- 0.9.10
 
+  * Changed: Require CMake >=3.15.0 (GitHub #270)
   * Fixed: Normalization of URIs with leading dot segments
       produced ambiguous results in the sense that a reparse
       after normalization would have misinterpreted path parts
@@ -21,6 +22,12 @@ NOTE: uriparser is looking for help with a few things:
   * Fixed: Documentation of functions uriCompleteMemoryManager,
       uriEmulateCalloc, uriEmulateReallocarray and uriTestMemoryManager
       (GitHub #261)
+  * Fixed: CMake: Remake approach to static CRT with MSVC compilers
+      Old: -DURIPARSER_MSVC_RUNTIME=/MT
+      New: -DURIPARSER_MSVC_STATIC_CRT=ON
+      (GitHub #270)
+  * Fixed: Documentation: Get CMake variables list back in sync and sorted
+      in the readme (GitHub #270)
   * Added: Add a new (and recommended to use) version of uriTestMemoryManager
       that can challenge pointer alignment (GitHub #261)
       New functions:
@@ -29,6 +36,8 @@ NOTE: uriparser is looking for help with a few things:
       via environment variable UBSAN_OPTIONS (GitHub #261)
   * Infrastructure: Bump GoogleTest to 1.12.0 in AppVeyor CI to fix the build
       with CMake >=3.5 (GitHub #261)
+  * Infrastructure: Migrate Windows CI from AppVeyor to GitHub Actions
+      (GitHub #270)
 
 2025-09-03 -- 0.9.9
 
