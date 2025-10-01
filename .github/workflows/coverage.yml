@@ -1,0 +1,77 @@
+# Copyright (C) 2025 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under the MIT license
+
+name: Run tests under coverage
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '0 2 * * 5'  # Every Friday at 2am
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test_coverage:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+
+    - name: Install Clang 21
+      run: |-
+        set -x
+        source /etc/os-release
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo add-apt-repository "deb https://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-21 main"
+        sudo apt-get update  # due to new repository
+        sudo apt-get install --yes --no-install-recommends -V \
+            clang-21 \
+            libclang-rt-21-dev \
+            llvm-21
+        echo /usr/lib/llvm-21/bin >>"${GITHUB_PATH}"
+
+    - name: Install other build dependencies
+      run: |-
+        set -x
+        sudo apt-get install --yes --no-install-recommends -V \
+            libgtest-dev
+
+    - name: Build uriparser fuzzers
+      run: |
+        args=(
+            # Build nothing but fuzzers
+            -DURIPARSER_BUILD_DOCS=OFF
+            -DURIPARSER_BUILD_TESTS=ON
+            -DURIPARSER_BUILD_TOOLS=OFF
+            -DURIPARSER_ENABLE_INSTALL=OFF
+
+            # Tune compilation to use Clang with code coverage
+            -DCMAKE_C_COMPILER=clang-21
+            -DCMAKE_CXX_COMPILER=clang++-21
+            -DCMAKE_{C,CXX}_FLAGS='-Wall -Wextra -pedantic -O2 -g -fprofile-instr-generate -fcoverage-mapping'
+            -DURIPARSER_WARNINGS_AS_ERRORS=ON
+        )
+        set -x -o pipefail
+        cmake "${args[@]}" -S . -B build
+        make -C build VERBOSE=1 -j$(nproc)
+
+    - name: Run tests under coverage
+      run: |
+        CTEST_OUTPUT_ON_FAILURE=1 make -C build all test
+
+    - name: Generate reports
+      run: |
+        set -x -o pipefail
+        mkdir coverage/
+        llvm-profdata merge -sparse build/default.profraw -o coverage/indexed.profraw
+        llvm-cov show -instr-profile=coverage/indexed.profraw -format=html -output-dir=coverage/html/ build/testrunner
+        llvm-cov report -instr-profile=coverage/indexed.profraw build/testrunner |& tee coverage/report.txt
+
+    - name: Store coverage report
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+      with:
+        name: uriparser_coverage_${{ github.sha }}
+        path: coverage/
+        if-no-files-found: error
