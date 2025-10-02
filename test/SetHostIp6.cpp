@@ -296,6 +296,18 @@ TEST(SetHostIp6, NonNullValueAppliedNonEmptyPriorNull) {
 	uriFreeUriMembersA(&uri);
 }
 
+TEST(SetHostIp6, MutationTesting) {
+	UriUriA uri = parseWellFormedUri("scheme:");
+	const char * const first = "1:23:456:7890::5.43.219.0";
+	const char * const afterLast = first + strlen(first);
+
+	EXPECT_EQ(uriSetHostIp6A(&uri, first, afterLast), URI_SUCCESS);
+
+	assertUriEqual(&uri, "scheme://[0001:0023:0456:7890:0000:0000:052b:db00]");
+
+	uriFreeUriMembersA(&uri);
+}
+
 TEST(SetHostIp6, NonNullValueAppliedNonEmptyPriorIp4) {
 	UriUriA uri = parseWellFormedUri("//1.2.3.4");
 	const char * const first = "::1";

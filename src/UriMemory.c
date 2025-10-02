@@ -237,7 +237,7 @@ static void * uriDecorateRealloc(UriMemoryManager * memory,
 	prevSize = *((size_t *)((char *)ptr - sizeof(size_t) - URI_MALLOC_PADDING));
 
 	/* Anything to do? */
-	if (size <= prevSize) {
+	if (size <= prevSize) { /* mull-ignore cxx_le_to_lt */
 		return ptr;
 	}
 
@@ -297,6 +297,7 @@ int uriCompleteMemoryManager(UriMemoryManager * memory,
 
 
 
+/* mull-off */
 int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment) {
 	const size_t mallocSize = 7;
 	const size_t callocNmemb = 3;
@@ -491,6 +492,7 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
 
 	return URI_SUCCESS;
 }
+/* mull-on */
 
 
 
