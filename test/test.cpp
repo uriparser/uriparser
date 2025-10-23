@@ -101,6 +101,7 @@ namespace {
 
 
 TEST(UriSuite, TestDistinction) {
+		/* clang-format off */
 		/*
 ============================================================================
 Rule                                | Example | hostSet | absPath | emptySeg
@@ -124,6 +125,7 @@ Rule                                | Example | hostSet | absPath | emptySeg
    4) path-empty                    | ""      |   false |   false |   false
 ============================================================================
 		*/
+		/* clang-format on */
 		ASSERT_TRUE(testDistinctionHelper("s://", true, false, false));
 		ASSERT_TRUE(testDistinctionHelper("s:///", true, false, true));
 		ASSERT_TRUE(testDistinctionHelper("s://a", true, false, false));
@@ -384,10 +386,12 @@ TEST(UriSuite, TestUriComponents) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0              15 01  0      7  01
 		const char * const input = "http" "://" "sourceforge.net" "/" "project" "/"
 		//		 0                   20 01  0              15
 				"platformdownload.php" "?" "group_id=182840";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.scheme.first, input);
@@ -419,8 +423,10 @@ TEST(UriSuite, TestUriComponentsBug20070701) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          01  01  01
 		const char * const input = "a" ":" "b";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.scheme.first, input);
@@ -453,8 +459,10 @@ TEST(UriSuite, TestUriUserInfoHostPort1) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0      7  01  0        9
 		const char * const input = "http" "://" "abc:def" "@" "localhost";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
@@ -471,10 +479,12 @@ TEST(UriSuite, TestUriUserInfoHostPort2) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0      7  01  0        9
 		const char * const input = "http" "://" "abc:def" "@" "localhost"
 		//		01   0  3
 				":" "123";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
@@ -523,8 +533,10 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198One) {
 		stateA.uri = &uriA;
 
 		int res;
+		// clang-format off
 		//                           0   4  0  3  0         10 01  0   4  01
 		res = uriParseUriA(&stateA, "http" "://" "user:%2F21" "@" "host" "/");
+		// clang-format on
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "user:%2F21", 10 * sizeof(char)));
 		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 10);
@@ -542,8 +554,10 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198Two) {
 		stateA.uri = &uriA;
 
 		int res;
+		// clang-format off
 		//                           0   4  0  3  0            13 01  0   4  01
 		res = uriParseUriA(&stateA, "http" "://" "%2Fuser:%2F21" "@" "host" "/");
+		// clang-format on
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "%2Fuser:%2F21", 13 * sizeof(char)));
 		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 13);
@@ -561,8 +575,10 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198Three) {
 		stateA.uri = &uriA;
 
 		int res;
+		// clang-format off
 		//                           0   4  0  3  0               16 01  0   4  01
 		res = uriParseUriA(&stateA, "http" "://" "user:!$&'()*+,;=" "@" "host" "/");
+		// clang-format on
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "user:!$&'()*+,;=", 16 * sizeof(char)));
 		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 16);
@@ -580,8 +596,10 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198Four) {
 		stateA.uri = &uriA;
 
 		int res;
+		// clang-format off
 		//                           0   4  0  3  0                   20 01  0   4  01
 		res = uriParseUriA(&stateA, "http" "://" "!$&'()*+,;=:password" "@" "host" "/");
+		// clang-format on
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "!$&'()*+,;=:password", 20 * sizeof(char)));
 		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 20);
@@ -599,8 +617,10 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198RelatedOne) {
 		stateA.uri = &uriA;
 
 		int res;
+		// clang-format off
 		//                           0   4  0  3  01  0   4  01
 		res = uriParseUriA(&stateA, "http" "://" "@" "host" "/");
+		// clang-format on
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(uriA.userInfo.afterLast != NULL);
 		ASSERT_TRUE(uriA.userInfo.first != NULL);
@@ -619,8 +639,10 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198RelatedOneTwo) {
 		stateA.uri = &uriA;
 
 		int res;
+		// clang-format off
 		//                           0   4  0  3  0      7  01
 		res = uriParseUriA(&stateA, "http" "://" "%2Fhost" "/");
+		// clang-format on
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(uriA.userInfo.afterLast == NULL);
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
@@ -638,8 +660,10 @@ TEST(UriSuite, TestUriUserInfoHostPort23Bug3510198RelatedTwo) {
 		stateA.uri = &uriA;
 
 		int res;
+		// clang-format off
 		//                           0   4  0  3  0 2  01  0   4  01
 		res = uriParseUriA(&stateA, "http" "://" "::" "@" "host" "/");
+		// clang-format on
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(!memcmp(uriA.userInfo.first, "::", 2 * sizeof(char)));
 		ASSERT_EQ(uriA.userInfo.afterLast - uriA.userInfo.first, 2);
@@ -655,8 +679,10 @@ TEST(UriSuite, TestUriUserInfoHostPort3) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0      7  01  0        9
 		const char * const input = "http" "://" "abcdefg" "@" "localhost";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
@@ -673,10 +699,12 @@ TEST(UriSuite, TestUriUserInfoHostPort4) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0      7  01  0        9
 		const char * const input = "http" "://" "abcdefg" "@" "localhost"
 		//		01   0  3
 				":" "123";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.userInfo.first, input + 4 + 3);
@@ -693,8 +721,10 @@ TEST(UriSuite, TestUriUserInfoHostPort5) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0        9
 		const char * const input = "http" "://" "localhost";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
@@ -711,8 +741,10 @@ TEST(UriSuite, TestUriUserInfoHostPort6) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0        9  01  0  3
 		const char * const input = "http" "://" "localhost" ":" "123";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
@@ -728,8 +760,10 @@ TEST(UriSuite, TestUriHostRegname) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0          11
 		const char * const input = "http" "://" "example.com";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
@@ -745,8 +779,10 @@ TEST(UriSuite, TestUriHostIpFour1) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0      7  01  0 2
 		const char * const input = "http" "://" "1.2.3.4" ":" "80";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
@@ -762,8 +798,10 @@ TEST(UriSuite, TestUriHostIpFour2) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  0      7
 		const char * const input = "http" "://" "1.2.3.4";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.hostText.first, input + 4 + 3);
@@ -779,8 +817,10 @@ TEST(UriSuite, TestUriHostIpSix1) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  01  45  01  0 2
 		const char * const input = "http" "://" "[::1]" ":" "80";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 1);
@@ -796,8 +836,10 @@ TEST(UriSuite, TestUriHostIpSix2) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  01  45
 		const char * const input = "http" "://" "[::1]";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.hostText.first, input + 4 + 3 + 1);
@@ -813,8 +855,10 @@ TEST(UriSuite, TestUriHostEmpty) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0   4  0  3  01  0  3
 		const char * const input = "http" "://" ":" "123";
+		// clang-format on
 		const int res = uriParseUriA(&stateA, input);
 		ASSERT_EQ(URI_SUCCESS, res);
 		ASSERT_TRUE(uriA.userInfo.first == NULL);
@@ -829,8 +873,10 @@ TEST(UriSuite, TestUriHostEmpty) {
 
 TEST(UriSuite, TestUriHostIpFuture) {
 		UriUriA uri;
+		// clang-format off
 		//                          0 2  01  0       8  01
 		const char * const input = "//" "[" "v7.hello" "]";
+		// clang-format on
 		ASSERT_EQ(uriParseSingleUriA(&uri, input, NULL), URI_SUCCESS);
 		ASSERT_EQ(uri.hostText.first, input + 2 + 1);
 		ASSERT_EQ(uri.hostText.afterLast, input + 2 + 1 + 8);
@@ -1076,8 +1122,10 @@ TEST(UriSuite, TestTrailingSlash) {
 		UriParserStateA stateA;
 		UriUriA uriA;
 		stateA.uri = &uriA;
+		// clang-format off
 		//                          0  3  01
 		const char * const input = "abc" "/";
+		// clang-format on
 		ASSERT_EQ(0, uriParseUriA(&stateA, input));
 
 		ASSERT_EQ(uriA.pathHead->text.first, input);

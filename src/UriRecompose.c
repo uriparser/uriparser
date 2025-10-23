@@ -107,15 +107,21 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 	}
 	maxChars--; /* So we don't have to subtract 1 for '\0' all the time */
 
+	/* clang-format off */
 	/* [01/19]	result = "" */
+	/* clang-format on */
 				if (dest != NULL) {
 					dest[0] = _UT('\0');
 				} else {
 					(*charsRequired) = 0;
 				}
+	/* clang-format off */
 	/* [02/19]	if defined(scheme) then */
+	/* clang-format on */
 				if (uri->scheme.first != NULL) {
+	/* clang-format off */
 	/* [03/19]		append scheme to result; */
+	/* clang-format on */
 					const int charsToWrite
 							= (int)(uri->scheme.afterLast - uri->scheme.first);
 					if (dest != NULL) {
@@ -133,7 +139,9 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 					} else {
 						(*charsRequired) += charsToWrite;
 					}
+	/* clang-format off */
 	/* [04/19]		append ":" to result; */
+	/* clang-format on */
 					if (dest != NULL) {
 						if (written + 1 <= maxChars) {
 							memcpy(dest + written, _UT(":"),
@@ -149,11 +157,17 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 					} else {
 						(*charsRequired) += 1;
 					}
+	/* clang-format off */
 	/* [05/19]	endif; */
+	/* clang-format on */
 				}
+	/* clang-format off */
 	/* [06/19]	if defined(authority) then */
+	/* clang-format on */
 				if (URI_FUNC(HasHost)(uri)) {
+	/* clang-format off */
 	/* [07/19]		append "//" to result; */
+	/* clang-format on */
 					if (dest != NULL) {
 						if (written + 2 <= maxChars) {
 							memcpy(dest + written, _UT("//"),
@@ -169,7 +183,9 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 					} else {
 						(*charsRequired) += 2;
 					}
+	/* clang-format off */
 	/* [08/19]		append authority to result; */
+	/* clang-format on */
 					/* UserInfo */
 					if (uri->userInfo.first != NULL) {
 						const int charsToWrite = (int)(uri->userInfo.afterLast - uri->userInfo.first);
@@ -417,9 +433,13 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 							(*charsRequired) += 1 + charsToWrite;
 						}
 					}
+	/* clang-format off */
 	/* [09/19]	endif; */
+	/* clang-format on */
 				}
+	/* clang-format off */
 	/* [10/19]	append path to result; */
+	/* clang-format on */
 				/* Slash needed here? */
 				if (uri->absolutePath || ((uri->pathHead != NULL)
 						&& URI_FUNC(HasHost)(uri))) {
@@ -482,9 +502,13 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 						walker = walker->next;
 					} while (walker != NULL);
 				}
+	/* clang-format off */
 	/* [11/19]	if defined(query) then */
+	/* clang-format on */
 				if (uri->query.first != NULL) {
+	/* clang-format off */
 	/* [12/19]		append "?" to result; */
+	/* clang-format on */
 					if (dest != NULL) {
 						if (written + 1 <= maxChars) {
 							memcpy(dest + written, _UT("?"),
@@ -500,7 +524,9 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 					} else {
 						(*charsRequired) += 1;
 					}
+	/* clang-format off */
 	/* [13/19]		append query to result; */
+	/* clang-format on */
 					{
 						const int charsToWrite
 								= (int)(uri->query.afterLast - uri->query.first);
@@ -520,11 +546,17 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 							(*charsRequired) += charsToWrite;
 						}
 					}
+	/* clang-format off */
 	/* [14/19]	endif; */
+	/* clang-format on */
 				}
+	/* clang-format off */
 	/* [15/19]	if defined(fragment) then */
+	/* clang-format on */
 				if (uri->fragment.first != NULL) {
+	/* clang-format off */
 	/* [16/19]		append "#" to result; */
+	/* clang-format on */
 					if (dest != NULL) {
 						if (written + 1 <= maxChars) {
 							memcpy(dest + written, _UT("#"),
@@ -540,7 +572,9 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 					} else {
 						(*charsRequired) += 1;
 					}
+	/* clang-format off */
 	/* [17/19]		append fragment to result; */
+	/* clang-format on */
 					{
 						const int charsToWrite
 								= (int)(uri->fragment.afterLast - uri->fragment.first);
@@ -560,9 +594,13 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 							(*charsRequired) += charsToWrite;
 						}
 					}
+	/* clang-format off */
 	/* [18/19]	endif; */
+	/* clang-format on */
 				}
+	/* clang-format off */
 	/* [19/19]	return result; */
+	/* clang-format on */
 				if (dest != NULL) {
 					dest[written++] = _UT('\0');
 					if (charsWritten != NULL) {
