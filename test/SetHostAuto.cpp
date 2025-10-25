@@ -25,179 +25,179 @@
 namespace {
 
 static UriUriA parseWellFormedUri(const char * text) {
-	UriUriA uri;
-	const int error = uriParseSingleUriA(&uri, text, NULL);
-	// NOTE: we cannot use ASSERT_EQ here because of the outer non-void return type
-	assert(error == URI_SUCCESS);
-	return uri;
+    UriUriA uri;
+    const int error = uriParseSingleUriA(&uri, text, NULL);
+    // NOTE: we cannot use ASSERT_EQ here because of the outer non-void return type
+    assert(error == URI_SUCCESS);
+    return uri;
 }
 
 static void assertUriEqual(const UriUriA * uri, const char * expected) {
-	int charsRequired = -1;
-	ASSERT_EQ(uriToStringCharsRequiredA(uri, &charsRequired), URI_SUCCESS);
-	ASSERT_TRUE(charsRequired >= 0);
+    int charsRequired = -1;
+    ASSERT_EQ(uriToStringCharsRequiredA(uri, &charsRequired), URI_SUCCESS);
+    ASSERT_TRUE(charsRequired >= 0);
 
-	char * const buffer = (char *)malloc(charsRequired + 1);
-	ASSERT_TRUE(buffer != NULL);
+    char * const buffer = (char *)malloc(charsRequired + 1);
+    ASSERT_TRUE(buffer != NULL);
 
-	ASSERT_EQ(uriToStringA(buffer, uri, charsRequired + 1, NULL), URI_SUCCESS);
+    ASSERT_EQ(uriToStringA(buffer, uri, charsRequired + 1, NULL), URI_SUCCESS);
 
-	EXPECT_STREQ(buffer, expected);
+    EXPECT_STREQ(buffer, expected);
 
-	free(buffer);
+    free(buffer);
 }
 
 static void assertMalformedHostValueRejected(const char * text) {
-	UriUriA uri = parseWellFormedUri("scheme://host/");
-	const char * const first = text;
-	const char * const afterLast = text + strlen(text);
+    UriUriA uri = parseWellFormedUri("scheme://host/");
+    const char * const first = text;
+    const char * const afterLast = text + strlen(text);
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_ERROR_SYNTAX);
+    EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_ERROR_SYNTAX);
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 }  // namespace
 
 TEST(SetHostAuto, NullUriOnly) {
-	UriUriA * const uri = NULL;
-	const char * const first = "localhost";
-	const char * const afterLast = first + strlen(first);
-	ASSERT_EQ(uriSetHostAutoA(uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA * const uri = NULL;
+    const char * const first = "localhost";
+    const char * const afterLast = first + strlen(first);
+    ASSERT_EQ(uriSetHostAutoA(uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetHostAuto, NullFirstOnly) {
-	UriUriA uri = {};
-	const char * const fragment = "localhost";
-	const char * const first = NULL;
-	const char * const afterLast = fragment + strlen(fragment);
-	ASSERT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA uri = {};
+    const char * const fragment = "localhost";
+    const char * const first = NULL;
+    const char * const afterLast = fragment + strlen(fragment);
+    ASSERT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetHostAuto, NullAfterLastOnly) {
-	UriUriA uri = {};
-	const char * const first = "localhost";
-	const char * const afterLast = NULL;
-	ASSERT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA uri = {};
+    const char * const first = "localhost";
+    const char * const afterLast = NULL;
+    ASSERT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetHostAuto, NullValueLeavesOwnerAtFalse) {
-	UriUriA uri = parseWellFormedUri("scheme://host/");
-	EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
+    UriUriA uri = parseWellFormedUri("scheme://host/");
+    EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, NULL, NULL), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, NULL, NULL), URI_SUCCESS);
 
-	EXPECT_EQ(uri.owner, URI_FALSE);  // i.e. still false
+    EXPECT_EQ(uri.owner, URI_FALSE);  // i.e. still false
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, NonNullValueMakesOwner) {
-	UriUriA uri = parseWellFormedUri("scheme://old/");
-	const char * const first = "new";
-	const char * const afterLast = first + strlen(first);
-	EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
+    UriUriA uri = parseWellFormedUri("scheme://old/");
+    const char * const first = "new";
+    const char * const afterLast = first + strlen(first);
+    EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
 
-	EXPECT_EQ(uri.owner, URI_TRUE);  // i.e. now owned
+    EXPECT_EQ(uri.owner, URI_TRUE);  // i.e. now owned
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, NullValueApplied) {
-	UriUriA uri = parseWellFormedUri("scheme://host/path");
+    UriUriA uri = parseWellFormedUri("scheme://host/path");
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, NULL, NULL), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, NULL, NULL), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme:/path");
+    assertUriEqual(&uri, "scheme:/path");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, NonNullValueAppliedEmpty) {
-	UriUriA uri = parseWellFormedUri("scheme://host/path");
-	const char * const empty = "";
+    UriUriA uri = parseWellFormedUri("scheme://host/path");
+    const char * const empty = "";
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, empty, empty), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, empty, empty), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme:///path");
+    assertUriEqual(&uri, "scheme:///path");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, NonNullValueAppliedNonEmptyIp4) {
-	UriUriA uri = parseWellFormedUri("scheme://host/path");
-	const char * const first = "1.2.3.4";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://host/path");
+    const char * const first = "1.2.3.4";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://1.2.3.4/path");
+    assertUriEqual(&uri, "scheme://1.2.3.4/path");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, NonNullValueAppliedNonEmptyIp6) {
-	UriUriA uri = parseWellFormedUri("scheme://host/path");
-	const char * const first = "[::1]";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://host/path");
+    const char * const first = "[::1]";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://[0000:0000:0000:0000:0000:0000:0000:0001]/path");
+    assertUriEqual(&uri, "scheme://[0000:0000:0000:0000:0000:0000:0000:0001]/path");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, NonNullValueAppliedNonEmptyIpFuture) {
-	UriUriA uri = parseWellFormedUri("scheme://host/path");
-	const char * const first = "[v7.host]";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://host/path");
+    const char * const first = "[v7.host]";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://[v7.host]/path");
+    assertUriEqual(&uri, "scheme://[v7.host]/path");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, NonNullValueAppliedNonEmptyRegName) {
-	UriUriA uri = parseWellFormedUri("scheme://old/path");
-	const char * const first = "new";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://old/path");
+    const char * const first = "new";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://new/path");
+    assertUriEqual(&uri, "scheme://new/path");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetHostAuto, MalformedValueRejectedIp6BothSquareBracketsMissing) {
-	assertMalformedHostValueRejected("::1");
+    assertMalformedHostValueRejected("::1");
 }
 
 TEST(SetHostAuto, MalformedValueRejectedIp6ClosingSquareBracketMissing) {
-	assertMalformedHostValueRejected("[::1");
+    assertMalformedHostValueRejected("[::1");
 }
 
 TEST(SetHostAuto, MalformedValueRejectedIp6OpeningSquareBracketMissing) {
-	assertMalformedHostValueRejected("::1]");
+    assertMalformedHostValueRejected("::1]");
 }
 
 TEST(SetHostAuto, MalformedValueRejectedIp6SquareBracketsMissing) {
-	assertMalformedHostValueRejected("::1");
+    assertMalformedHostValueRejected("::1");
 }
 
 TEST(SetHostAuto, MalformedValueRejectedIp6Empty) {
-	assertMalformedHostValueRejected("[]");
+    assertMalformedHostValueRejected("[]");
 }
 
 TEST(SetHostAuto, MalformedValueRejectedIpFutureClosingSquareBracketMissing) {
-	assertMalformedHostValueRejected("[v7.host");
+    assertMalformedHostValueRejected("[v7.host");
 }
 
 TEST(SetHostAuto, MalformedValueRejectedRegNameForbiddenCharacters) {
-	assertMalformedHostValueRejected("not well-formed");
+    assertMalformedHostValueRejected("not well-formed");
 }

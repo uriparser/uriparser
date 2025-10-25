@@ -18,14 +18,13 @@
 #include <cstddef>
 #include <cstdint>
 
-
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
-	FuzzedDataProvider fdp(data, size);
-	UriString fuzz_uri = consumeRemainingBytesAsString(fdp);
-	URI_TYPE(ParserState) state;
-	URI_TYPE(Uri) uriA;
-	state.uri = &uriA;
-	URI_FUNC(ParseUri)(&state, fuzz_uri.c_str());
-	URI_FUNC(FreeUriMembers)(&uriA);
-	return 0;
+    FuzzedDataProvider fdp(data, size);
+    UriString fuzz_uri = consumeRemainingBytesAsString(fdp);
+    URI_TYPE(ParserState) state;
+    URI_TYPE(Uri) uriA;
+    state.uri = &uriA;
+    URI_FUNC(ParseUri)(&state, fuzz_uri.c_str());
+    URI_FUNC(FreeUriMembers)(&uriA);
+    return 0;
 }

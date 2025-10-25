@@ -22,21 +22,20 @@
 
 #include <cstdio>
 
-
 #include "UriConfig.h"  // for PACKAGE_VERSION
 #include <uriparser/Uri.h>
 
-
 TEST(VersionSuite, EnsureVersionDefinesInSync) {
-	char INSIDE_VERSION[256];
-	const int bytes_printed = sprintf(INSIDE_VERSION, "%d.%d.%d%s",
-			URI_VER_MAJOR, URI_VER_MINOR, URI_VER_RELEASE, URI_VER_SUFFIX_ANSI);
-	ASSERT_NE(bytes_printed, -1);
-	EXPECT_STREQ(INSIDE_VERSION, PACKAGE_VERSION);
+    char INSIDE_VERSION[256];
+    const int bytes_printed =
+        sprintf(INSIDE_VERSION, "%d.%d.%d%s", URI_VER_MAJOR, URI_VER_MINOR,
+                URI_VER_RELEASE, URI_VER_SUFFIX_ANSI);
+    ASSERT_NE(bytes_printed, -1);
+    EXPECT_STREQ(INSIDE_VERSION, PACKAGE_VERSION);
 }
 
 TEST(VersionSuite, EnsureRuntimeVersionAsExpected) {
-	// NOTE: This needs a bump for every release
-	EXPECT_STREQ(uriBaseRuntimeVersionA(),  "0.9.9");
-	EXPECT_STREQ(uriBaseRuntimeVersionW(), L"0.9.9");
+    // NOTE: This needs a bump for every release
+    EXPECT_STREQ(uriBaseRuntimeVersionA(), "0.9.9");
+    EXPECT_STREQ(uriBaseRuntimeVersionW(), L"0.9.9");
 }

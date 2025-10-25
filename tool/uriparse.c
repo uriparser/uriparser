@@ -41,105 +41,100 @@
 #include <uriparser/Uri.h>
 
 #ifdef _WIN32
-# include <winsock2.h>
-# include <ws2tcpip.h>
-# if defined(__MINGW32__) &&                                              \
-     (!defined(__MINGW64_VERSION_MAJOR) || __MINGW64_VERSION_MAJOR < 3 || \
-      _WIN32_WINNT < _WIN32_WINNT_VISTA)
-WINSOCK_API_LINKAGE const char * WSAAPI inet_ntop(
-		int af, const void *src, char *dst, size_t size);
-# endif
+#  include <winsock2.h>
+#  include <ws2tcpip.h>
+#  if defined(__MINGW32__) \
+      && (!defined(__MINGW64_VERSION_MAJOR) || __MINGW64_VERSION_MAJOR < 3 \
+          || _WIN32_WINNT < _WIN32_WINNT_VISTA)
+WINSOCK_API_LINKAGE const char * WSAAPI inet_ntop(int af, const void * src, char * dst,
+                                                  size_t size);
+#  endif
 #else
-# include <sys/socket.h>
-# include <arpa/inet.h>
-# include <netinet/in.h>
+#  include <sys/socket.h>
+#  include <arpa/inet.h>
+#  include <netinet/in.h>
 #endif
 
-
-#define RANGE(x)  (int)((x).afterLast-(x).first), ((x).first)
-
+#define RANGE(x) (int)((x).afterLast - (x).first), ((x).first)
 
 void usage(void) {
-	printf("Usage: uriparse URI [..]\n");
+    printf("Usage: uriparse URI [..]\n");
 }
 
+int main(int argc, char * argv[]) {
+    int retval = EXIT_SUCCESS;
+    int i = 1;
 
-int main(int argc, char *argv[]) {
-	int retval = EXIT_SUCCESS;
-	int i = 1;
+    if (argc < 2) {
+        usage();
+        exit(1);
+    }
 
-	if (argc < 2) {
-		usage();
-		exit(1);
-	}
+    for (; i < argc; i++) {
+        UriParserStateA state;
+        UriUriA uri;
+        char ipstr[INET6_ADDRSTRLEN];
 
-	for (; i < argc; i++) {
-		UriParserStateA state;
-		UriUriA uri;
-		char ipstr[INET6_ADDRSTRLEN];
+        state.uri = &uri;
+        printf("uri:          %s\n", argv[i]);
+        if (uriParseUriA(&state, argv[i]) != URI_SUCCESS) {
+            /* Failure */
+            printf("Failure:      %s @ '%.18s' (#%lu)\n",
+                   (state.errorCode == URI_ERROR_SYNTAX) ? "syntax"
+                   : (state.errorCode == URI_ERROR_MALLOC)
+                       ? "not enough memory"
+                       : "liburiparser bug (please report)",
+                   state.errorPos, (long unsigned int)(state.errorPos - argv[i]));
+            retval = EXIT_FAILURE;
+        } else {
+            if (uri.scheme.first) {
+                printf("scheme:       %.*s\n", RANGE(uri.scheme));
+            }
+            if (uri.userInfo.first) {
+                printf("userInfo:     %.*s\n", RANGE(uri.userInfo));
+            }
+            if (uri.hostText.first) {
+                printf("hostText:     %.*s\n", RANGE(uri.hostText));
+            }
+            if (uri.hostData.ip4) {
+                inet_ntop(AF_INET, uri.hostData.ip4->data, ipstr, sizeof ipstr);
+                printf("hostData.ip4: %s\n", ipstr);
+            }
+            if (uri.hostData.ip6) {
+                inet_ntop(AF_INET6, uri.hostData.ip6->data, ipstr, sizeof ipstr);
+                printf("hostData.ip6: %s\n", ipstr);
+            }
+            if (uri.hostData.ipFuture.first) {
+                printf("hostData.ipFuture: %.*s\n", RANGE(uri.hostData.ipFuture));
+            }
+            if (uri.portText.first) {
+                printf("portText:     %.*s\n", RANGE(uri.portText));
+            }
+            if (uri.pathHead) {
+                const UriPathSegmentA * p = uri.pathHead;
+                for (; p; p = p->next) {
+                    printf(" .. pathSeg:  %.*s\n", RANGE(p->text));
+                }
+            }
+            if (uri.query.first) {
+                printf("query:        %.*s\n", RANGE(uri.query));
+            }
+            if (uri.fragment.first) {
+                printf("fragment:     %.*s\n", RANGE(uri.fragment));
+            }
+            {
+                const char * const absolutePathLabel = "absolutePath: ";
+                printf("%s%s\n", absolutePathLabel,
+                       (uri.absolutePath == URI_TRUE) ? "true" : "false");
+                if (uri.hostText.first != NULL) {
+                    printf("%*s%s\n", (int)strlen(absolutePathLabel), "",
+                           "(always false for URIs with host)");
+                }
+            }
+        }
+        printf("\n");
 
-		state.uri = &uri;
-		printf("uri:          %s\n", argv[i]);
-		if (uriParseUriA(&state, argv[i]) != URI_SUCCESS) {
-			/* Failure */
-			printf("Failure:      %s @ '%.18s' (#%lu)\n",
-					(state.errorCode == URI_ERROR_SYNTAX)
-						? "syntax"
-						: (state.errorCode == URI_ERROR_MALLOC)
-							? "not enough memory"
-							: "liburiparser bug (please report)",
-					state.errorPos,
-					(long unsigned int)(state.errorPos - argv[i]));
-			retval = EXIT_FAILURE;
-		} else {
-			if (uri.scheme.first) {
-				printf("scheme:       %.*s\n", RANGE(uri.scheme));
-			}
-			if (uri.userInfo.first) {
-				printf("userInfo:     %.*s\n", RANGE(uri.userInfo));
-			}
-			if (uri.hostText.first) {
-				printf("hostText:     %.*s\n", RANGE(uri.hostText));
-			}
-			if (uri.hostData.ip4) {
-				inet_ntop(AF_INET, uri.hostData.ip4->data, ipstr, sizeof ipstr);
-				printf("hostData.ip4: %s\n", ipstr);
-			}
-			if (uri.hostData.ip6) {
-				inet_ntop(AF_INET6, uri.hostData.ip6->data, ipstr, sizeof ipstr);
-				printf("hostData.ip6: %s\n", ipstr);
-			}
-			if (uri.hostData.ipFuture.first) {
-				printf("hostData.ipFuture: %.*s\n", RANGE(uri.hostData.ipFuture));
-			}
-			if (uri.portText.first) {
-				printf("portText:     %.*s\n", RANGE(uri.portText));
-			}
-			if (uri.pathHead) {
-				const UriPathSegmentA * p = uri.pathHead;
-				for (; p; p = p->next) {
-					printf(" .. pathSeg:  %.*s\n", RANGE(p->text));
-				}
-			}
-			if (uri.query.first) {
-				printf("query:        %.*s\n", RANGE(uri.query));
-			}
-			if (uri.fragment.first) {
-				printf("fragment:     %.*s\n", RANGE(uri.fragment));
-			}
-			{
-				const char * const absolutePathLabel = "absolutePath: ";
-				printf("%s%s\n", absolutePathLabel,
-						(uri.absolutePath == URI_TRUE) ? "true" : "false");
-				if (uri.hostText.first != NULL) {
-					printf("%*s%s\n", (int)strlen(absolutePathLabel), "",
-							"(always false for URIs with host)");
-				}
-			}
-		}
-		printf("\n");
-
-		uriFreeUriMembersA(&uri);
-	}
-	return retval;
+        uriFreeUriMembersA(&uri);
+    }
+    return retval;
 }

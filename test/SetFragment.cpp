@@ -29,192 +29,202 @@
 namespace {
 
 static void testIsWellFormedFragment(const char * candidate, bool expectedWellFormed) {
-	const char * const first = candidate;
-	const char * const afterLast = (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+    const char * const first = candidate;
+    const char * const afterLast =
+        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
-	const UriBool actualWellFormed = uriIsWellFormedFragmentA(first, afterLast);
+    const UriBool actualWellFormed = uriIsWellFormedFragmentA(first, afterLast);
 
-	ASSERT_EQ(actualWellFormed, expectedWellFormed);
+    ASSERT_EQ(actualWellFormed, expectedWellFormed);
 }
 
 static UriUriA parseWellFormedUri(const char * text) {
-	UriUriA uri;
-	const int error = uriParseSingleUriA(&uri, text, NULL);
-	// NOTE: we cannot use ASSERT_EQ here because of the outer non-void return type
-	assert(error == URI_SUCCESS);
-	return uri;
+    UriUriA uri;
+    const int error = uriParseSingleUriA(&uri, text, NULL);
+    // NOTE: we cannot use ASSERT_EQ here because of the outer non-void return type
+    assert(error == URI_SUCCESS);
+    return uri;
 }
 
 static void assertUriEqual(const UriUriA * uri, const char * expected) {
-	int charsRequired = -1;
-	ASSERT_EQ(uriToStringCharsRequiredA(uri, &charsRequired), URI_SUCCESS);
-	ASSERT_TRUE(charsRequired >= 0);
+    int charsRequired = -1;
+    ASSERT_EQ(uriToStringCharsRequiredA(uri, &charsRequired), URI_SUCCESS);
+    ASSERT_TRUE(charsRequired >= 0);
 
-	char * const buffer = (char *)malloc(charsRequired + 1);
-	ASSERT_TRUE(buffer != NULL);
+    char * const buffer = (char *)malloc(charsRequired + 1);
+    ASSERT_TRUE(buffer != NULL);
 
-	ASSERT_EQ(uriToStringA(buffer, uri, charsRequired + 1, NULL), URI_SUCCESS);
+    ASSERT_EQ(uriToStringA(buffer, uri, charsRequired + 1, NULL), URI_SUCCESS);
 
-	EXPECT_STREQ(buffer, expected);
+    EXPECT_STREQ(buffer, expected);
 
-	free(buffer);
+    free(buffer);
 }
 
 }  // namespace
 
 TEST(IsWellFormedFragment, Null) {
-	testIsWellFormedFragment(NULL, false);
+    testIsWellFormedFragment(NULL, false);
 }
 
 TEST(IsWellFormedFragment, Empty) {
-	testIsWellFormedFragment("", true);
+    testIsWellFormedFragment("", true);
 }
 
 TEST(IsWellFormedFragment, AllowedCharacters) {
-	// The related grammar subset is this:
-	//
-	//   fragment    = *( pchar / "/" / "?" )
-	//   pchar       = unreserved / pct-encoded / sub-delims / ":" / "@"
-	//   unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-	//   pct-encoded = "%" HEXDIG HEXDIG
-	//   sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
-	//               / "*" / "+" / "," / ";" / "="
-	//
-	// NOTE: Percent encoding has dedicated tests further down
-	testIsWellFormedFragment(
-			"0123456789"
-			"ABCDEF"
-			"abcdef"
-			"gGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
-			"-._~"
-			"!$&'()*+,;="
-			":@"
-			"/?",
-			true);
+    // The related grammar subset is this:
+    //
+    //   fragment    = *( pchar / "/" / "?" )
+    //   pchar       = unreserved / pct-encoded / sub-delims / ":" / "@"
+    //   unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
+    //   pct-encoded = "%" HEXDIG HEXDIG
+    //   sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
+    //               / "*" / "+" / "," / ";" / "="
+    //
+    // NOTE: Percent encoding has dedicated tests further down
+    testIsWellFormedFragment("0123456789"
+                             "ABCDEF"
+                             "abcdef"
+                             "gGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
+                             "-._~"
+                             "!$&'()*+,;="
+                             ":@"
+                             "/?",
+                             true);
 }
 
 TEST(IsWellFormedFragment, ForbiddenCharacters) {
-	testIsWellFormedFragment(" ", false);
+    testIsWellFormedFragment(" ", false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingWellFormed) {
-	testIsWellFormedFragment("%" "aa" "%" "AA", true);
+    testIsWellFormedFragment("%"
+                             "aa"
+                             "%"
+                             "AA",
+                             true);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff1) {
-	testIsWellFormedFragment("%", false);
+    testIsWellFormedFragment("%", false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff2) {
-	testIsWellFormedFragment("%" "a", false);
+    testIsWellFormedFragment("%"
+                             "a",
+                             false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedForbiddenCharacter1) {
-	testIsWellFormedFragment("%" "ga", false);
+    testIsWellFormedFragment("%"
+                             "ga",
+                             false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedForbiddenCharacter2) {
-	testIsWellFormedFragment("%" "ag", false);
+    testIsWellFormedFragment("%"
+                             "ag",
+                             false);
 }
 
 TEST(SetFragment, NullUriOnly) {
-	UriUriA * const uri = NULL;
-	const char * const first = "toc";
-	const char * const afterLast = first + strlen(first);
-	ASSERT_EQ(uriSetFragmentA(uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA * const uri = NULL;
+    const char * const first = "toc";
+    const char * const afterLast = first + strlen(first);
+    ASSERT_EQ(uriSetFragmentA(uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetFragment, NullFirstOnly) {
-	UriUriA uri = {};
-	const char * const fragment = "toc";
-	const char * const first = NULL;
-	const char * const afterLast = fragment + strlen(fragment);
-	ASSERT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA uri = {};
+    const char * const fragment = "toc";
+    const char * const first = NULL;
+    const char * const afterLast = fragment + strlen(fragment);
+    ASSERT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetFragment, NullAfterLastOnly) {
-	UriUriA uri = {};
-	const char * const first = "toc";
-	const char * const afterLast = NULL;
-	ASSERT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA uri = {};
+    const char * const first = "toc";
+    const char * const afterLast = NULL;
+    ASSERT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetFragment, NullValueLeavesOwnerAtFalse) {
-	UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
-	EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
+    UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
+    EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
 
-	EXPECT_EQ(uriSetFragmentA(&uri, NULL, NULL), URI_SUCCESS);
+    EXPECT_EQ(uriSetFragmentA(&uri, NULL, NULL), URI_SUCCESS);
 
-	EXPECT_EQ(uri.owner, URI_FALSE);  // i.e. still false
+    EXPECT_EQ(uri.owner, URI_FALSE);  // i.e. still false
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetFragment, NonNullValueMakesOwner) {
-	UriUriA uri = parseWellFormedUri("scheme://host/#old");
-	const char * const first = "new";
-	const char * const afterLast = first + strlen(first);
-	EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
+    UriUriA uri = parseWellFormedUri("scheme://host/#old");
+    const char * const first = "new";
+    const char * const afterLast = first + strlen(first);
+    EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
 
-	EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_SUCCESS);
 
-	EXPECT_EQ(uri.owner, URI_TRUE);  // i.e. now owned
+    EXPECT_EQ(uri.owner, URI_TRUE);  // i.e. now owned
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetFragment, NullValueApplied) {
-	UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
+    UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
 
-	EXPECT_EQ(uriSetFragmentA(&uri, NULL, NULL), URI_SUCCESS);
+    EXPECT_EQ(uriSetFragmentA(&uri, NULL, NULL), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://host/");
+    assertUriEqual(&uri, "scheme://host/");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetFragment, NonNullValueAppliedEmpty) {
-	UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
-	const char * const empty = "";
+    UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
+    const char * const empty = "";
 
-	EXPECT_EQ(uriSetFragmentA(&uri, empty, empty), URI_SUCCESS);
+    EXPECT_EQ(uriSetFragmentA(&uri, empty, empty), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://host/#");
+    assertUriEqual(&uri, "scheme://host/#");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetFragment, NonNullValueAppliedNonEmpty) {
-	UriUriA uri = parseWellFormedUri("scheme://host/#old");
-	const char * const first = "new";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://host/#old");
+    const char * const first = "new";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://host/#new");
+    assertUriEqual(&uri, "scheme://host/#new");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetFragment, MalformedValueRejected) {
-	UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
-	const char * const first = "not well-formed";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://host/#fragment");
+    const char * const first = "not well-formed";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_ERROR_SYNTAX);
+    EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_ERROR_SYNTAX);
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetFragment, UriWithoutHostTolerated) {
-	UriUriA uri = parseWellFormedUri("/no/host/here");
-	const char * const first = "toc";
-	const char * const afterLast = first + strlen(first);
-	EXPECT_TRUE(uri.hostText.first == NULL);  // self-test
+    UriUriA uri = parseWellFormedUri("/no/host/here");
+    const char * const first = "toc";
+    const char * const afterLast = first + strlen(first);
+    EXPECT_TRUE(uri.hostText.first == NULL);  // self-test
 
-	EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetFragmentA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "/no/host/here#toc");
+    assertUriEqual(&uri, "/no/host/here#toc");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
