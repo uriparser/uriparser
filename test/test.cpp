@@ -1716,9 +1716,6 @@ namespace {
 		} else {
 			uriWindowsFilenameToUriStringW(filename, uriBuffer);
 		}
-#ifdef HAVE_WPRINTF
-		// wprintf(L"1 [%s][%s]\n", uriBuffer, expectedUriString);
-#endif
 		ASSERT_TRUE(!wcscmp(uriBuffer, expectedUriString));
 		delete [] uriBuffer;
 
@@ -1730,9 +1727,6 @@ namespace {
 		} else {
 			uriUriStringToWindowsFilenameW(uriString, filenameBuffer);
 		}
-#ifdef HAVE_WPRINTF
-		// wprintf(L"2 [%s][%s]\n", filenameBuffer, filename);
-#endif
 		ASSERT_TRUE(!wcscmp(filenameBuffer, filename));
 		delete [] filenameBuffer;
 	}
