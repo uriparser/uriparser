@@ -127,8 +127,7 @@ typedef int UriBool; /**< Boolean type */
 /* Shared errors */
 #define URI_SUCCESS                        0
 #define URI_ERROR_SYNTAX                   1 /* Parsed text violates expected format */
-#define URI_ERROR_NULL                     2 /* One of the params passed was NULL
-                                                although it mustn't be */
+#define URI_ERROR_NULL                     2 /* One of the params passed was NULL although it mustn't be */
 #define URI_ERROR_MALLOC                   3 /* Requested memory could not be allocated */
 #define URI_ERROR_OUTPUT_TOO_LARGE         4 /* Some output is to large for the receiving buffer */
 #define URI_ERROR_NOT_IMPLEMENTED          8 /* The called function is not implemented yet */
