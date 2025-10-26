@@ -14,13 +14,13 @@ rm -Rf "${distdir}" "${distdir}.zip"
 # Copy
 mkdir -p "${distdir}/html/search"
 cp \
-	html/*.css \
-	html/*.html \
-	html/*.js \
-	html/*.md5 \
-	html/*.png \
-	\
-	"${distdir}/html/" || exit 1
+    html/*.css \
+    html/*.html \
+    html/*.js \
+    html/*.md5 \
+    html/*.png \
+    \
+    "${distdir}/html/" || exit 1
 cp -R html/search/ "${distdir}/html/" || exit 1
 
 # Package
