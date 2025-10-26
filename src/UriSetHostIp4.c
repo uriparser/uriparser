@@ -72,11 +72,10 @@ UriBool URI_FUNC(IsWellFormedHostIp4)(const URI_CHAR * first,
         return URI_FALSE;
     }
 
-        unsigned char octetOutput[4];
-        return (URI_FUNC(ParseIpFourAddress)(octetOutput, first, afterLast)
-                == URI_SUCCESS)
-                   ? URI_TRUE
-                   : URI_FALSE;
+    unsigned char octetOutput[4];
+    return (URI_FUNC(ParseIpFourAddress)(octetOutput, first, afterLast) == URI_SUCCESS)
+               ? URI_TRUE
+               : URI_FALSE;
 }
 
 int URI_FUNC(SetHostIp4Mm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,

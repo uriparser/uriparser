@@ -222,14 +222,13 @@ int URI_FUNC(SetSchemeMm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,
     assert(uri->owner == URI_TRUE);
 
     /* Apply new value */
-        URI_TYPE(TextRange) sourceRange;
-        sourceRange.first = first;
-        sourceRange.afterLast = afterLast;
+    URI_TYPE(TextRange) sourceRange;
+    sourceRange.first = first;
+    sourceRange.afterLast = afterLast;
 
-        if (URI_FUNC(CopyRangeAsNeeded)(&uri->scheme, &sourceRange, memory)
-            == URI_FALSE) {
-            return URI_ERROR_MALLOC;
-        }
+    if (URI_FUNC(CopyRangeAsNeeded)(&uri->scheme, &sourceRange, memory) == URI_FALSE) {
+        return URI_ERROR_MALLOC;
+    }
 
     return URI_SUCCESS;
 }

@@ -89,53 +89,53 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
     }
 
     /* Are we dealing with IPvFuture input? */
-        /* Assemble "//[..]" input wrap for upcoming parse as a URI
-         * NOTE: If the input contains closing "]" on its own, the resulting
-         *       string will not be valid URI syntax, and hence there is
-         *       no risk of false positives from "bracket injection". */
-        const size_t inputLenChars = (afterLast - first);
-        const size_t MAX_SIZE_T = (size_t)-1;
+    /* Assemble "//[..]" input wrap for upcoming parse as a URI
+     * NOTE: If the input contains closing "]" on its own, the resulting
+     *       string will not be valid URI syntax, and hence there is
+     *       no risk of false positives from "bracket injection". */
+    const size_t inputLenChars = (afterLast - first);
+    const size_t MAX_SIZE_T = (size_t)-1;
 
-        /* Detect overflow */
-        if (MAX_SIZE_T - inputLenChars < 3 + 1 + 1) {
-            return URI_ERROR_MALLOC;
-        }
+    /* Detect overflow */
+    if (MAX_SIZE_T - inputLenChars < 3 + 1 + 1) {
+        return URI_ERROR_MALLOC;
+    }
 
-            const size_t candidateLenChars = 3 + inputLenChars + 1;
+    const size_t candidateLenChars = 3 + inputLenChars + 1;
 
-            /* Detect overflow */
-            if (MAX_SIZE_T / sizeof(URI_CHAR) < candidateLenChars + 1) {
-                return URI_ERROR_MALLOC;
-            }
+    /* Detect overflow */
+    if (MAX_SIZE_T / sizeof(URI_CHAR) < candidateLenChars + 1) {
+        return URI_ERROR_MALLOC;
+    }
 
-                URI_CHAR * const candidate =
-                    memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
+    URI_CHAR * const candidate =
+        memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
 
-                if (candidate == NULL) {
-                    return URI_ERROR_MALLOC;
-                }
+    if (candidate == NULL) {
+        return URI_ERROR_MALLOC;
+    }
 
-                memcpy(candidate, _UT("//["), 3 * sizeof(URI_CHAR));
-                memcpy(candidate + 3, first, inputLenChars * sizeof(URI_CHAR));
-                memcpy(candidate + 3 + inputLenChars, _UT("]"),
-                       2 * sizeof(URI_CHAR)); /* includes zero terminator */
+    memcpy(candidate, _UT("//["), 3 * sizeof(URI_CHAR));
+    memcpy(candidate + 3, first, inputLenChars * sizeof(URI_CHAR));
+    memcpy(candidate + 3 + inputLenChars, _UT("]"),
+           2 * sizeof(URI_CHAR)); /* includes zero terminator */
 
-                /* Parse as an RFC 3986 URI */
-                    URI_TYPE(Uri) uri;
-                    const int res = URI_FUNC(ParseSingleUriExMm)(
-                        &uri, candidate, candidate + candidateLenChars, NULL, memory);
+    /* Parse as an RFC 3986 URI */
+    URI_TYPE(Uri) uri;
+    const int res = URI_FUNC(ParseSingleUriExMm)(
+        &uri, candidate, candidate + candidateLenChars, NULL, memory);
 
-                    assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
-                           || (res == URI_ERROR_MALLOC));
+    assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
+           || (res == URI_ERROR_MALLOC));
 
-                    if (res == URI_SUCCESS) {
-                        assert(uri.hostData.ipFuture.first != NULL);
-                        URI_FUNC(FreeUriMembersMm)(&uri, memory);
-                    }
+    if (res == URI_SUCCESS) {
+        assert(uri.hostData.ipFuture.first != NULL);
+        URI_FUNC(FreeUriMembersMm)(&uri, memory);
+    }
 
-                    memory->free(memory, candidate);
+    memory->free(memory, candidate);
 
-                    return res;
+    return res;
 }
 
 int URI_FUNC(IsWellFormedHostIpFuture)(const URI_CHAR * first,

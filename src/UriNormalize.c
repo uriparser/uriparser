@@ -524,22 +524,22 @@ static const URI_CHAR * URI_FUNC(PastLeadingZeros)(const URI_CHAR * first,
     assert(afterLast != NULL);
     assert(first != afterLast);
 
-        /* Find the first non-zero character */
-        const URI_CHAR * remainderFirst = first;
-        while ((remainderFirst < afterLast) && (remainderFirst[0] == _UT('0'))) {
-            remainderFirst++;
-        }
+    /* Find the first non-zero character */
+    const URI_CHAR * remainderFirst = first;
+    while ((remainderFirst < afterLast) && (remainderFirst[0] == _UT('0'))) {
+        remainderFirst++;
+    }
 
-        /* Is the string /all/ zeros? */
-        if (remainderFirst == afterLast) {
-            /* Yes, and length is >=1 because we ruled out the empty string earlier;
-             * pull back onto rightmost zero */
-            assert(remainderFirst > first);
-            remainderFirst--;
-            assert(remainderFirst[0] == _UT('0'));
-        }
+    /* Is the string /all/ zeros? */
+    if (remainderFirst == afterLast) {
+        /* Yes, and length is >=1 because we ruled out the empty string earlier;
+         * pull back onto rightmost zero */
+        assert(remainderFirst > first);
+        remainderFirst--;
+        assert(remainderFirst[0] == _UT('0'));
+    }
 
-        return remainderFirst;
+    return remainderFirst;
 }
 
 static void URI_FUNC(DropLeadingZerosInplace)(URI_CHAR * first,
@@ -552,15 +552,14 @@ static void URI_FUNC(DropLeadingZerosInplace)(URI_CHAR * first,
         return;
     }
 
-        const URI_CHAR * const remainderFirst =
-            URI_FUNC(PastLeadingZeros)(first, *afterLast);
+    const URI_CHAR * const remainderFirst = URI_FUNC(PastLeadingZeros)(first, *afterLast);
 
-        if (remainderFirst > first) {
-            const size_t remainderLen = *afterLast - remainderFirst;
-            memmove(first, remainderFirst, remainderLen * sizeof(URI_CHAR));
-            first[remainderLen] = _UT('\0');
-            *afterLast = first + remainderLen;
-        }
+    if (remainderFirst > first) {
+        const size_t remainderLen = *afterLast - remainderFirst;
+        memmove(first, remainderFirst, remainderLen * sizeof(URI_CHAR));
+        first[remainderLen] = _UT('\0');
+        *afterLast = first + remainderLen;
+    }
 }
 
 static void URI_FUNC(AdvancePastLeadingZeros)(const URI_CHAR ** first,
@@ -573,11 +572,10 @@ static void URI_FUNC(AdvancePastLeadingZeros)(const URI_CHAR ** first,
         return;
     }
 
-        const URI_CHAR * const remainderFirst =
-            URI_FUNC(PastLeadingZeros)(*first, afterLast);
+    const URI_CHAR * const remainderFirst = URI_FUNC(PastLeadingZeros)(*first, afterLast);
 
-        /* Cut off leading zeros */
-        *first = remainderFirst;
+    /* Cut off leading zeros */
+    *first = remainderFirst;
 }
 
 static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
