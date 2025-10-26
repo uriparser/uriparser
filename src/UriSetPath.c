@@ -248,15 +248,13 @@ static void URI_FUNC(DropEmptyFirstPathSegment)(URI_TYPE(Uri) * uri,
     assert(uri->pathHead != NULL);
     assert(uri->pathHead->text.first == uri->pathHead->text.afterLast);
 
-    {
-        URI_TYPE(PathSegment) * const originalHead = uri->pathHead;
+    URI_TYPE(PathSegment) * const originalHead = uri->pathHead;
 
-        uri->pathHead = uri->pathHead->next;
+    uri->pathHead = uri->pathHead->next;
 
-        originalHead->text.first = NULL;
-        originalHead->text.afterLast = NULL;
-        memory->free(memory, originalHead);
-    }
+    originalHead->text.first = NULL;
+    originalHead->text.afterLast = NULL;
+    memory->free(memory, originalHead);
 }
 
 /* URIs without a host encode a leading slash in the path as .absolutePath == URI_TRUE.
@@ -305,102 +303,86 @@ static int URI_FUNC(InternalSetPath)(URI_TYPE(Uri) * destUri, const URI_CHAR * f
     }
 
     /* Assemble "///.." input wrap for upcoming parse as a URI */
-    {
-        const size_t inputLenChars = (afterLast - first);
-        const size_t MAX_SIZE_T = (size_t)-1;
+    const size_t inputLenChars = (afterLast - first);
+    const size_t MAX_SIZE_T = (size_t)-1;
 
-        /* Detect overflow */
-        if (MAX_SIZE_T - inputLenChars < 3 + 1) {
-            return URI_ERROR_MALLOC;
-        }
+    /* Detect overflow */
+    if (MAX_SIZE_T - inputLenChars < 3 + 1) {
+        return URI_ERROR_MALLOC;
+    }
 
-        {
-            const size_t candidateLenChars = 3 + inputLenChars;
+    const size_t candidateLenChars = 3 + inputLenChars;
 
-            /* Detect overflow */
-            if (MAX_SIZE_T / sizeof(URI_CHAR) < candidateLenChars + 1) {
-                return URI_ERROR_MALLOC;
-            }
+    /* Detect overflow */
+    if (MAX_SIZE_T / sizeof(URI_CHAR) < candidateLenChars + 1) {
+        return URI_ERROR_MALLOC;
+    }
 
-            {
-                URI_CHAR * const candidate =
-                    memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
+    URI_CHAR * const candidate =
+        memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
 
-                if (candidate == NULL) {
-                    return URI_ERROR_MALLOC;
-                }
+    if (candidate == NULL) {
+        return URI_ERROR_MALLOC;
+    }
 
-                memcpy(candidate, _UT("///"), 3 * sizeof(URI_CHAR));
-                memcpy(candidate + 3, first, inputLenChars * sizeof(URI_CHAR));
-                candidate[3 + inputLenChars] = _UT('\0');
+    memcpy(candidate, _UT("///"), 3 * sizeof(URI_CHAR));
+    memcpy(candidate + 3, first, inputLenChars * sizeof(URI_CHAR));
+    candidate[3 + inputLenChars] = _UT('\0');
 
-                /* Parse as an RFC 3986 URI */
-                {
-                    URI_TYPE(Uri) tempUri;
-                    const int res = URI_FUNC(ParseSingleUriExMm)(
-                        &tempUri, candidate, candidate + candidateLenChars, NULL, memory);
-                    assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
-                           || (res == URI_ERROR_MALLOC));
-                    if (res != URI_SUCCESS) {
-                        memory->free(memory, candidate);
-                        return res;
-                    }
+    /* Parse as an RFC 3986 URI */
+    URI_TYPE(Uri) tempUri;
+    int res = URI_FUNC(ParseSingleUriExMm)(&tempUri, candidate,
+                                           candidate + candidateLenChars, NULL, memory);
+    assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
+           || (res == URI_ERROR_MALLOC));
+    if (res != URI_SUCCESS) {
+        memory->free(memory, candidate);
+        return res;
+    }
 
-                    /* Nothing but path and host is supposed to be set by the parse, in
-                     * particular not: */
-                    assert(tempUri.query.first == NULL);
-                    assert(tempUri.fragment.first == NULL);
+    /* Nothing but path and host is supposed to be set by the parse, in
+     * particular not: */
+    assert(tempUri.query.first == NULL);
+    assert(tempUri.fragment.first == NULL);
 
-                    /* Ensure that the strings in the path segments are all owned by
-                     * `tempUri` because we want to (1) rip out and keep the full path
-                     * list further down and (2) be able to free the parsed string
-                     * (`candidate`) also. */
-                    {
-                        const int res = URI_FUNC(MakeOwnerMm)(&tempUri, memory);
-                        assert((res == URI_SUCCESS) || (res == URI_ERROR_MALLOC));
-                        if (res != URI_SUCCESS) {
-                            URI_FUNC(FreeUriMembersMm)(&tempUri, memory);
-                            memory->free(memory, candidate);
-                            return res;
-                        }
-                        assert(tempUri.owner == URI_TRUE);
-                    }
+    /* Ensure that the strings in the path segments are all owned by
+     * `tempUri` because we want to (1) rip out and keep the full path
+     * list further down and (2) be able to free the parsed string
+     * (`candidate`) also. */
+    res = URI_FUNC(MakeOwnerMm)(&tempUri, memory);
+    assert((res == URI_SUCCESS) || (res == URI_ERROR_MALLOC));
+    if (res != URI_SUCCESS) {
+        URI_FUNC(FreeUriMembersMm)(&tempUri, memory);
+        memory->free(memory, candidate);
+        return res;
+    }
+    assert(tempUri.owner == URI_TRUE);
 
-                    /* Move path to destination URI */
-                    assert(tempUri.absolutePath
-                           == URI_FALSE); /* always URI_FALSE for URIs with host */
-                    destUri->pathHead = tempUri.pathHead;
-                    destUri->pathTail = tempUri.pathTail;
-                    destUri->absolutePath = URI_FALSE;
+    /* Move path to destination URI */
+    assert(tempUri.absolutePath == URI_FALSE); /* always URI_FALSE for URIs with host */
+    destUri->pathHead = tempUri.pathHead;
+    destUri->pathTail = tempUri.pathTail;
+    destUri->absolutePath = URI_FALSE;
 
-                    tempUri.pathHead = NULL;
-                    tempUri.pathTail = NULL;
+    tempUri.pathHead = NULL;
+    tempUri.pathTail = NULL;
 
-                    /* Free the rest of the temp URI */
-                    URI_FUNC(FreeUriMembersMm)(&tempUri, memory);
-                    memory->free(memory, candidate);
+    /* Free the rest of the temp URI */
+    URI_FUNC(FreeUriMembersMm)(&tempUri, memory);
+    memory->free(memory, candidate);
 
-                    /* Restore use of .absolutePath as needed */
-                    URI_FUNC(TransformEmptyLeadPathSegments)(destUri, memory);
+    /* Restore use of .absolutePath as needed */
+    URI_FUNC(TransformEmptyLeadPathSegments)(destUri, memory);
 
-                    /* Disambiguate as needed */
-                    {
-                        const UriBool success =
-                            URI_FUNC(FixPathNoScheme)(destUri, memory);
-                        if (success == URI_FALSE) {
-                            return URI_ERROR_MALLOC;
-                        }
-                    }
-                    {
-                        const UriBool success =
-                            URI_FUNC(EnsureThatPathIsNotMistakenForHost)(destUri, memory);
-                        if (success == URI_FALSE) {
-                            return URI_ERROR_MALLOC;
-                        }
-                    }
-                }
-            }
-        }
+    /* Disambiguate as needed */
+    UriBool success = URI_FUNC(FixPathNoScheme)(destUri, memory);
+    if (success == URI_FALSE) {
+        return URI_ERROR_MALLOC;
+    }
+
+    success = URI_FUNC(EnsureThatPathIsNotMistakenForHost)(destUri, memory);
+    if (success == URI_FALSE) {
+        return URI_ERROR_MALLOC;
     }
 
     return URI_SUCCESS;
@@ -422,13 +404,11 @@ int URI_FUNC(SetPathMm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,
     }
 
     /* Clear old value */
-    {
-        const int res = URI_FUNC(FreeUriPath)(uri, memory);
-        if (res != URI_SUCCESS) {
-            return res;
-        }
-        uri->absolutePath = URI_FALSE;
+    int res = URI_FUNC(FreeUriPath)(uri, memory);
+    if (res != URI_SUCCESS) {
+        return res;
     }
+    uri->absolutePath = URI_FALSE;
 
     /* Already done? */
     if (first == NULL) {
@@ -439,7 +419,7 @@ int URI_FUNC(SetPathMm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,
 
     /* Ensure owned */
     if (uri->owner == URI_FALSE) {
-        const int res = URI_FUNC(MakeOwnerMm)(uri, memory);
+        res = URI_FUNC(MakeOwnerMm)(uri, memory);
         if (res != URI_SUCCESS) {
             return res;
         }
@@ -448,12 +428,10 @@ int URI_FUNC(SetPathMm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,
     assert(uri->owner == URI_TRUE);
 
     /* Apply new value */
-    {
-        const int res = URI_FUNC(InternalSetPath)(uri, first, afterLast, memory);
-        assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
-               || (res == URI_ERROR_MALLOC));
-        return res;
-    }
+    res = URI_FUNC(InternalSetPath)(uri, first, afterLast, memory);
+    assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
+           || (res == URI_ERROR_MALLOC));
+    return res;
 }
 
 int URI_FUNC(SetPath)(URI_TYPE(Uri) * uri, const URI_CHAR * first,

@@ -93,46 +93,42 @@ int URI_FUNC(ParseIpSixAddressMm)(UriIp6 * output, const URI_CHAR * first,
     }
 
     /* Are we dealing with IPv6 input? */
-    {
-        /* Assemble "//[..]" input wrap for upcoming parse as a URI
-         * NOTE: If the input contains closing "]" on its own, the resulting
-         *       string will not be valid URI syntax, and hence there is
-         *       no risk of false positives from "bracket injection". */
-        URI_CHAR candidate[3 + URI_MAX_IP6_LEN + 1 + 1] = _UT("//[");
-        const size_t inputLenChars = (afterLast - first);
+    /* Assemble "//[..]" input wrap for upcoming parse as a URI
+     * NOTE: If the input contains closing "]" on its own, the resulting
+     *       string will not be valid URI syntax, and hence there is
+     *       no risk of false positives from "bracket injection". */
+    URI_CHAR candidate[3 + URI_MAX_IP6_LEN + 1 + 1] = _UT("//[");
+    const size_t inputLenChars = (afterLast - first);
 
-        /* Detect overflow */
-        if (inputLenChars > URI_MAX_IP6_LEN) {
-            return URI_ERROR_SYNTAX;
-        }
-
-        memcpy(candidate + 3, first, inputLenChars * sizeof(URI_CHAR));
-        memcpy(candidate + 3 + inputLenChars, _UT("]"),
-               2 * sizeof(URI_CHAR)); /* includes zero terminator */
-
-        /* Parse as an RFC 3986 URI */
-        {
-            const size_t candidateLenChars = 3 + inputLenChars + 1;
-            URI_TYPE(Uri) uri;
-            const int res = URI_FUNC(ParseSingleUriExMm)(
-                &uri, candidate, candidate + candidateLenChars, NULL, memory);
-
-            assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
-                   || (res == URI_ERROR_MALLOC));
-
-            if (res == URI_SUCCESS) {
-                assert(uri.hostData.ip6 != NULL);
-
-                if (output != NULL) {
-                    memcpy(output->data, uri.hostData.ip6->data, sizeof(output->data));
-                }
-
-                URI_FUNC(FreeUriMembersMm)(&uri, memory);
-            }
-
-            return res;
-        }
+    /* Detect overflow */
+    if (inputLenChars > URI_MAX_IP6_LEN) {
+        return URI_ERROR_SYNTAX;
     }
+
+    memcpy(candidate + 3, first, inputLenChars * sizeof(URI_CHAR));
+    memcpy(candidate + 3 + inputLenChars, _UT("]"),
+           2 * sizeof(URI_CHAR)); /* includes zero terminator */
+
+    /* Parse as an RFC 3986 URI */
+    const size_t candidateLenChars = 3 + inputLenChars + 1;
+    URI_TYPE(Uri) uri;
+    const int res = URI_FUNC(ParseSingleUriExMm)(
+        &uri, candidate, candidate + candidateLenChars, NULL, memory);
+
+    assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
+           || (res == URI_ERROR_MALLOC));
+
+    if (res == URI_SUCCESS) {
+        assert(uri.hostData.ip6 != NULL);
+
+        if (output != NULL) {
+            memcpy(output->data, uri.hostData.ip6->data, sizeof(output->data));
+        }
+
+        URI_FUNC(FreeUriMembersMm)(&uri, memory);
+    }
+
+    return res;
 }
 
 int URI_FUNC(ParseIpSixAddress)(UriIp6 * output, const URI_CHAR * first,

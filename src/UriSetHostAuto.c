@@ -80,42 +80,40 @@ int URI_FUNC(SetHostAutoMm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,
     }
 
     /* Auto-detect type and then apply */
-    {
-        UriHostType hostType;
+    UriHostType hostType;
 
-        /* IPv6 or IPvFuture? */
-        if (first[0] == _UT('[')) {
-            if ((afterLast - first < 2) || (afterLast[-1] != _UT(']'))) {
-                return URI_ERROR_SYNTAX;
-            }
-
-            /* Drop the bracket wrap (for InternalSetHostMm call below) */
-            first++;
-            afterLast--;
-
-            if (first >= afterLast) {
-                return URI_ERROR_SYNTAX;
-            }
-
-            switch (first[0]) {
-            case _UT('v'):
-            case _UT('V'):
-                hostType = URI_HOST_TYPE_IPFUTURE;
-                break;
-            default:
-                hostType = URI_HOST_TYPE_IP6;
-                break;
-            }
-            /* IPv4? */
-        } else if (URI_FUNC(IsWellFormedHostIp4)(first, afterLast)) {
-            hostType = URI_HOST_TYPE_IP4;
-        } else {
-            /* RegName! */
-            hostType = URI_HOST_TYPE_REGNAME;
+    /* IPv6 or IPvFuture? */
+    if (first[0] == _UT('[')) {
+        if ((afterLast - first < 2) || (afterLast[-1] != _UT(']'))) {
+            return URI_ERROR_SYNTAX;
         }
 
-        return URI_FUNC(InternalSetHostMm)(uri, hostType, first, afterLast, memory);
+        /* Drop the bracket wrap (for InternalSetHostMm call below) */
+        first++;
+        afterLast--;
+
+        if (first >= afterLast) {
+            return URI_ERROR_SYNTAX;
+        }
+
+        switch (first[0]) {
+        case _UT('v'):
+        case _UT('V'):
+            hostType = URI_HOST_TYPE_IPFUTURE;
+            break;
+        default:
+            hostType = URI_HOST_TYPE_IP6;
+            break;
+        }
+        /* IPv4? */
+    } else if (URI_FUNC(IsWellFormedHostIp4)(first, afterLast)) {
+        hostType = URI_HOST_TYPE_IP4;
+    } else {
+        /* RegName! */
+        hostType = URI_HOST_TYPE_REGNAME;
     }
+
+    return URI_FUNC(InternalSetHostMm)(uri, hostType, first, afterLast, memory);
 }
 
 int URI_FUNC(SetHostAuto)(URI_TYPE(Uri) * uri, const URI_CHAR * first,

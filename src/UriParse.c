@@ -1361,14 +1361,12 @@ static const URI_CHAR * URI_FUNC(ParseOwnPortUserInfo)(URI_TYPE(ParserState) * s
 
     case _UT('%'):
         state->uri->portText.first = NULL; /* Not a port, reset */
-        {
-            const URI_CHAR * const afterPct =
-                URI_FUNC(ParsePctEncoded)(state, first, afterLast, memory);
-            if (afterPct == NULL) {
-                return NULL;
-            }
-            return URI_FUNC(ParseOwnUserInfo)(state, afterPct, afterLast, memory);
+        const URI_CHAR * const afterPct =
+            URI_FUNC(ParsePctEncoded)(state, first, afterLast, memory);
+        if (afterPct == NULL) {
+            return NULL;
         }
+        return URI_FUNC(ParseOwnUserInfo)(state, afterPct, afterLast, memory);
 
     case _UT('@'):
         state->uri->hostText.afterLast = NULL; /* Not a host, reset */

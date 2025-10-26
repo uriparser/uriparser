@@ -671,34 +671,29 @@ static UriBool URI_FUNC(PrependNewDotSegment)(URI_TYPE(Uri) * uri,
     assert(uri != NULL);
     assert(memory != NULL);
 
-    {
-        URI_TYPE(PathSegment) * const segment =
-            memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
+    URI_TYPE(PathSegment) * const segment =
+        memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
 
-        if (segment == NULL) {
+    if (segment == NULL) {
+        return URI_FALSE; /* i.e. raise malloc error */
+    }
+
+    segment->next = uri->pathHead;
+
+    URI_TYPE(TextRange) dotRange;
+    dotRange.first = URI_FUNC(ConstPwd);
+    dotRange.afterLast = URI_FUNC(ConstPwd) + 1;
+
+    if (uri->owner == URI_TRUE) {
+        if (URI_FUNC(CopyRange)(&(segment->text), &dotRange, memory) == URI_FALSE) {
+            memory->free(memory, segment);
             return URI_FALSE; /* i.e. raise malloc error */
         }
-
-        segment->next = uri->pathHead;
-
-        {
-            URI_TYPE(TextRange) dotRange;
-            dotRange.first = URI_FUNC(ConstPwd);
-            dotRange.afterLast = URI_FUNC(ConstPwd) + 1;
-
-            if (uri->owner == URI_TRUE) {
-                if (URI_FUNC(CopyRange)(&(segment->text), &dotRange, memory)
-                    == URI_FALSE) {
-                    memory->free(memory, segment);
-                    return URI_FALSE; /* i.e. raise malloc error */
-                }
-            } else {
-                segment->text = dotRange; /* copies all members */
-            }
-        }
-
-        uri->pathHead = segment;
+    } else {
+        segment->text = dotRange; /* copies all members */
     }
+
+    uri->pathHead = segment;
 
     return URI_TRUE;
 }
@@ -730,23 +725,21 @@ UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri, UriMemoryManager * memory
     }
 
     /* Check for troublesome first path segment containing a colon */
-    {
-        UriBool colonFound = URI_FALSE;
-        const URI_CHAR * walker = uri->pathHead->text.first;
+    UriBool colonFound = URI_FALSE;
+    const URI_CHAR * walker = uri->pathHead->text.first;
 
-        while (walker < uri->pathHead->text.afterLast) {
-            if (walker[0] == _UT(':')) {
-                colonFound = URI_TRUE;
-                break;
-            }
-            walker++;
+    while (walker < uri->pathHead->text.afterLast) {
+        if (walker[0] == _UT(':')) {
+            colonFound = URI_TRUE;
+            break;
         }
+        walker++;
+    }
 
-        assert((walker == uri->pathHead->text.afterLast) || (colonFound == URI_TRUE));
+    assert((walker == uri->pathHead->text.afterLast) || (colonFound == URI_TRUE));
 
-        if (colonFound == URI_FALSE) {
-            return URI_TRUE; /* i.e. nothing to do */
-        }
+    if (colonFound == URI_FALSE) {
+        return URI_TRUE; /* i.e. nothing to do */
     }
 
     /* Insert "." segment in front */

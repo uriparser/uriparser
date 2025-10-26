@@ -436,16 +436,14 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
             ptr[2] = 2.2L;
             ptr[3] = 3.3L;
 
-            {
-                long double * const ptrNew =
-                    memory->realloc(memory, ptr, 8 * sizeof(long double));
-                if (ptrNew != NULL) {
-                    ptr = ptrNew;
-                    ptr[4] = 4.4L;
-                    ptr[5] = 5.5L;
-                    ptr[6] = 6.6L;
-                    ptr[7] = 7.7L;
-                }
+            long double * const ptrNew =
+                memory->realloc(memory, ptr, 8 * sizeof(long double));
+            if (ptrNew != NULL) {
+                ptr = ptrNew;
+                ptr[4] = 4.4L;
+                ptr[5] = 5.5L;
+                ptr[6] = 6.6L;
+                ptr[7] = 7.7L;
             }
 
             memory->free(memory, ptr);
