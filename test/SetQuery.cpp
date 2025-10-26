@@ -29,193 +29,203 @@
 namespace {
 
 static void testIsWellFormedQuery(const char * candidate, bool expectedWellFormed) {
-	const char * const first = candidate;
-	const char * const afterLast = (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+    const char * const first = candidate;
+    const char * const afterLast =
+        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
-	const UriBool actualWellFormed = uriIsWellFormedQueryA(first, afterLast);
+    const UriBool actualWellFormed = uriIsWellFormedQueryA(first, afterLast);
 
-	ASSERT_EQ(actualWellFormed, expectedWellFormed);
+    ASSERT_EQ(actualWellFormed, expectedWellFormed);
 }
 
 static UriUriA parseWellFormedUri(const char * text) {
-	UriUriA uri;
-	const int error = uriParseSingleUriA(&uri, text, NULL);
-	// NOTE: we cannot use ASSERT_EQ here because of the outer non-void return type
-	assert(error == URI_SUCCESS);
-	return uri;
+    UriUriA uri;
+    const int error = uriParseSingleUriA(&uri, text, NULL);
+    // NOTE: we cannot use ASSERT_EQ here because of the outer non-void return type
+    assert(error == URI_SUCCESS);
+    return uri;
 }
 
 static void assertUriEqual(const UriUriA * uri, const char * expected) {
-	int charsRequired = -1;
-	ASSERT_EQ(uriToStringCharsRequiredA(uri, &charsRequired), URI_SUCCESS);
-	ASSERT_TRUE(charsRequired >= 0);
+    int charsRequired = -1;
+    ASSERT_EQ(uriToStringCharsRequiredA(uri, &charsRequired), URI_SUCCESS);
+    ASSERT_TRUE(charsRequired >= 0);
 
-	char * const buffer = (char *)malloc(charsRequired + 1);
-	ASSERT_TRUE(buffer != NULL);
+    char * const buffer = (char *)malloc(charsRequired + 1);
+    ASSERT_TRUE(buffer != NULL);
 
-	ASSERT_EQ(uriToStringA(buffer, uri, charsRequired + 1, NULL), URI_SUCCESS);
+    ASSERT_EQ(uriToStringA(buffer, uri, charsRequired + 1, NULL), URI_SUCCESS);
 
-	EXPECT_STREQ(buffer, expected);
+    EXPECT_STREQ(buffer, expected);
 
-	free(buffer);
+    free(buffer);
 }
 
 }  // namespace
 
 TEST(IsWellFormedQuery, Null) {
-	testIsWellFormedQuery(NULL, false);
+    testIsWellFormedQuery(NULL, false);
 }
 
 TEST(IsWellFormedQuery, Empty) {
-	testIsWellFormedQuery("", true);
+    testIsWellFormedQuery("", true);
 }
 
 TEST(IsWellFormedQuery, AllowedCharacters) {
-	// The related grammar subset is this:
-	//
-	//   query       = *( pchar / "/" / "?" )
-	//   pchar       = unreserved / pct-encoded / sub-delims / ":" / "@"
-	//   unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-	//   pct-encoded = "%" HEXDIG HEXDIG
-	//   sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
-	//               / "*" / "+" / "," / ";" / "="
-	//
-	// NOTE: Percent encoding has dedicated tests further down
-	testIsWellFormedQuery(
-			"0123456789"
-			"ABCDEF"
-			"abcdef"
-			"gGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
-			"-._~"
-			"!$&'()*+,;="
-			":@"
-			"/?",
-			true);
+    // The related grammar subset is this:
+    //
+    //   query       = *( pchar / "/" / "?" )
+    //   pchar       = unreserved / pct-encoded / sub-delims / ":" / "@"
+    //   unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
+    //   pct-encoded = "%" HEXDIG HEXDIG
+    //   sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
+    //               / "*" / "+" / "," / ";" / "="
+    //
+    // NOTE: Percent encoding has dedicated tests further down
+    testIsWellFormedQuery("0123456789"
+                          "ABCDEF"
+                          "abcdef"
+                          "gGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
+                          "-._~"
+                          "!$&'()*+,;="
+                          ":@"
+                          "/?",
+                          true);
 }
 
 TEST(IsWellFormedQuery, ForbiddenCharacters) {
-	testIsWellFormedQuery(" ", false);
-	testIsWellFormedQuery("#", false);
+    testIsWellFormedQuery(" ", false);
+    testIsWellFormedQuery("#", false);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingWellFormed) {
-	testIsWellFormedQuery("%" "aa" "%" "AA", true);
+    testIsWellFormedQuery("%"
+                          "aa"
+                          "%"
+                          "AA",
+                          true);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingMalformedCutOff1) {
-	testIsWellFormedQuery("%", false);
+    testIsWellFormedQuery("%", false);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingMalformedCutOff2) {
-	testIsWellFormedQuery("%" "a", false);
+    testIsWellFormedQuery("%"
+                          "a",
+                          false);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingMalformedForbiddenCharacter1) {
-	testIsWellFormedQuery("%" "ga", false);
+    testIsWellFormedQuery("%"
+                          "ga",
+                          false);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingMalformedForbiddenCharacter2) {
-	testIsWellFormedQuery("%" "ag", false);
+    testIsWellFormedQuery("%"
+                          "ag",
+                          false);
 }
 
 TEST(SetQuery, NullUriOnly) {
-	UriUriA * const uri = NULL;
-	const char * const first = "k1=v1";
-	const char * const afterLast = first + strlen(first);
-	ASSERT_EQ(uriSetQueryA(uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA * const uri = NULL;
+    const char * const first = "k1=v1";
+    const char * const afterLast = first + strlen(first);
+    ASSERT_EQ(uriSetQueryA(uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetQuery, NullFirstOnly) {
-	UriUriA uri = {};
-	const char * const query = "k1=v1";
-	const char * const first = NULL;
-	const char * const afterLast = query + strlen(query);
-	ASSERT_EQ(uriSetQueryA(&uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA uri = {};
+    const char * const query = "k1=v1";
+    const char * const first = NULL;
+    const char * const afterLast = query + strlen(query);
+    ASSERT_EQ(uriSetQueryA(&uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetQuery, NullAfterLastOnly) {
-	UriUriA uri = {};
-	const char * const first = "k1=v1";
-	const char * const afterLast = NULL;
-	ASSERT_EQ(uriSetQueryA(&uri, first, afterLast), URI_ERROR_NULL);
+    UriUriA uri = {};
+    const char * const first = "k1=v1";
+    const char * const afterLast = NULL;
+    ASSERT_EQ(uriSetQueryA(&uri, first, afterLast), URI_ERROR_NULL);
 }
 
 TEST(SetQuery, NullValueLeavesOwnerAtFalse) {
-	UriUriA uri = parseWellFormedUri("scheme://host/?query");
-	EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
+    UriUriA uri = parseWellFormedUri("scheme://host/?query");
+    EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
 
-	EXPECT_EQ(uriSetQueryA(&uri, NULL, NULL), URI_SUCCESS);
+    EXPECT_EQ(uriSetQueryA(&uri, NULL, NULL), URI_SUCCESS);
 
-	EXPECT_EQ(uri.owner, URI_FALSE);  // i.e. still false
+    EXPECT_EQ(uri.owner, URI_FALSE);  // i.e. still false
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetQuery, NonNullValueMakesOwner) {
-	UriUriA uri = parseWellFormedUri("scheme://host/?old");
-	const char * const first = "new";
-	const char * const afterLast = first + strlen(first);
-	EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
+    UriUriA uri = parseWellFormedUri("scheme://host/?old");
+    const char * const first = "new";
+    const char * const afterLast = first + strlen(first);
+    EXPECT_EQ(uri.owner, URI_FALSE);  // self-test
 
-	EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_SUCCESS);
 
-	EXPECT_EQ(uri.owner, URI_TRUE);  // i.e. now owned
+    EXPECT_EQ(uri.owner, URI_TRUE);  // i.e. now owned
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetQuery, NullValueApplied) {
-	UriUriA uri = parseWellFormedUri("scheme://host/?query");
+    UriUriA uri = parseWellFormedUri("scheme://host/?query");
 
-	EXPECT_EQ(uriSetQueryA(&uri, NULL, NULL), URI_SUCCESS);
+    EXPECT_EQ(uriSetQueryA(&uri, NULL, NULL), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://host/");
+    assertUriEqual(&uri, "scheme://host/");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetQuery, NonNullValueAppliedEmpty) {
-	UriUriA uri = parseWellFormedUri("scheme://host/?query");
-	const char * const empty = "";
+    UriUriA uri = parseWellFormedUri("scheme://host/?query");
+    const char * const empty = "";
 
-	EXPECT_EQ(uriSetQueryA(&uri, empty, empty), URI_SUCCESS);
+    EXPECT_EQ(uriSetQueryA(&uri, empty, empty), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://host/?");
+    assertUriEqual(&uri, "scheme://host/?");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetQuery, NonNullValueAppliedNonEmpty) {
-	UriUriA uri = parseWellFormedUri("scheme://host/?old");
-	const char * const first = "new";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://host/?old");
+    const char * const first = "new";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "scheme://host/?new");
+    assertUriEqual(&uri, "scheme://host/?new");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetQuery, MalformedValueRejected) {
-	UriUriA uri = parseWellFormedUri("scheme://host/?query");
-	const char * const first = "not well-formed";
-	const char * const afterLast = first + strlen(first);
+    UriUriA uri = parseWellFormedUri("scheme://host/?query");
+    const char * const first = "not well-formed";
+    const char * const afterLast = first + strlen(first);
 
-	EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_ERROR_SYNTAX);
+    EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_ERROR_SYNTAX);
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }
 
 TEST(SetQuery, UriWithoutHostTolerated) {
-	UriUriA uri = parseWellFormedUri("/no/host/here");
-	const char * const first = "k1=v1";
-	const char * const afterLast = first + strlen(first);
-	EXPECT_TRUE(uri.hostText.first == NULL);  // self-test
+    UriUriA uri = parseWellFormedUri("/no/host/here");
+    const char * const first = "k1=v1";
+    const char * const afterLast = first + strlen(first);
+    EXPECT_TRUE(uri.hostText.first == NULL);  // self-test
 
-	EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_SUCCESS);
+    EXPECT_EQ(uriSetQueryA(&uri, first, afterLast), URI_SUCCESS);
 
-	assertUriEqual(&uri, "/no/host/here?k1=v1");
+    assertUriEqual(&uri, "/no/host/here?k1=v1");
 
-	uriFreeUriMembersA(&uri);
+    uriFreeUriMembersA(&uri);
 }

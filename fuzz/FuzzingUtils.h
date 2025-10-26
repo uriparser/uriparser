@@ -13,40 +13,32 @@
 // limitations under the License.
 
 #ifndef URI_FUZZING_UTILS_H
-#define URI_FUZZING_UTILS_H 1
+#  define URI_FUZZING_UTILS_H 1
 
-#include "uriparser/Uri.h"
-#include <fuzzer/FuzzedDataProvider.h>
-#include <string>
-
-
+#  include "uriparser/Uri.h"
+#  include <fuzzer/FuzzedDataProvider.h>
+#  include <string>
 
 using UriString = std::basic_string<URI_CHAR>;
 
-
-
 inline UriString tryConsumeBytesAsString(FuzzedDataProvider & fdp, size_t chars) {
-	UriString str(chars, 0);
-	const size_t bytes = fdp.ConsumeData(str.data(), chars * sizeof(URI_CHAR));
-	// FuzzedDataProvider may provide less data than requested if the input is
-	// insufficiently long. We need to adjust the string length accordingly.
-	str.resize(bytes / sizeof(URI_CHAR));
-	return str;
+    UriString str(chars, 0);
+    const size_t bytes = fdp.ConsumeData(str.data(), chars * sizeof(URI_CHAR));
+    // FuzzedDataProvider may provide less data than requested if the input is
+    // insufficiently long. We need to adjust the string length accordingly.
+    str.resize(bytes / sizeof(URI_CHAR));
+    return str;
 }
-
-
 
 inline UriString consumeRandomLengthString(FuzzedDataProvider & fdp) {
-	const size_t max_chars = fdp.remaining_bytes() / sizeof(URI_CHAR);
-	const size_t chars = fdp.ConsumeIntegralInRange<size_t>(0, max_chars);
-	return tryConsumeBytesAsString(fdp, chars);
+    const size_t max_chars = fdp.remaining_bytes() / sizeof(URI_CHAR);
+    const size_t chars = fdp.ConsumeIntegralInRange<size_t>(0, max_chars);
+    return tryConsumeBytesAsString(fdp, chars);
 }
 
-
-
 inline UriString consumeRemainingBytesAsString(FuzzedDataProvider & fdp) {
-	const size_t chars = fdp.remaining_bytes() / sizeof(URI_CHAR);
-	return tryConsumeBytesAsString(fdp, chars);
+    const size_t chars = fdp.remaining_bytes() / sizeof(URI_CHAR);
+    return tryConsumeBytesAsString(fdp, chars);
 }
 
 #endif /* URI_FUZZING_UTILS_H */

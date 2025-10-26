@@ -27,19 +27,19 @@
  * Parsing a URI with uriparser looks like this:
  *
  * @code
- * 	UriUriA uri;
- * 	const char * const uriString = "file:///home/user/song.mp3";
- * 	const char * errorPos;
+ *     UriUriA uri;
+ *     const char * const uriString = "file:///home/user/song.mp3";
+ *     const char * errorPos;
  *
- * 	if (uriParseSingleUriA(&uri, uriString, &errorPos) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure (no need to call uriFreeUriMembersA) *COMMENT_HACK/
- * 		...
- * 		return ...;
- * 	}
+ *     if (uriParseSingleUriA(&uri, uriString, &errorPos) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure (no need to call uriFreeUriMembersA) *COMMENT_HACK/
+ *         ...
+ *         return ...;
+ *     }
  *
- * 	/COMMENT_HACK* Success *COMMENT_HACK/
- * 	...
- * 	uriFreeUriMembersA(&uri);
+ *     /COMMENT_HACK* Success *COMMENT_HACK/
+ *     ...
+ *     uriFreeUriMembersA(&uri);
  * @endcode
  *
  * While the URI object (::UriUriA) holds information about the recognized
@@ -53,29 +53,29 @@
  * space the resulting string will take:
  *
  * @code
- * 	UriUriA uri;
- * 	char * uriString;
- * 	int charsRequired;
- * 	...
- * 	if (uriToStringCharsRequiredA(&uri, &charsRequired) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
- * 	charsRequired++;
+ *     UriUriA uri;
+ *     char * uriString;
+ *     int charsRequired;
+ *     ...
+ *     if (uriToStringCharsRequiredA(&uri, &charsRequired) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
+ *     charsRequired++;
  * @endcode
  *
  * Now we can tell uriToStringA() to write the string to a given buffer:
  *
  * @code
- * 	uriString = malloc(charsRequired * sizeof(char));
- * 	if (uriString == NULL) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
- * 	if (uriToStringA(uriString, &uri, charsRequired, NULL) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
+ *     uriString = malloc(charsRequired * sizeof(char));
+ *     if (uriString == NULL) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
+ *     if (uriToStringA(uriString, &uri, charsRequired, NULL) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
  * @endcode
  *
  * @remarks
@@ -92,20 +92,20 @@
  * URI to it. In code it looks like this:
  *
  * @code
- * 	UriUriA absoluteDest;
- * 	UriUriA relativeSource;
- * 	UriUriA absoluteBase;
- * 	...
- * 	/COMMENT_HACK* relativeSource holds "../TWO" now *COMMENT_HACK/
- * 	/COMMENT_HACK* absoluteBase holds "file:///one/two/three" now *COMMENT_HACK/
- * 	if (uriAddBaseUriA(&absoluteDest, &relativeSource, &absoluteBase) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		uriFreeUriMembersA(&absoluteDest);
- * 		...
- * 	}
- * 	/COMMENT_HACK* absoluteDest holds "file:///one/TWO" now *COMMENT_HACK/
- * 	...
- * 	uriFreeUriMembersA(&absoluteDest);
+ *     UriUriA absoluteDest;
+ *     UriUriA relativeSource;
+ *     UriUriA absoluteBase;
+ *     ...
+ *     /COMMENT_HACK* relativeSource holds "../TWO" now *COMMENT_HACK/
+ *     /COMMENT_HACK* absoluteBase holds "file:///one/two/three" now *COMMENT_HACK/
+ *     if (uriAddBaseUriA(&absoluteDest, &relativeSource, &absoluteBase) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         uriFreeUriMembersA(&absoluteDest);
+ *         ...
+ *     }
+ *     /COMMENT_HACK* absoluteDest holds "file:///one/TWO" now *COMMENT_HACK/
+ *     ...
+ *     uriFreeUriMembersA(&absoluteDest);
  * @endcode
  *
  * @remarks
@@ -120,20 +120,20 @@
  * carry a scheme
  *
  * @code
- * 	UriUriA dest;
- * 	UriUriA absoluteSource;
- * 	UriUriA absoluteBase;
- * 	...
- * 	/COMMENT_HACK* absoluteSource holds "file:///one/TWO" now *COMMENT_HACK/
- * 	/COMMENT_HACK* absoluteBase holds "file:///one/two/three" now *COMMENT_HACK/
- * 	if (uriRemoveBaseUriA(&dest, &absoluteSource, &absoluteBase, URI_FALSE) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		uriFreeUriMembersA(&dest);
- * 		...
- * 	}
- * 	/COMMENT_HACK* dest holds "../TWO" now *COMMENT_HACK/
- * 	...
- * 	uriFreeUriMembersA(&dest);
+ *     UriUriA dest;
+ *     UriUriA absoluteSource;
+ *     UriUriA absoluteBase;
+ *     ...
+ *     /COMMENT_HACK* absoluteSource holds "file:///one/TWO" now *COMMENT_HACK/
+ *     /COMMENT_HACK* absoluteBase holds "file:///one/two/three" now *COMMENT_HACK/
+ *     if (uriRemoveBaseUriA(&dest, &absoluteSource, &absoluteBase, URI_FALSE) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         uriFreeUriMembersA(&dest);
+ *         ...
+ *     }
+ *     /COMMENT_HACK* dest holds "../TWO" now *COMMENT_HACK/
+ *     ...
+ *     uriFreeUriMembersA(&dest);
  * @endcode
  *
  * The fourth parameter is the domain root mode. With <c>URI_FALSE</c> as above this will produce
@@ -146,17 +146,17 @@
  * i.e. without creating an URI object. 
  *
  * @code
- * 	const char * const absFilename = "E:\\Documents and Settings";
- * 	const int bytesNeeded = 8 + 3 * strlen(absFilename) + 1;
- * 	char * absUri = malloc(bytesNeeded * sizeof(char));
- * 	if (uriWindowsFilenameToUriStringA(absFilename, absUri) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		free(absUri);
- * 		...
- * 	}
- * 	/COMMENT_HACK* absUri is "file:///E:/Documents%20and%20Settings" now *COMMENT_HACK/
- * 	...
- * 	free(absUri);
+ *     const char * const absFilename = "E:\\Documents and Settings";
+ *     const int bytesNeeded = 8 + 3 * strlen(absFilename) + 1;
+ *     char * absUri = malloc(bytesNeeded * sizeof(char));
+ *     if (uriWindowsFilenameToUriStringA(absFilename, absUri) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         free(absUri);
+ *         ...
+ *     }
+ *     /COMMENT_HACK* absUri is "file:///E:/Documents%20and%20Settings" now *COMMENT_HACK/
+ *     ...
+ *     free(absUri);
  * @endcode
  *
  * Conversion works ..
@@ -194,22 +194,22 @@
  * mask to uriNormalizeSyntaxExA():
  *
  * @code
- * 	const unsigned int dirtyParts = uriNormalizeSyntaxMaskRequiredA(&uri);
- * 	if (uriNormalizeSyntaxExA(&uri, dirtyParts) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
+ *     const unsigned int dirtyParts = uriNormalizeSyntaxMaskRequiredA(&uri);
+ *     if (uriNormalizeSyntaxExA(&uri, dirtyParts) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
  * @endcode
  *
  * If you don't want to normalize all parts of the URI you can pass a custom
  * mask as well:
  *
  * @code
- * 	const unsigned int normMask = URI_NORMALIZE_SCHEME | URI_NORMALIZE_USER_INFO;
- * 	if (uriNormalizeSyntaxExA(&uri, normMask) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
+ *     const unsigned int normMask = URI_NORMALIZE_SCHEME | URI_NORMALIZE_USER_INFO;
+ *     if (uriNormalizeSyntaxExA(&uri, normMask) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
  * @endcode
  *
  * Please see ::UriNormalizationMaskEnum for the complete set of flags.
@@ -219,10 +219,10 @@
  * internally:
  *
  * @code
- * 	if (uriNormalizeSyntaxA(&uri) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
+ *     if (uriNormalizeSyntaxA(&uri) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
  * @endcode
  *
  *
@@ -238,17 +238,17 @@
  * To dissect the query part of a just-parsed URI you could write code like this:
  * 
  * @code
- * 	UriUriA uri;
- * 	UriQueryListA * queryList;
- * 	int itemCount;
- * 	...
- * 	if (uriDissectQueryMallocA(&queryList, &itemCount, uri.query.first,
- * 			uri.query.afterLast) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
- * 	...
- * 	uriFreeQueryListA(queryList);
+ *     UriUriA uri;
+ *     UriQueryListA * queryList;
+ *     int itemCount;
+ *     ...
+ *     if (uriDissectQueryMallocA(&queryList, &itemCount, uri.query.first,
+ *             uri.query.afterLast) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
+ *     ...
+ *     uriFreeQueryListA(queryList);
  * @endcode
  *
  * @remarks
@@ -259,25 +259,25 @@
  * To compose a query string from a query list you could write code like this:
  *
  * @code
- * 	int charsRequired;
- * 	int charsWritten;
- * 	char * queryString;
- * 	...
- * 	if (uriComposeQueryCharsRequiredA(queryList, &charsRequired) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
- * 	queryString = malloc((charsRequired + 1) * sizeof(char));
- * 	if (queryString == NULL) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
- * 	if (uriComposeQueryA(queryString, queryList, charsRequired + 1, &charsWritten) != URI_SUCCESS) {
- * 		/COMMENT_HACK* Failure *COMMENT_HACK/
- * 		...
- * 	}
- * 	...
- * 	free(queryString);
+ *     int charsRequired;
+ *     int charsWritten;
+ *     char * queryString;
+ *     ...
+ *     if (uriComposeQueryCharsRequiredA(queryList, &charsRequired) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
+ *     queryString = malloc((charsRequired + 1) * sizeof(char));
+ *     if (queryString == NULL) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
+ *     if (uriComposeQueryA(queryString, queryList, charsRequired + 1, &charsWritten) != URI_SUCCESS) {
+ *         /COMMENT_HACK* Failure *COMMENT_HACK/
+ *         ...
+ *     }
+ *     ...
+ *     free(queryString);
  * @endcode
  *
  *
