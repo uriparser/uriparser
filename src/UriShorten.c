@@ -146,79 +146,79 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
     }
 
     /* clang-format off */
-	/* [01/50]	if (A.scheme != Base.scheme) then */
+    /* [01/50]    if (A.scheme != Base.scheme) then */
     /* clang-format on */
     if (URI_FUNC(CompareRange)(&absSource->scheme, &absBase->scheme)) {
         /* clang-format off */
-	/* [02/50]	   T.scheme    = A.scheme; */
+    /* [02/50]       T.scheme    = A.scheme; */
         /* clang-format on */
         dest->scheme = absSource->scheme;
         /* clang-format off */
-	/* [03/50]	   T.authority = A.authority; */
+    /* [03/50]       T.authority = A.authority; */
         /* clang-format on */
         if (!URI_FUNC(CopyAuthority)(dest, absSource, memory)) {
             return URI_ERROR_MALLOC;
         }
         /* clang-format off */
-	/* [04/50]	   T.path      = A.path; */
+    /* [04/50]       T.path      = A.path; */
         /* clang-format on */
         if (!URI_FUNC(CopyPath)(dest, absSource, memory)) {
             return URI_ERROR_MALLOC;
         }
         /* clang-format off */
-	/* [05/50]	else */
+    /* [05/50]    else */
         /* clang-format on */
     } else {
         /* clang-format off */
-	/* [06/50]	   undef(T.scheme); */
+    /* [06/50]       undef(T.scheme); */
         /* clang-format on */
         /* NOOP */
         /* clang-format off */
-	/* [07/50]	   if (A.authority != Base.authority) then */
+    /* [07/50]       if (A.authority != Base.authority) then */
         /* clang-format on */
         if (!URI_FUNC(EqualsAuthority)(absSource, absBase)) {
             /* clang-format off */
-	/* [08/50]	      T.authority = A.authority; */
+    /* [08/50]          T.authority = A.authority; */
             /* clang-format on */
             if (!URI_FUNC(CopyAuthority)(dest, absSource, memory)) {
                 return URI_ERROR_MALLOC;
             }
             /* clang-format off */
-	/* [09/50]	      T.path      = A.path; */
+    /* [09/50]          T.path      = A.path; */
             /* clang-format on */
             if (!URI_FUNC(CopyPath)(dest, absSource, memory)) {
                 return URI_ERROR_MALLOC;
             }
             /* clang-format off */
-	/* [10/50]	   else */
+    /* [10/50]       else */
             /* clang-format on */
         } else {
             /* clang-format off */
-	/* [11/50]	      if domainRootMode then */
+    /* [11/50]          if domainRootMode then */
             /* clang-format on */
             if (domainRootMode == URI_TRUE) {
                 /* clang-format off */
-	/* [12/50]	         undef(T.authority); */
+    /* [12/50]             undef(T.authority); */
                 /* clang-format on */
                 /* NOOP */
                 /* clang-format off */
-	/* [13/50]	         if (first(A.path) == "") then */
+    /* [13/50]             if (first(A.path) == "") then */
                 /* clang-format on */
                 /* GROUPED */
                 /* clang-format off */
-	/* [14/50]	            T.path   = "/." + A.path; */
+    /* [14/50]                T.path   = "/." + A.path; */
                 /* clang-format on */
                 /* GROUPED */
                 /* clang-format off */
-	/* [15/50]	         else */
+    /* [15/50]             else */
                 /* clang-format on */
                 /* GROUPED */
                 /* clang-format off */
-	/* [16/50]	            T.path   = A.path; */
+    /* [16/50]                T.path   = A.path; */
                 /* clang-format on */
                 /* GROUPED */
                 /* clang-format off */
-	/* [17/50]	         endif; */
+    /* [17/50]             endif; */
                 /* clang-format on */
                 if (!URI_FUNC(CopyPath)(dest, absSource, memory)) {
                     return URI_ERROR_MALLOC;
@@ -229,75 +229,75 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
                     return URI_ERROR_MALLOC;
                 }
                 /* clang-format off */
-	/* [18/50]	      else */
+    /* [18/50]          else */
                 /* clang-format on */
             } else {
                 const URI_TYPE(PathSegment) * sourceSeg = absSource->pathHead;
                 const URI_TYPE(PathSegment) * baseSeg = absBase->pathHead;
                 /* clang-format off */
-	/* [19/50]	         bool pathNaked = true; */
+    /* [19/50]             bool pathNaked = true; */
                 /* clang-format on */
                 UriBool pathNaked = URI_TRUE;
                 /* clang-format off */
-	/* [20/50]	         undef(last(Base.path)); */
+    /* [20/50]             undef(last(Base.path)); */
                 /* clang-format on */
                 /* NOOP */
                 /* clang-format off */
-	/* [21/50]	         T.path = ""; */
+    /* [21/50]             T.path = ""; */
                 /* clang-format on */
                 dest->absolutePath = URI_FALSE;
                 /* clang-format off */
-	/* [22/50]	         while (first(A.path) == first(Base.path)) do */
+    /* [22/50]             while (first(A.path) == first(Base.path)) do */
                 /* clang-format on */
                 while ((sourceSeg != NULL) && (baseSeg != NULL)
                        && !URI_FUNC(CompareRange)(&sourceSeg->text, &baseSeg->text)
                        && !((sourceSeg->text.first == sourceSeg->text.afterLast)
                             && ((sourceSeg->next == NULL) != (baseSeg->next == NULL)))) {
                     /* clang-format off */
-	/* [23/50]	            A.path++; */
+    /* [23/50]                A.path++; */
                     /* clang-format on */
                     sourceSeg = sourceSeg->next;
                     /* clang-format off */
-	/* [24/50]	            Base.path++; */
+    /* [24/50]                Base.path++; */
                     /* clang-format on */
                     baseSeg = baseSeg->next;
                     /* clang-format off */
-	/* [25/50]	         endwhile; */
+    /* [25/50]             endwhile; */
                     /* clang-format on */
                 }
                 /* clang-format off */
-	/* [26/50]	         while defined(first(Base.path)) do */
+    /* [26/50]             while defined(first(Base.path)) do */
                 /* clang-format on */
                 while ((baseSeg != NULL) && (baseSeg->next != NULL)) {
                     /* clang-format off */
-	/* [27/50]	            Base.path++; */
+    /* [27/50]                Base.path++; */
                     /* clang-format on */
                     baseSeg = baseSeg->next;
                     /* clang-format off */
-	/* [28/50]	            T.path += "../"; */
+    /* [28/50]                T.path += "../"; */
                     /* clang-format on */
                     if (!URI_FUNC(AppendSegment)(dest, URI_FUNC(ConstParent),
                                                  URI_FUNC(ConstParent) + 2, memory)) {
                         return URI_ERROR_MALLOC;
                     }
                     /* clang-format off */
-	/* [29/50]	            pathNaked = false; */
+    /* [29/50]                pathNaked = false; */
                     /* clang-format on */
                     pathNaked = URI_FALSE;
                     /* clang-format off */
-	/* [30/50]	         endwhile; */
+    /* [30/50]             endwhile; */
                     /* clang-format on */
                 }
                 /* clang-format off */
-	/* [31/50]	         while defined(first(A.path)) do */
+    /* [31/50]             while defined(first(A.path)) do */
                 /* clang-format on */
                 while (sourceSeg != NULL) {
                     /* clang-format off */
-	/* [32/50]	            if pathNaked then */
+    /* [32/50]                if pathNaked then */
                     /* clang-format on */
                     if (pathNaked == URI_TRUE) {
                         /* clang-format off */
-	/* [33/50]	               if (first(A.path) contains ":") then */
+    /* [33/50]                   if (first(A.path) contains ":") then */
                         /* clang-format on */
                         UriBool containsColon = URI_FALSE;
                         const URI_CHAR * ch = sourceSeg->text.first;
@@ -310,7 +310,7 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
 
                         if (containsColon) {
                             /* clang-format off */
-	/* [34/50]	                  T.path += "./"; */
+    /* [34/50]                      T.path += "./"; */
                             /* clang-format on */
                             if (!URI_FUNC(AppendSegment)(dest, URI_FUNC(ConstPwd),
                                                          URI_FUNC(ConstPwd) + 1,
@@ -318,11 +318,11 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
                                 return URI_ERROR_MALLOC;
                             }
                             /* clang-format off */
-	/* [35/50]	               elseif (first(A.path) == "") then */
+    /* [35/50]                   elseif (first(A.path) == "") then */
                             /* clang-format on */
                         } else if (sourceSeg->text.first == sourceSeg->text.afterLast) {
                             /* clang-format off */
-	/* [36/50]	                  T.path += "/."; */
+    /* [36/50]                      T.path += "/."; */
                             /* clang-format on */
                             if (!URI_FUNC(AppendSegment)(dest, URI_FUNC(ConstPwd),
                                                          URI_FUNC(ConstPwd) + 1,
@@ -330,62 +330,62 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
                                 return URI_ERROR_MALLOC;
                             }
                             /* clang-format off */
-	/* [37/50]	               endif; */
+    /* [37/50]                   endif; */
                             /* clang-format on */
                         }
                         /* clang-format off */
-	/* [38/50]	            endif; */
+    /* [38/50]                endif; */
                         /* clang-format on */
                     }
                     /* clang-format off */
-	/* [39/50]	            T.path += first(A.path); */
+    /* [39/50]                T.path += first(A.path); */
                     /* clang-format on */
                     if (!URI_FUNC(AppendSegment)(dest, sourceSeg->text.first,
                                                  sourceSeg->text.afterLast, memory)) {
                         return URI_ERROR_MALLOC;
                     }
                     /* clang-format off */
-	/* [40/50]	            pathNaked = false; */
+    /* [40/50]                pathNaked = false; */
                     /* clang-format on */
                     pathNaked = URI_FALSE;
                     /* clang-format off */
-	/* [41/50]	            A.path++; */
+    /* [41/50]                A.path++; */
                     /* clang-format on */
                     sourceSeg = sourceSeg->next;
                     /* clang-format off */
-	/* [42/50]	            if defined(first(A.path)) then */
+    /* [42/50]                if defined(first(A.path)) then */
                     /* clang-format on */
                     /* NOOP */
                     /* clang-format off */
-	/* [43/50]	               T.path += + "/"; */
+    /* [43/50]                   T.path += + "/"; */
                     /* clang-format on */
                     /* NOOP */
                     /* clang-format off */
-	/* [44/50]	            endif; */
+    /* [44/50]                endif; */
                     /* clang-format on */
                     /* NOOP */
                     /* clang-format off */
-	/* [45/50]	         endwhile; */
+    /* [45/50]             endwhile; */
                     /* clang-format on */
                 }
                 /* clang-format off */
-	/* [46/50]	      endif; */
+    /* [46/50]          endif; */
                 /* clang-format on */
             }
             /* clang-format off */
-	/* [47/50]	   endif; */
+    /* [47/50]       endif; */
             /* clang-format on */
         }
         /* clang-format off */
-	/* [48/50]	endif; */
+    /* [48/50]    endif; */
         /* clang-format on */
     }
     /* clang-format off */
-	/* [49/50]	T.query     = A.query; */
+    /* [49/50]    T.query     = A.query; */
     /* clang-format on */
     dest->query = absSource->query;
     /* clang-format off */
-	/* [50/50]	T.fragment  = A.fragment; */
+    /* [50/50]    T.fragment  = A.fragment; */
     /* clang-format on */
     dest->fragment = absSource->fragment;
 

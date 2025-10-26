@@ -170,39 +170,39 @@ static int URI_FUNC(AddBaseUriImpl)(URI_TYPE(Uri) * absDest,
     }
 
     /* clang-format off */
-	/* [00/32] 	-- A non-strict parser may ignore a scheme in the reference */
-	/* [00/32] 	-- if it is identical to the base URI's scheme. */
-	/* [00/32] 	if ((not strict) and (R.scheme == Base.scheme)) then */
+    /* [00/32]     -- A non-strict parser may ignore a scheme in the reference */
+    /* [00/32]     -- if it is identical to the base URI's scheme. */
+    /* [00/32]     if ((not strict) and (R.scheme == Base.scheme)) then */
     /* clang-format on */
     relSourceHasScheme = (relSource->scheme.first != NULL) ? URI_TRUE : URI_FALSE;
     if ((options & URI_RESOLVE_IDENTICAL_SCHEME_COMPAT) && (absBase->scheme.first != NULL)
         && (relSource->scheme.first != NULL)
         && (0 == URI_FUNC(CompareRange)(&(absBase->scheme), &(relSource->scheme)))) {
         /* clang-format off */
-	/* [00/32] 		undefine(R.scheme); */
+    /* [00/32]         undefine(R.scheme); */
         /* clang-format on */
         relSourceHasScheme = URI_FALSE;
         /* clang-format off */
-	/* [00/32] 	endif; */
+    /* [00/32]     endif; */
         /* clang-format on */
     }
 
     /* clang-format off */
-	/* [01/32]	if defined(R.scheme) then */
+    /* [01/32]    if defined(R.scheme) then */
     /* clang-format on */
     if (relSourceHasScheme) {
         /* clang-format off */
-	/* [02/32]		T.scheme = R.scheme; */
+    /* [02/32]        T.scheme = R.scheme; */
         /* clang-format on */
         absDest->scheme = relSource->scheme;
         /* clang-format off */
-	/* [03/32]		T.authority = R.authority; */
+    /* [03/32]        T.authority = R.authority; */
         /* clang-format on */
         if (!URI_FUNC(CopyAuthority)(absDest, relSource, memory)) {
             return URI_ERROR_MALLOC;
         }
         /* clang-format off */
-	/* [04/32]		T.path = remove_dot_segments(R.path); */
+    /* [04/32]        T.path = remove_dot_segments(R.path); */
         /* clang-format on */
         if (!URI_FUNC(CopyPath)(absDest, relSource, memory)) {
             return URI_ERROR_MALLOC;
@@ -211,25 +211,25 @@ static int URI_FUNC(AddBaseUriImpl)(URI_TYPE(Uri) * absDest,
             return URI_ERROR_MALLOC;
         }
         /* clang-format off */
-	/* [05/32]		T.query = R.query; */
+    /* [05/32]        T.query = R.query; */
         /* clang-format on */
         absDest->query = relSource->query;
         /* clang-format off */
-	/* [06/32]	else */
+    /* [06/32]    else */
         /* clang-format on */
     } else {
         /* clang-format off */
-	/* [07/32]		if defined(R.authority) then */
+    /* [07/32]        if defined(R.authority) then */
         /* clang-format on */
         if (URI_FUNC(HasHost)(relSource)) {
             /* clang-format off */
-	/* [08/32]			T.authority = R.authority; */
+    /* [08/32]            T.authority = R.authority; */
             /* clang-format on */
             if (!URI_FUNC(CopyAuthority)(absDest, relSource, memory)) {
                 return URI_ERROR_MALLOC;
             }
             /* clang-format off */
-	/* [09/32]			T.path = remove_dot_segments(R.path); */
+    /* [09/32]            T.path = remove_dot_segments(R.path); */
             /* clang-format on */
             if (!URI_FUNC(CopyPath)(absDest, relSource, memory)) {
                 return URI_ERROR_MALLOC;
@@ -238,60 +238,60 @@ static int URI_FUNC(AddBaseUriImpl)(URI_TYPE(Uri) * absDest,
                 return URI_ERROR_MALLOC;
             }
             /* clang-format off */
-	/* [10/32]			T.query = R.query; */
+    /* [10/32]            T.query = R.query; */
             /* clang-format on */
             absDest->query = relSource->query;
             /* clang-format off */
-	/* [11/32]		else */
+    /* [11/32]        else */
             /* clang-format on */
         } else {
             /* clang-format off */
-	/* [28/32]			T.authority = Base.authority; */
+    /* [28/32]            T.authority = Base.authority; */
             /* clang-format on */
             if (!URI_FUNC(CopyAuthority)(absDest, absBase, memory)) {
                 return URI_ERROR_MALLOC;
             }
             /* clang-format off */
-	/* [12/32]			if (R.path == "") then */
+    /* [12/32]            if (R.path == "") then */
             /* clang-format on */
             if (relSource->pathHead == NULL && !relSource->absolutePath) {
                 /* clang-format off */
-	/* [13/32]				T.path = Base.path; */
+    /* [13/32]                T.path = Base.path; */
                 /* clang-format on */
                 if (!URI_FUNC(CopyPath)(absDest, absBase, memory)) {
                     return URI_ERROR_MALLOC;
                 }
                 /* clang-format off */
-	/* [14/32]				if defined(R.query) then */
+    /* [14/32]                if defined(R.query) then */
                 /* clang-format on */
                 if (relSource->query.first != NULL) {
                     /* clang-format off */
-	/* [15/32]					T.query = R.query; */
+    /* [15/32]                    T.query = R.query; */
                     /* clang-format on */
                     absDest->query = relSource->query;
                     /* clang-format off */
-	/* [16/32]				else */
+    /* [16/32]                else */
                     /* clang-format on */
                 } else {
                     /* clang-format off */
-	/* [17/32]					T.query = Base.query; */
+    /* [17/32]                    T.query = Base.query; */
                     /* clang-format on */
                     absDest->query = absBase->query;
                     /* clang-format off */
-	/* [18/32]				endif; */
+    /* [18/32]                endif; */
                     /* clang-format on */
                 }
                 /* clang-format off */
-	/* [19/32]			else */
+    /* [19/32]            else */
                 /* clang-format on */
             } else {
                 /* clang-format off */
-	/* [20/32]				if (R.path starts-with "/") then */
+    /* [20/32]                if (R.path starts-with "/") then */
                 /* clang-format on */
                 if (relSource->absolutePath) {
                     int res;
                     /* clang-format off */
-	/* [21/32]					T.path = remove_dot_segments(R.path); */
+    /* [21/32]                    T.path = remove_dot_segments(R.path); */
                     /* clang-format on */
                     if (!URI_FUNC(CopyPath)(absDest, relSource, memory)) {
                         return URI_ERROR_MALLOC;
@@ -304,11 +304,11 @@ static int URI_FUNC(AddBaseUriImpl)(URI_TYPE(Uri) * absDest,
                         return URI_ERROR_MALLOC;
                     }
                     /* clang-format off */
-	/* [22/32]				else */
+    /* [22/32]                else */
                     /* clang-format on */
                 } else {
                     /* clang-format off */
-	/* [23/32]					T.path = merge(Base.path, R.path); */
+    /* [23/32]                    T.path = merge(Base.path, R.path); */
                     /* clang-format on */
                     if (!URI_FUNC(CopyPath)(absDest, absBase, memory)) {
                         return URI_ERROR_MALLOC;
@@ -317,7 +317,7 @@ static int URI_FUNC(AddBaseUriImpl)(URI_TYPE(Uri) * absDest,
                         return URI_ERROR_MALLOC;
                     }
                     /* clang-format off */
-	/* [24/32]					T.path = remove_dot_segments(T.path); */
+    /* [24/32]                    T.path = remove_dot_segments(T.path); */
                     /* clang-format on */
                     if (!URI_FUNC(RemoveDotSegmentsAbsolute)(absDest, memory)) {
                         return URI_ERROR_MALLOC;
@@ -327,31 +327,31 @@ static int URI_FUNC(AddBaseUriImpl)(URI_TYPE(Uri) * absDest,
                         return URI_ERROR_MALLOC;
                     }
                     /* clang-format off */
-	/* [25/32]				endif; */
-							}
-	/* clang-format off */
-	/* [26/32]				T.query = R.query; */
+    /* [25/32]                endif; */
+                            }
+    /* clang-format off */
+    /* [26/32]                T.query = R.query; */
                 /* clang-format on */
                 absDest->query = relSource->query;
                 /* clang-format off */
-	/* [27/32]			endif; */
+    /* [27/32]            endif; */
                 /* clang-format on */
             }
             URI_FUNC(FixEmptyTrailSegment)(absDest, memory);
             /* clang-format off */
-	/* [29/32]		endif; */
+    /* [29/32]        endif; */
             /* clang-format on */
         }
         /* clang-format off */
-	/* [30/32]		T.scheme = Base.scheme; */
+    /* [30/32]        T.scheme = Base.scheme; */
         /* clang-format on */
         absDest->scheme = absBase->scheme;
         /* clang-format off */
-	/* [31/32]	endif; */
+    /* [31/32]    endif; */
         /* clang-format on */
     }
     /* clang-format off */
-	/* [32/32]	T.fragment = R.fragment; */
+    /* [32/32]    T.fragment = R.fragment; */
     /* clang-format on */
     absDest->fragment = relSource->fragment;
 
