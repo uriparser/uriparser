@@ -436,7 +436,6 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
             ptr[2] = 2.2L;
             ptr[3] = 3.3L;
 
-            {
                 long double * const ptrNew =
                     memory->realloc(memory, ptr, 8 * sizeof(long double));
                 if (ptrNew != NULL) {
@@ -446,7 +445,6 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
                     ptr[6] = 6.6L;
                     ptr[7] = 7.7L;
                 }
-            }
 
             memory->free(memory, ptr);
         }

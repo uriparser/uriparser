@@ -122,7 +122,6 @@ int main(int argc, char * argv[]) {
             if (uri.fragment.first) {
                 printf("fragment:     %.*s\n", RANGE(uri.fragment));
             }
-            {
                 const char * const absolutePathLabel = "absolutePath: ";
                 printf("%s%s\n", absolutePathLabel,
                        (uri.absolutePath == URI_TRUE) ? "true" : "false");
@@ -130,7 +129,6 @@ int main(int argc, char * argv[]) {
                     printf("%*s%s\n", (int)strlen(absolutePathLabel), "",
                            "(always false for URIs with host)");
                 }
-            }
         }
         printf("\n");
 

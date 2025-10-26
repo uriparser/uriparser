@@ -131,7 +131,6 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
         }
     }
 
-    {
         /* Clear old value */
         const UriBool hadHostBefore = URI_FUNC(HasHost)(uri);
         if (uri->hostData.ipFuture.first != NULL) {
@@ -169,16 +168,13 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
             if (hadHostBefore == URI_TRUE) {
                 uri->absolutePath = URI_TRUE;
 
-                {
                     const UriBool success =
                         URI_FUNC(EnsureThatPathIsNotMistakenForHost)(uri, memory);
                     return (success == URI_TRUE) ? URI_SUCCESS : URI_ERROR_MALLOC;
-                }
             }
 
             return URI_SUCCESS;
         }
-    }
 
     assert(first != NULL);
 
@@ -193,7 +189,6 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
     assert(uri->owner == URI_TRUE);
 
     /* Apply new value; NOTE that .hostText is set for all four host types */
-    {
         URI_TYPE(TextRange) sourceRange;
         sourceRange.first = first;
         sourceRange.afterLast = afterLast;
@@ -213,7 +208,6 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
                 return URI_ERROR_MALLOC;
             }
 
-            {
                 const int res = URI_FUNC(ParseIpFourAddress)(uri->hostData.ip4->data,
                                                              first, afterLast);
 #  if defined(NDEBUG)
@@ -222,7 +216,6 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
                 assert(res
                        == URI_SUCCESS); /* because checked for well-formedness earlier */
 #  endif
-            }
         } break;
         case URI_HOST_TYPE_IP6: {
             uri->hostData.ip6 = memory->malloc(memory, sizeof(UriIp6));
@@ -230,7 +223,6 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
                 return URI_ERROR_MALLOC;
             }
 
-            {
                 const int res = URI_FUNC(ParseIpSixAddressMm)(uri->hostData.ip6, first,
                                                               afterLast, memory);
                 assert((res == URI_SUCCESS)
@@ -239,7 +231,6 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
                 if (res != URI_SUCCESS) {
                     return res;
                 }
-            }
         } break;
         case URI_HOST_TYPE_IPFUTURE:
             uri->hostData.ipFuture.first = uri->hostText.first;
@@ -250,7 +241,6 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
         default:
             assert(0 && "Unsupported URI host type");
         }
-    }
 
     return URI_SUCCESS;
 }

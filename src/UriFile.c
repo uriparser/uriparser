@@ -140,7 +140,6 @@ static URI_INLINE int URI_FUNC(UriStringToFilename)(const URI_CHAR * uriString,
         return URI_ERROR_NULL;
     }
 
-    {
         const UriBool file_unknown_slashes =
             URI_STRNCMP(uriString, _UT("file:"), URI_STRLEN(_UT("file:"))) == 0;
         const UriBool file_one_or_more_slashes =
@@ -189,7 +188,6 @@ static URI_INLINE int URI_FUNC(UriStringToFilename)(const URI_CHAR * uriString,
 
         memcpy(unescape_target, uriString + charsToSkip, charsToCopy * sizeof(URI_CHAR));
         URI_FUNC(UnescapeInPlaceEx)(filename, URI_FALSE, URI_BR_DONT_TOUCH);
-    }
 
     /* Convert forward slashes to backslashes */
     if (!toUnix) {

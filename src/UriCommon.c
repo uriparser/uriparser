@@ -671,7 +671,6 @@ static UriBool URI_FUNC(PrependNewDotSegment)(URI_TYPE(Uri) * uri,
     assert(uri != NULL);
     assert(memory != NULL);
 
-    {
         URI_TYPE(PathSegment) * const segment =
             memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
 
@@ -681,7 +680,6 @@ static UriBool URI_FUNC(PrependNewDotSegment)(URI_TYPE(Uri) * uri,
 
         segment->next = uri->pathHead;
 
-        {
             URI_TYPE(TextRange) dotRange;
             dotRange.first = URI_FUNC(ConstPwd);
             dotRange.afterLast = URI_FUNC(ConstPwd) + 1;
@@ -695,10 +693,8 @@ static UriBool URI_FUNC(PrependNewDotSegment)(URI_TYPE(Uri) * uri,
             } else {
                 segment->text = dotRange; /* copies all members */
             }
-        }
 
         uri->pathHead = segment;
-    }
 
     return URI_TRUE;
 }
@@ -730,7 +726,6 @@ UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri, UriMemoryManager * memory
     }
 
     /* Check for troublesome first path segment containing a colon */
-    {
         UriBool colonFound = URI_FALSE;
         const URI_CHAR * walker = uri->pathHead->text.first;
 
@@ -747,7 +742,6 @@ UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri, UriMemoryManager * memory
         if (colonFound == URI_FALSE) {
             return URI_TRUE; /* i.e. nothing to do */
         }
-    }
 
     /* Insert "." segment in front */
     return URI_FUNC(PrependNewDotSegment)(uri, memory);

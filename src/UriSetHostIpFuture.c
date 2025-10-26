@@ -89,7 +89,6 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
     }
 
     /* Are we dealing with IPvFuture input? */
-    {
         /* Assemble "//[..]" input wrap for upcoming parse as a URI
          * NOTE: If the input contains closing "]" on its own, the resulting
          *       string will not be valid URI syntax, and hence there is
@@ -102,7 +101,6 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
             return URI_ERROR_MALLOC;
         }
 
-        {
             const size_t candidateLenChars = 3 + inputLenChars + 1;
 
             /* Detect overflow */
@@ -110,7 +108,6 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
                 return URI_ERROR_MALLOC;
             }
 
-            {
                 URI_CHAR * const candidate =
                     memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
 
@@ -124,7 +121,6 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
                        2 * sizeof(URI_CHAR)); /* includes zero terminator */
 
                 /* Parse as an RFC 3986 URI */
-                {
                     URI_TYPE(Uri) uri;
                     const int res = URI_FUNC(ParseSingleUriExMm)(
                         &uri, candidate, candidate + candidateLenChars, NULL, memory);
@@ -140,10 +136,6 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
                     memory->free(memory, candidate);
 
                     return res;
-                }
-            }
-        }
-    }
 }
 
 int URI_FUNC(IsWellFormedHostIpFuture)(const URI_CHAR * first,

@@ -80,7 +80,6 @@ int URI_FUNC(SetHostAutoMm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,
     }
 
     /* Auto-detect type and then apply */
-    {
         UriHostType hostType;
 
         /* IPv6 or IPvFuture? */
@@ -115,7 +114,6 @@ int URI_FUNC(SetHostAutoMm)(URI_TYPE(Uri) * uri, const URI_CHAR * first,
         }
 
         return URI_FUNC(InternalSetHostMm)(uri, hostType, first, afterLast, memory);
-    }
 }
 
 int URI_FUNC(SetHostAuto)(URI_TYPE(Uri) * uri, const URI_CHAR * first,

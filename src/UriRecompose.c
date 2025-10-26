@@ -520,7 +520,6 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                     /* clang-format off */
     /* [13/19]     append query to result; */
                     /* clang-format on */
-                    {
                         const int charsToWrite =
                             (int)(uri->query.afterLast - uri->query.first);
                         if (dest != NULL) {
@@ -538,7 +537,6 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                         } else {
                             (*charsRequired) += charsToWrite;
                         }
-                    }
                     /* clang-format off */
     /* [14/19] endif; */
                     /* clang-format on */
@@ -567,7 +565,6 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                     /* clang-format off */
     /* [17/19]     append fragment to result; */
                     /* clang-format on */
-                    {
                         const int charsToWrite =
                             (int)(uri->fragment.afterLast - uri->fragment.first);
                         if (dest != NULL) {
@@ -585,7 +582,6 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                         } else {
                             (*charsRequired) += charsToWrite;
                         }
-                    }
                     /* clang-format off */
     /* [18/19] endif; */
                     /* clang-format on */

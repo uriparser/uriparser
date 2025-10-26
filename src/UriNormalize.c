@@ -524,7 +524,6 @@ static const URI_CHAR * URI_FUNC(PastLeadingZeros)(const URI_CHAR * first,
     assert(afterLast != NULL);
     assert(first != afterLast);
 
-    {
         /* Find the first non-zero character */
         const URI_CHAR * remainderFirst = first;
         while ((remainderFirst < afterLast) && (remainderFirst[0] == _UT('0'))) {
@@ -541,7 +540,6 @@ static const URI_CHAR * URI_FUNC(PastLeadingZeros)(const URI_CHAR * first,
         }
 
         return remainderFirst;
-    }
 }
 
 static void URI_FUNC(DropLeadingZerosInplace)(URI_CHAR * first,
@@ -554,7 +552,6 @@ static void URI_FUNC(DropLeadingZerosInplace)(URI_CHAR * first,
         return;
     }
 
-    {
         const URI_CHAR * const remainderFirst =
             URI_FUNC(PastLeadingZeros)(first, *afterLast);
 
@@ -564,7 +561,6 @@ static void URI_FUNC(DropLeadingZerosInplace)(URI_CHAR * first,
             first[remainderLen] = _UT('\0');
             *afterLast = first + remainderLen;
         }
-    }
 }
 
 static void URI_FUNC(AdvancePastLeadingZeros)(const URI_CHAR ** first,
@@ -577,13 +573,11 @@ static void URI_FUNC(AdvancePastLeadingZeros)(const URI_CHAR ** first,
         return;
     }
 
-    {
         const URI_CHAR * const remainderFirst =
             URI_FUNC(PastLeadingZeros)(*first, afterLast);
 
         /* Cut off leading zeros */
         *first = remainderFirst;
-    }
 }
 
 static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,

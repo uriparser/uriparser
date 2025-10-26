@@ -93,7 +93,6 @@ int URI_FUNC(ParseIpSixAddressMm)(UriIp6 * output, const URI_CHAR * first,
     }
 
     /* Are we dealing with IPv6 input? */
-    {
         /* Assemble "//[..]" input wrap for upcoming parse as a URI
          * NOTE: If the input contains closing "]" on its own, the resulting
          *       string will not be valid URI syntax, and hence there is
@@ -111,7 +110,6 @@ int URI_FUNC(ParseIpSixAddressMm)(UriIp6 * output, const URI_CHAR * first,
                2 * sizeof(URI_CHAR)); /* includes zero terminator */
 
         /* Parse as an RFC 3986 URI */
-        {
             const size_t candidateLenChars = 3 + inputLenChars + 1;
             URI_TYPE(Uri) uri;
             const int res = URI_FUNC(ParseSingleUriExMm)(
@@ -131,8 +129,6 @@ int URI_FUNC(ParseIpSixAddressMm)(UriIp6 * output, const URI_CHAR * first,
             }
 
             return res;
-        }
-    }
 }
 
 int URI_FUNC(ParseIpSixAddress)(UriIp6 * output, const URI_CHAR * first,
