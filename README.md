@@ -7,7 +7,7 @@
 uriparser is a
 strictly [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) compliant
 URI parsing and handling library
-written in C89 ("ANSI C").
+written in C99.
 uriparser is cross-platform,
 fast,
 supports both `char` and `wchar_t`, and

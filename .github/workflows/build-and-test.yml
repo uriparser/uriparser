@@ -116,7 +116,7 @@ jobs:
               -Wextra
               -pedantic
             )
-            CFLAGS="${compile_flags[*]} -std=c89"
+            CFLAGS="${compile_flags[*]} -std=c99"
             CXXFLAGS="${compile_flags[*]} -std=c++98"
             LDFLAGS='-g ${{ matrix.ldflags }}'
             cmake_args=(
