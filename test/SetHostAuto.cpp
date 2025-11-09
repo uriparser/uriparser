@@ -115,6 +115,26 @@ TEST(SetHostAuto, NullValueApplied) {
     uriFreeUriMembersA(&uri);
 }
 
+TEST(SetHostAuto, NullValueAppliedNoPath) {
+    UriUriA uri = parseWellFormedUri("https://example.com");
+
+    EXPECT_EQ(uriSetHostAutoA(&uri, NULL, NULL), URI_SUCCESS);
+
+    assertUriEqual(&uri, "https:");
+
+    uriFreeUriMembersA(&uri);
+}
+
+TEST(SetHostAuto, NullValueAppliedNoPath2) {
+    UriUriA uri = parseWellFormedUri("https://example.com?foo=bar");
+
+    EXPECT_EQ(uriSetHostAutoA(&uri, NULL, NULL), URI_SUCCESS);
+
+    assertUriEqual(&uri, "https:?foo=bar");
+
+    uriFreeUriMembersA(&uri);
+}
+
 TEST(SetHostAuto, NonNullValueAppliedEmpty) {
     UriUriA uri = parseWellFormedUri("scheme://host/path");
     const char * const empty = "";
