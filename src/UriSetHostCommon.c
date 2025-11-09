@@ -166,7 +166,9 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
     if (first == NULL) {
         /* Yes, but disambiguate as needed */
         if (hadHostBefore == URI_TRUE) {
-            uri->absolutePath = URI_TRUE;
+            if (uri->pathHead != NULL) {
+                uri->absolutePath = URI_TRUE;
+            }
 
             const UriBool success =
                 URI_FUNC(EnsureThatPathIsNotMistakenForHost)(uri, memory);
