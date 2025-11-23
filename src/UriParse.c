@@ -267,11 +267,7 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseAuthority)(URI_TYPE(ParserState
         return URI_FUNC(ParseAuthorityTwo)(state, afterIpLit2, afterLast);
     }
 
-    case _UT('%'):
-    case _UT(':'):
-    case _UT('@'):
-    case URI_SET_SUB_DELIMS(_UT):
-    case URI_SET_UNRESERVED(_UT):
+    case URI_SET_PCHAR(_UT):
         state->uri->userInfo.first = first; /* USERINFO BEGIN */
         return URI_FUNC(ParseOwnHostUserInfoNz)(state, first, afterLast, memory);
 
@@ -345,11 +341,7 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseHierPart)(URI_TYPE(ParserState)
     }
 
     switch (*first) {
-    case _UT('%'):
-    case _UT(':'):
-    case _UT('@'):
-    case URI_SET_SUB_DELIMS(_UT):
-    case URI_SET_UNRESERVED(_UT):
+    case URI_SET_PCHAR(_UT):
         return URI_FUNC(ParsePathRootless)(state, first, afterLast, memory);
 
     case _UT('/'):
@@ -1030,11 +1022,7 @@ URI_FUNC(ParseOwnHostUserInfo)(URI_TYPE(ParserState) * state, const URI_CHAR * f
     }
 
     switch (*first) {
-    case _UT('%'):
-    case _UT(':'):
-    case _UT('@'):
-    case URI_SET_SUB_DELIMS(_UT):
-    case URI_SET_UNRESERVED(_UT):
+    case URI_SET_PCHAR(_UT):
         return URI_FUNC(ParseOwnHostUserInfoNz)(state, first, afterLast, memory);
 
     default:
@@ -1302,11 +1290,7 @@ URI_FUNC(ParsePathAbsNoLeadSlash)(URI_TYPE(ParserState) * state, const URI_CHAR 
     }
 
     switch (*first) {
-    case _UT('%'):
-    case _UT(':'):
-    case _UT('@'):
-    case URI_SET_SUB_DELIMS(_UT): {
-    case URI_SET_UNRESERVED(_UT): {
+    case URI_SET_PCHAR(_UT): {
         const URI_CHAR * const afterSegmentNz =
             URI_FUNC(ParseSegmentNz)(state, first, afterLast, memory);
         if (afterSegmentNz == NULL) {
@@ -1490,11 +1474,7 @@ static const URI_CHAR * URI_FUNC(ParseQueryFrag)(URI_TYPE(ParserState) * state,
     }
 
     switch (*first) {
-    case _UT('%'):
-    case _UT(':'):
-    case _UT('@'):
-    case URI_SET_SUB_DELIMS(_UT): {
-    case URI_SET_UNRESERVED(_UT): {
+    case URI_SET_PCHAR(_UT): {
         const URI_CHAR * const afterPchar =
             URI_FUNC(ParsePchar)(state, first, afterLast, memory);
         if (afterPchar == NULL) {
@@ -1525,11 +1505,7 @@ static const URI_CHAR * URI_FUNC(ParseSegment)(URI_TYPE(ParserState) * state,
     }
 
     switch (*first) {
-    case _UT('%'):
-    case _UT(':'):
-    case _UT('@'):
-    case URI_SET_SUB_DELIMS(_UT): {
-    case URI_SET_UNRESERVED(_UT): {
+    case URI_SET_PCHAR(_UT): {
         const URI_CHAR * const afterPchar =
             URI_FUNC(ParsePchar)(state, first, afterLast, memory);
         if (afterPchar == NULL) {
