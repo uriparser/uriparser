@@ -267,20 +267,10 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseAuthority)(URI_TYPE(ParserState
         return URI_FUNC(ParseAuthorityTwo)(state, afterIpLit2, afterLast);
     }
 
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
     case _UT('@'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         state->uri->userInfo.first = first; /* USERINFO BEGIN */
         return URI_FUNC(ParseOwnHostUserInfoNz)(state, first, afterLast, memory);
@@ -355,20 +345,10 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseHierPart)(URI_TYPE(ParserState)
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
     case _UT('@'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         return URI_FUNC(ParsePathRootless)(state, first, afterLast, memory);
 
@@ -395,18 +375,8 @@ static const URI_CHAR * URI_FUNC(ParseIpFutLoop)(URI_TYPE(ParserState) * state,
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         return URI_FUNC(ParseIpFutStopGo)(state, first + 1, afterLast, memory);
 
@@ -429,18 +399,8 @@ static const URI_CHAR * URI_FUNC(ParseIpFutStopGo)(URI_TYPE(ParserState) * state
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         return URI_FUNC(ParseIpFutLoop)(state, first, afterLast, memory);
 
@@ -902,17 +862,7 @@ static const URI_CHAR * URI_FUNC(ParseMustBeSegmentNzNc)(URI_TYPE(ParserState) *
     }
 
     case _UT('@'):
-    case _UT('!'):
-    case _UT('$'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         return URI_FUNC(ParseMustBeSegmentNzNc)(state, first + 1, afterLast, memory);
 
@@ -1020,18 +970,8 @@ static const URI_CHAR * URI_FUNC(ParseOwnHost2)(URI_TYPE(ParserState) * state,
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT): {
         const URI_CHAR * const afterPctSubUnres =
             URI_FUNC(ParsePctSubUnres)(state, first, afterLast, memory);
@@ -1090,20 +1030,10 @@ URI_FUNC(ParseOwnHostUserInfo)(URI_TYPE(ParserState) * state, const URI_CHAR * f
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
     case _UT('@'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         return URI_FUNC(ParseOwnHostUserInfoNz)(state, first, afterLast, memory);
 
@@ -1131,18 +1061,8 @@ static const URI_CHAR * URI_FUNC(ParseOwnHostUserInfoNz)(URI_TYPE(ParserState) *
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT): {
         const URI_CHAR * const afterPctSubUnres =
             URI_FUNC(ParsePctSubUnres)(state, first, afterLast, memory);
@@ -1218,19 +1138,7 @@ static const URI_CHAR * URI_FUNC(ParseOwnPortUserInfo)(URI_TYPE(ParserState) * s
     }
 
     switch (*first) {
-    /* begin sub-delims */
-    case _UT('!'):
-    case _UT('$'):
-    case _UT('&'):
-    case _UT('\''):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT('+'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('='):
-    /* end sub-delims */
+    case URI_SET_SUB_DELIMS(_UT):
     /* begin unreserved (except alpha and digit) */
     case _UT('-'):
     case _UT('.'):
@@ -1286,18 +1194,8 @@ static const URI_CHAR * URI_FUNC(ParseOwnUserInfo)(URI_TYPE(ParserState) * state
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT): {
         const URI_CHAR * const afterPctSubUnres =
             URI_FUNC(ParsePctSubUnres)(state, first, afterLast, memory);
@@ -1404,20 +1302,10 @@ URI_FUNC(ParsePathAbsNoLeadSlash)(URI_TYPE(ParserState) * state, const URI_CHAR 
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
     case _UT('@'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT): {
     case URI_SET_UNRESERVED(_UT): {
         const URI_CHAR * const afterSegmentNz =
             URI_FUNC(ParseSegmentNz)(state, first, afterLast, memory);
@@ -1479,17 +1367,7 @@ static const URI_CHAR * URI_FUNC(ParsePchar)(URI_TYPE(ParserState) * state,
 
     case _UT(':'):
     case _UT('@'):
-    case _UT('!'):
-    case _UT('$'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         return first + 1;
 
@@ -1570,17 +1448,7 @@ static const URI_CHAR * URI_FUNC(ParsePctSubUnres)(URI_TYPE(ParserState) * state
     case _UT('%'):
         return URI_FUNC(ParsePctEncoded)(state, first, afterLast, memory);
 
-    case _UT('!'):
-    case _UT('$'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case URI_SET_UNRESERVED(_UT):
         return first + 1;
 
@@ -1625,20 +1493,10 @@ static const URI_CHAR * URI_FUNC(ParseQueryFrag)(URI_TYPE(ParserState) * state,
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
     case _UT('@'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT): {
     case URI_SET_UNRESERVED(_UT): {
         const URI_CHAR * const afterPchar =
             URI_FUNC(ParsePchar)(state, first, afterLast, memory);
@@ -1670,20 +1528,10 @@ static const URI_CHAR * URI_FUNC(ParseSegment)(URI_TYPE(ParserState) * state,
     }
 
     switch (*first) {
-    case _UT('!'):
-    case _UT('$'):
     case _UT('%'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
     case _UT(':'):
-    case _UT(';'):
     case _UT('@'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT): {
     case URI_SET_UNRESERVED(_UT): {
         const URI_CHAR * const afterPchar =
             URI_FUNC(ParsePchar)(state, first, afterLast, memory);
@@ -1864,17 +1712,7 @@ static const URI_CHAR * URI_FUNC(ParseUriReference)(URI_TYPE(ParserState) * stat
         return URI_FUNC(ParseSegmentNzNcOrScheme2)(state, first + 1, afterLast, memory);
 
     case URI_SET_DIGIT(_UT):
-    case _UT('!'):
-    case _UT('$'):
-    case _UT('&'):
-    case _UT('('):
-    case _UT(')'):
-    case _UT('*'):
-    case _UT(','):
-    case _UT(';'):
-    case _UT('\''):
-    case _UT('+'):
-    case _UT('='):
+    case URI_SET_SUB_DELIMS(_UT):
     case _UT('.'):
     case _UT('_'):
     case _UT('~'):
