@@ -79,7 +79,7 @@ UriBool URI_FUNC(IsWellFormedQuery)(const URI_CHAR * first, const URI_CHAR * aft
      */
     while (first < afterLast) {
         switch (first[0]) {
-        case URI_SET_UNRESERVED(_UT):
+        case URI_SET_PCHAR_WITHOUT_PERCENT(_UT):
             break;
 
         /* pct-encoded */
@@ -102,12 +102,6 @@ UriBool URI_FUNC(IsWellFormedQuery)(const URI_CHAR * first, const URI_CHAR * aft
             first += 2;
             break;
 
-        case URI_SET_SUB_DELIMS(_UT):
-            break;
-
-        /* ":" / "@" and "/" / "?" */
-        case _UT(':'):
-        case _UT('@'):
         case _UT('/'):
         case _UT('?'):
             break;

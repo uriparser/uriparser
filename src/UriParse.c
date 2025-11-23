@@ -1365,10 +1365,7 @@ static const URI_CHAR * URI_FUNC(ParsePchar)(URI_TYPE(ParserState) * state,
     case _UT('%'):
         return URI_FUNC(ParsePctEncoded)(state, first, afterLast, memory);
 
-    case _UT(':'):
-    case _UT('@'):
-    case URI_SET_SUB_DELIMS(_UT):
-    case URI_SET_UNRESERVED(_UT):
+    case URI_SET_PCHAR_WITHOUT_PERCENT(_UT):
         return first + 1;
 
     default:
