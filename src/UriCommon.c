@@ -471,21 +471,9 @@ unsigned char URI_FUNC(HexdigToInt)(URI_CHAR hexdig) {
     switch (hexdig) {
     case URI_SET_DIGIT(_UT):
         return (unsigned char)(9 + hexdig - _UT('9'));
-
-    case _UT('a'):
-    case _UT('b'):
-    case _UT('c'):
-    case _UT('d'):
-    case _UT('e'):
-    case _UT('f'):
+    case URI_SET_HEX_LETTER_LOWER(_UT):
         return (unsigned char)(15 + hexdig - _UT('f'));
-
-    case _UT('A'):
-    case _UT('B'):
-    case _UT('C'):
-    case _UT('D'):
-    case _UT('E'):
-    case _UT('F'):
+    case URI_SET_HEX_LETTER_UPPER(_UT):
         return (unsigned char)(15 + hexdig - _UT('F'));
 
     default:
