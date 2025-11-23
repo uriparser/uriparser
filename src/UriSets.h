@@ -157,4 +157,18 @@
   case ut('_'): \
   case ut('~')
 
+// clang-format off
+#  define URI_SET_PCHAR_WITHOUT_PERCENT(ut) \
+       URI_SET_UNRESERVED(ut): \
+  case URI_SET_SUB_DELIMS(ut): \
+  /* clang-format on */ \
+  case ut(':'): \
+  case ut('@')
+
+// clang-format off
+#  define URI_SET_PCHAR(ut) \
+       URI_SET_PCHAR_WITHOUT_PERCENT(ut): \
+  case ut('%')
+/* clang-format on */
+
 #endif  // ! defined(URI_SET_DIGIT)
