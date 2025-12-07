@@ -41,7 +41,7 @@ jobs:
     - name: Build uriparser fuzzers
       run: |
         args=(
-            # Build nothing but fuzzers
+            # Build nothing but the test suite
             -DURIPARSER_BUILD_DOCS=OFF
             -DURIPARSER_BUILD_TESTS=ON
             -DURIPARSER_BUILD_TOOLS=OFF
