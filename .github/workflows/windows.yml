@@ -67,6 +67,7 @@ jobs:
           # NOTE: GTEST_ROOT is relative to source CMakeLists.txt, not the build directory
           -DGTEST_ROOT="googletest-release-${GTEST_VERSION}/googletest"
           -DURIPARSER_BUILD_DOCS=OFF
+          -DURIPARSER_BUILD_TESTS=ON
           -DURIPARSER_MSVC_STATIC_CRT=ON
           -DURIPARSER_WARNINGS_AS_ERRORS=ON
           -S .
@@ -90,6 +91,7 @@ jobs:
       run: |-
         ctest_args=(
           --build-config Release
+          --no-tests=error
           --output-on-failure
           --parallel 2
         )

@@ -50,7 +50,6 @@ jobs:
         args=(
             # Build nothing but fuzzers
             -DURIPARSER_BUILD_DOCS=OFF
-            -DURIPARSER_BUILD_TESTS=OFF
             -DURIPARSER_BUILD_FUZZERS=ON
             -DURIPARSER_BUILD_TOOLS=OFF
             -DURIPARSER_ENABLE_INSTALL=OFF
