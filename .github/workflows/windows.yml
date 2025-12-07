@@ -91,6 +91,7 @@ jobs:
       run: |-
         ctest_args=(
           --build-config Release
+          --no-tests=error
           --output-on-failure
           --parallel 2
         )
