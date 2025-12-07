@@ -91,10 +91,6 @@ static const URI_CHAR * URI_FUNC(ParseIpFutLoop)(URI_TYPE(ParserState) * state,
                                                  const URI_CHAR * first,
                                                  const URI_CHAR * afterLast,
                                                  UriMemoryManager * memory);
-static const URI_CHAR * URI_FUNC(ParseIpFutStopGo)(URI_TYPE(ParserState) * state,
-                                                   const URI_CHAR * first,
-                                                   const URI_CHAR * afterLast,
-                                                   UriMemoryManager * memory);
 static const URI_CHAR * URI_FUNC(ParseIpLit2)(URI_TYPE(ParserState) * state,
                                               const URI_CHAR * first,
                                               const URI_CHAR * afterLast,
@@ -354,49 +350,37 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseHierPart)(URI_TYPE(ParserState)
  * [ipFutLoop]->[subDelims][ipFutStopGo]
  * [ipFutLoop]->[unreserved][ipFutStopGo]
  * [ipFutLoop]-><:>[ipFutStopGo]
+ *
+ * [ipFutStopGo]->[ipFutLoop]
+ * [ipFutStopGo]-><NULL>
  */
 static const URI_CHAR * URI_FUNC(ParseIpFutLoop)(URI_TYPE(ParserState) * state,
                                                  const URI_CHAR * first,
                                                  const URI_CHAR * afterLast,
                                                  UriMemoryManager * memory) {
-    if (first >= afterLast) {
-        URI_FUNC(StopSyntax)(state, afterLast, memory);
-        return NULL;
+    const URI_CHAR * const originalFirst = first;
+
+    while (first < afterLast) {
+        switch (*first) {
+        case _UT(':'):
+        case URI_SET_SUB_DELIMS(_UT):
+        case URI_SET_UNRESERVED(_UT):
+            first += 1;
+            break;
+
+        default:
+            goto done_looping;
+            break;
+        }
     }
 
-    switch (*first) {
-    case _UT(':'):
-    case URI_SET_SUB_DELIMS(_UT):
-    case URI_SET_UNRESERVED(_UT):
-        return URI_FUNC(ParseIpFutStopGo)(state, first + 1, afterLast, memory);
-
-    default:
+done_looping:
+    if (first == originalFirst) {
         URI_FUNC(StopSyntax)(state, first, memory);
         return NULL;
     }
-}
 
-/*
- * [ipFutStopGo]->[ipFutLoop]
- * [ipFutStopGo]-><NULL>
- */
-static const URI_CHAR * URI_FUNC(ParseIpFutStopGo)(URI_TYPE(ParserState) * state,
-                                                   const URI_CHAR * first,
-                                                   const URI_CHAR * afterLast,
-                                                   UriMemoryManager * memory) {
-    if (first >= afterLast) {
-        return afterLast;
-    }
-
-    switch (*first) {
-    case _UT(':'):
-    case URI_SET_SUB_DELIMS(_UT):
-    case URI_SET_UNRESERVED(_UT):
-        return URI_FUNC(ParseIpFutLoop)(state, first, afterLast, memory);
-
-    default:
-        return first;
-    }
+    return first;
 }
 
 /*
