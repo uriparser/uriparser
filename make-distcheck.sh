@@ -70,7 +70,7 @@ check_tarball() (
         mkdir build
         cd build
 
-        cmake "${@:2}" ..
+        cmake "${@:2}" -DURIPARSER_BUILD_TESTS=ON ..
         make
 
         # NOTE: We need to copy some .dll files next to the
