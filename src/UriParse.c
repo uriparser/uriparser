@@ -1031,23 +1031,34 @@ static const URI_CHAR * URI_FUNC(ParseOwnHostUserInfoNz)(URI_TYPE(ParserState) *
                                                          const URI_CHAR * first,
                                                          const URI_CHAR * afterLast,
                                                          UriMemoryManager * memory) {
+    const URI_CHAR * const originalFirst = first;
+
+    bool keepLooping = true;
+    while ((first < afterLast) && keepLooping) {
+        switch (*first) {
+        case _UT('%'):
+        case URI_SET_SUB_DELIMS(_UT):
+        case URI_SET_UNRESERVED(_UT): {
+            const URI_CHAR * const afterPctSubUnres =
+                URI_FUNC(ParsePctSubUnres)(state, first, afterLast, memory);
+            if (afterPctSubUnres == NULL) {
+                return NULL;
+            }
+            first = afterPctSubUnres;
+            break;
+        }
+
+        default:
+            keepLooping = false;
+            break;
+        }
+    }
+
     if (first >= afterLast) {
-        URI_FUNC(StopSyntax)(state, afterLast, memory);
-        return NULL;
+        goto exit;
     }
 
     switch (*first) {
-    case _UT('%'):
-    case URI_SET_SUB_DELIMS(_UT):
-    case URI_SET_UNRESERVED(_UT): {
-        const URI_CHAR * const afterPctSubUnres =
-            URI_FUNC(ParsePctSubUnres)(state, first, afterLast, memory);
-        if (afterPctSubUnres == NULL) {
-            return NULL;
-        }
-        return URI_FUNC(ParseOwnHostUserInfo)(state, afterPctSubUnres, afterLast, memory);
-    }
-
     case _UT(':'):
         state->uri->hostText.afterLast = first; /* HOST END */
         state->uri->portText.first = first + 1; /* PORT BEGIN */
@@ -1059,9 +1070,22 @@ static const URI_CHAR * URI_FUNC(ParseOwnHostUserInfoNz)(URI_TYPE(ParserState) *
         return URI_FUNC(ParseOwnHost)(state, first + 1, afterLast, memory);
 
     default:
-        URI_FUNC(StopSyntax)(state, first, memory);
+        goto exit;
+        break;
+    }
+
+exit:
+    if (first == originalFirst) {
+        URI_FUNC(StopSyntax)(state, afterLast, memory);
         return NULL;
     }
+
+    if (!URI_FUNC(OnExitOwnHostUserInfo)(state, first, memory)) {
+        URI_FUNC(StopMalloc)(state, memory);
+        return NULL;
+    }
+
+    return first;
 }
 
 static URI_INLINE UriBool URI_FUNC(OnExitOwnPortUserInfo)(URI_TYPE(ParserState) * state,
