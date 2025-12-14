@@ -4,6 +4,17 @@ NOTE: uriparser is looking for help with a few things:
 
 ????-??-?? -- 0.9.10
 
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: [CVE-2025-67899]
+      Protect from stack overflow during parsing by dissolving all 13 cases
+      of recursion, both direct and indirect. The attack vector was long
+      (or crafted) URI input. The known impact is denial of service or more.
+      Thanks for the report to Sergey Svistunov!
+      Thanks for in-depth review to Tim Düsterhus! (sponsored by Tideways GmbH)
+      Thanks for C callgraph tool "egypt" (https://www.gson.org/egypt/)
+        to Andreas Gustafsson and for "dot_find_cycles.py" to Jason Antman!
+      (GitHub #282, GitHub #284)
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   * Changed: Require CMake >=3.15.0 (GitHub #270)
   * Fixed: Normalization of URIs with leading dot segments
       produced ambiguous results in the sense that a reparse
