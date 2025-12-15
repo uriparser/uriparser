@@ -68,6 +68,8 @@ NOTE: uriparser is looking for help with a few things:
   * Infrastructure: Make CI report on test coverage using LLVM, and offer
       these reports for download (GitHub #32, GitHub #269)
   * Infrastructure: Make CI enforce clang-format clean code (GitHub #272)
+  * Soname: 3:0:2 — see https://verbump.de/ for what these numbers do
+      (liburiparser.so.1.2.0)
 
 2025-09-03 -- 0.9.9
 
