@@ -2510,6 +2510,21 @@ TEST(ParseIpFourAddressSuite, FourSaneOctets) {
     EXPECT_EQ(octetOutput[3], 40);
 }
 
+TEST(UriSuite, NoStackOverflowIssue282) {
+    const size_t sizeBytes = 2 * 1024 * 1024;
+
+    char * const uriString = new char[sizeBytes];
+    ASSERT_TRUE(uriString != NULL);
+    ::memset(uriString, 'x', sizeBytes - 1);
+    uriString[sizeBytes - 1] = '\0';
+
+    UriUriA uri;
+    ASSERT_EQ(uriParseSingleUriA(&uri, uriString, NULL), URI_SUCCESS);
+
+    uriFreeUriMembersA(&uri);
+    delete[] uriString;
+}
+
 int main(int argc, char ** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
