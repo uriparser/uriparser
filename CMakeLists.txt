@@ -529,7 +529,7 @@ configure_package_config_file(
 )
 write_basic_package_version_file(
     cmake/uriparser-config-version.cmake
-    COMPATIBILITY SameMajorVersion  # i.e. semver
+    COMPATIBILITY AnyNewerVersion  # i.e. declare 0.x.x and 1.x.x compatible
 )
 export(
     TARGETS
