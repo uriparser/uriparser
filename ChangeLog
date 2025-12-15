@@ -15,11 +15,13 @@ NOTE: uriparser is looking for help with a few things:
         to Andreas Gustafsson and for "dot_find_cycles.py" to Jason Antman!
       (GitHub #282, GitHub #284)
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Changed: Start requiring a C99 compiler (GitHub #264, GitHub #273)
   * Changed: Require CMake >=3.15.0 (GitHub #270)
+  * Changed: Stop building tests by default (GitHub #283)
   * Fixed: Normalization of URIs with leading dot segments
       produced ambiguous results in the sense that a reparse
       after normalization would have misinterpreted path parts
-      as a host (GitHub #262, GitHub #265)
+      as a host (GitHub #262, GitHub #263, GitHub #265)
       Examples of affected URIs:
       - "scheme:/.//path1/path2"
       - "/.//path1/path2"
@@ -30,6 +32,9 @@ NOTE: uriparser is looking for help with a few things:
       used in the implementation of function uriCompleteMemoryManager.
       (GitHub #261)
       Thanks to Matthew Fernandez and Rolf Eike Beer for the report and review!
+  * Fixed: Do not set `absolutePath` for empty paths when removing host
+      Thanks for the report and pull request to Tim Düsterhus!
+      (GitHub #275, GitHub #276)
   * Fixed: Documentation of functions uriCompleteMemoryManager,
       uriEmulateCalloc, uriEmulateReallocarray and uriTestMemoryManager
       (GitHub #261)
@@ -39,16 +44,30 @@ NOTE: uriparser is looking for help with a few things:
       (GitHub #270)
   * Fixed: Documentation: Get CMake variables list back in sync and sorted
       in the readme (GitHub #270)
+  * Fixed: Various typos found by Codespell
+      (https://github.com/codespell-project/codespell) (GitHub #259)
   * Added: Add a new (and recommended to use) version of uriTestMemoryManager
       that can challenge pointer alignment (GitHub #261)
       New functions:
         uriTestMemoryManagerEx
+  * Improved: Increase test coverage by mutation testing
+      Thanks for the pull request to Tim Düsterhus! (GitHub #266)
+  * Improved: Address compiler warning -Wunused-but-set-variable (GitHub #268)
+  * Improved: Deduplicate internal char set macros (GitHub #280)
   * Infrastructure: Enable stack traces from UndefinedBehaviorSanitizer in CI
       via environment variable UBSAN_OPTIONS (GitHub #261)
   * Infrastructure: Bump GoogleTest to 1.12.0 in AppVeyor CI to fix the build
       with CMake >=3.5 (GitHub #261)
   * Infrastructure: Migrate Windows CI from AppVeyor to GitHub Actions
       (GitHub #270)
+  * Infrastructure: Make GitHub Actions detect and reject known typos using
+      Codespell (https://github.com/codespell-project/codespell) (GitHub #259)
+  * Infrastructure: Update Clang from 20 to 21 (GitHub #267)
+  * Infrastructure: Start specifying CXX and CXXFLAGS for fuzzing CI
+      (GitHub #268)
+  * Infrastructure: Make CI report on test coverage using LLVM, and offer
+      these reports for download (GitHub #32, GitHub #269)
+  * Infrastructure: Make CI enforce clang-format clean code (GitHub #272)
 
 2025-09-03 -- 0.9.9
 
