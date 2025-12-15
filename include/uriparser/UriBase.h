@@ -394,7 +394,7 @@ URI_PUBLIC int uriTestMemoryManager(UriMemoryManager * memory);
  * @see uriEmulateReallocarray
  * @see UriMemoryManager
  * @see uriTestMemoryManager
- * @since 0.9.10
+ * @since 1.0.0
  */
 URI_PUBLIC int uriTestMemoryManagerEx(UriMemoryManager * memory,
                                       UriBool challengeAlignment);
