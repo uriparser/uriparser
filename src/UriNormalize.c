@@ -353,7 +353,6 @@ static URI_INLINE void URI_FUNC(FixPercentEncodingInplace)(const URI_CHAR * firs
 static URI_INLINE UriBool URI_FUNC(FixPercentEncodingMalloc)(const URI_CHAR ** first,
                                                              const URI_CHAR ** afterLast,
                                                              UriMemoryManager * memory) {
-    int lenInChars;
     URI_CHAR * buffer;
 
     /* Death checks */
@@ -363,10 +362,13 @@ static URI_INLINE UriBool URI_FUNC(FixPercentEncodingMalloc)(const URI_CHAR ** f
     }
 
     /* Old text length */
-    lenInChars = (int)(*afterLast - *first);
+    const size_t lenInChars = *afterLast - *first;
     if (lenInChars == 0) {
         return URI_TRUE;
-    } else if (lenInChars < 0) {
+    }
+
+    // Detect and avoid integer overflow
+    if (lenInChars > SIZE_MAX / sizeof(URI_CHAR)) {
         return URI_FALSE;
     }
 
