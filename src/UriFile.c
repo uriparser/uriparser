@@ -63,7 +63,7 @@
 #    include <uriparser/Uri.h>
 #  endif
 
-#  include <stdlib.h> /* for size_t, avoiding stddef.h for older MSVCs */
+#  include <stddef.h>  // size_t
 
 static URI_INLINE int URI_FUNC(FilenameToUriString)(const URI_CHAR * filename,
                                                     URI_CHAR * uriString,
