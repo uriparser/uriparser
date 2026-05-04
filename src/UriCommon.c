@@ -173,7 +173,7 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri, UriBool relative,
     walker->reserved = NULL; /* Prev pointer */
     do {
         UriBool removeSegment = URI_FALSE;
-        int len = (int)(walker->text.afterLast - walker->text.first);
+        const size_t len = walker->text.afterLast - walker->text.first;
         switch (len) {
         case 1:
             if ((walker->text.first)[0] == _UT('.')) {
