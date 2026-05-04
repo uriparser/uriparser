@@ -2106,6 +2106,76 @@ TEST(UriSuite, TestEquals) {
     testEqualsHelper("//host:123");
 }
 
+TEST(UriSuite, TestEqualsAbsolutePathWithSchemeWithHost) {
+    UriUriA uriAbsPathTrue;
+    UriUriA uriAbsPathFalse;
+
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathTrue, "scheme://host/path1", NULL),
+              URI_SUCCESS);
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathFalse, "scheme://host/path1", NULL),
+              URI_SUCCESS);
+    uriAbsPathTrue.absolutePath = URI_TRUE;  // i.e. produce artificially
+
+    EXPECT_EQ(uriAbsPathTrue.absolutePath, URI_TRUE);  // self-test
+    EXPECT_EQ(uriAbsPathFalse.absolutePath, URI_FALSE);  // self-test
+
+    // NOTE: .absolutePath is ignored for URIs with hosts!
+    EXPECT_EQ(uriEqualsUriA(&uriAbsPathFalse, &uriAbsPathTrue), URI_TRUE);
+
+    uriFreeUriMembersA(&uriAbsPathTrue);
+    uriFreeUriMembersA(&uriAbsPathFalse);
+}
+
+TEST(UriSuite, TestEqualsAbsolutePathWithSchemeWithoutHost) {
+    UriUriA uriAbsPathTrue;
+    UriUriA uriAbsPathFalse;
+
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathTrue, "scheme:/path1", NULL), URI_SUCCESS);
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathFalse, "scheme:path1", NULL), URI_SUCCESS);
+
+    EXPECT_EQ(uriAbsPathTrue.absolutePath, URI_TRUE);  // self-test
+    EXPECT_EQ(uriAbsPathFalse.absolutePath, URI_FALSE);  // self-test
+
+    EXPECT_EQ(uriEqualsUriA(&uriAbsPathFalse, &uriAbsPathTrue), URI_FALSE);
+
+    uriFreeUriMembersA(&uriAbsPathTrue);
+    uriFreeUriMembersA(&uriAbsPathFalse);
+}
+
+TEST(UriSuite, TestEqualsAbsolutePathWithoutSchemeWithHost) {
+    UriUriA uriAbsPathTrue;
+    UriUriA uriAbsPathFalse;
+
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathTrue, "//host/path1", NULL), URI_SUCCESS);
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathFalse, "//host/path1", NULL), URI_SUCCESS);
+    uriAbsPathTrue.absolutePath = URI_TRUE;  // i.e. produce artificially
+
+    EXPECT_EQ(uriAbsPathTrue.absolutePath, URI_TRUE);  // self-test
+    EXPECT_EQ(uriAbsPathFalse.absolutePath, URI_FALSE);  // self-test
+
+    // NOTE: .absolutePath is ignored for URIs with hosts!
+    EXPECT_EQ(uriEqualsUriA(&uriAbsPathFalse, &uriAbsPathTrue), URI_TRUE);
+
+    uriFreeUriMembersA(&uriAbsPathTrue);
+    uriFreeUriMembersA(&uriAbsPathFalse);
+}
+
+TEST(UriSuite, TestEqualsAbsolutePathWithoutSchemeWithoutHost) {
+    UriUriA uriAbsPathTrue;
+    UriUriA uriAbsPathFalse;
+
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathTrue, "/path1", NULL), URI_SUCCESS);
+    ASSERT_EQ(uriParseSingleUriA(&uriAbsPathFalse, "path1", NULL), URI_SUCCESS);
+
+    EXPECT_EQ(uriAbsPathTrue.absolutePath, URI_TRUE);  // self-test
+    EXPECT_EQ(uriAbsPathFalse.absolutePath, URI_FALSE);  // self-test
+
+    EXPECT_EQ(uriEqualsUriA(&uriAbsPathFalse, &uriAbsPathTrue), URI_FALSE);
+
+    uriFreeUriMembersA(&uriAbsPathTrue);
+    uriFreeUriMembersA(&uriAbsPathFalse);
+}
+
 TEST(UriSuite, TestHostTextTerminationIssue15) {
     UriParserStateA state;
     UriUriA uri;
