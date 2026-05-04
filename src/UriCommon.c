@@ -67,6 +67,7 @@
 
 #  include <assert.h>
 #  include <stddef.h>
+#  include <stdint.h>  // SIZE_MAX
 
 /*extern*/ const URI_CHAR * const URI_FUNC(SafeToPointTo) = _UT("X");
 /*extern*/ const URI_CHAR * const URI_FUNC(ConstPwd) = _UT(".");
@@ -129,8 +130,11 @@ bool URI_FUNC(RangeEquals)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRan
 UriBool URI_FUNC(CopyRange)(URI_TYPE(TextRange) * destRange,
                             const URI_TYPE(TextRange) * sourceRange,
                             UriMemoryManager * memory) {
-    const int lenInChars = (int)(sourceRange->afterLast - sourceRange->first);
-    const int lenInBytes = lenInChars * sizeof(URI_CHAR);
+    const size_t lenInChars = sourceRange->afterLast - sourceRange->first;
+    if (lenInChars > SIZE_MAX / sizeof(URI_CHAR)) {  // detect integer overflow
+        return URI_FALSE;
+    }
+    const size_t lenInBytes = lenInChars * sizeof(URI_CHAR);
     URI_CHAR * dup = memory->malloc(memory, lenInBytes);
     if (dup == NULL) {
         return URI_FALSE;
