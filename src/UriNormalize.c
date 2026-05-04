@@ -298,8 +298,8 @@ URI_FUNC(FixPercentEncodingEngine)(const URI_CHAR * inFirst, const URI_CHAR * in
                                    const URI_CHAR * outFirst,
                                    const URI_CHAR ** outAfterLast) {
     URI_CHAR * write = (URI_CHAR *)outFirst;
-    const int lenInChars = (int)(inAfterLast - inFirst);
-    int i = 0;
+    const size_t lenInChars = inAfterLast - inFirst;
+    size_t i = 0;
 
     /* All but last two */
     for (; i + 2 < lenInChars; i++) {
