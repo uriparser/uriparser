@@ -67,6 +67,7 @@
 
 #  include <limits.h>
 #  include <stddef.h> /* size_t */
+#  include <stdint.h>  // SIZE_MAX
 
 static int URI_FUNC(ComposeQueryEngine)(URI_CHAR * dest,
                                         const URI_TYPE(QueryList) * queryList,
@@ -267,8 +268,8 @@ UriBool URI_FUNC(AppendQueryItem)(URI_TYPE(QueryList) * *prevNext, int * itemCou
                                   const URI_CHAR * valueAfter, UriBool plusToSpace,
                                   UriBreakConversion breakConversion,
                                   UriMemoryManager * memory) {
-    const int keyLen = (int)(keyAfter - keyFirst);
-    const int valueLen = (int)(valueAfter - valueFirst);
+    const size_t keyLen = keyAfter - keyFirst;
+    const size_t valueLen = valueAfter - valueFirst;
     URI_CHAR * key;
     URI_CHAR * value;
 
@@ -284,6 +285,13 @@ UriBool URI_FUNC(AppendQueryItem)(URI_TYPE(QueryList) * *prevNext, int * itemCou
         return URI_FALSE; /* Raises malloc error */
     }
     (*prevNext)->next = NULL;
+
+    // Detect integer overflow
+    if ((keyLen > SIZE_MAX - 1) || (keyLen + 1 > SIZE_MAX / sizeof(URI_CHAR))) {
+        memory->free(memory, *prevNext);
+        *prevNext = NULL;
+        return URI_FALSE;  // Raises malloc error
+    }
 
     /* Fill key */
     key = memory->malloc(memory, (keyLen + 1) * sizeof(URI_CHAR));
@@ -305,6 +313,14 @@ UriBool URI_FUNC(AppendQueryItem)(URI_TYPE(QueryList) * *prevNext, int * itemCou
 
     /* Fill value */
     if (valueFirst != NULL) {
+        // Detect integer overflow
+        if ((valueLen > SIZE_MAX - 1) || (valueLen + 1 > SIZE_MAX / sizeof(URI_CHAR))) {
+            memory->free(memory, key);
+            memory->free(memory, *prevNext);
+            *prevNext = NULL;
+            return URI_FALSE;  // Raises malloc error
+        }
+
         value = memory->malloc(memory, (valueLen + 1) * sizeof(URI_CHAR));
         if (value == NULL) {
             memory->free(memory, key);
