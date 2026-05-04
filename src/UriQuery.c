@@ -255,7 +255,14 @@ int URI_FUNC(ComposeQueryEngine)(URI_CHAR * dest, const URI_TYPE(QueryList) * qu
     if (dest != NULL) {
         write[0] = _UT('\0');
         if (charsWritten != NULL) {
-            *charsWritten = (int)(write - dest) + 1; /* .. for terminator */
+            const size_t lenInChars = write - dest;
+
+            // Detect and avoid integer overflow
+            if (lenInChars > INT_MAX - 1) {
+                return URI_ERROR_OUTPUT_TOO_LARGE;
+            }
+
+            *charsWritten = (int)(lenInChars + 1); /* .. for terminator */
         }
     }
 
