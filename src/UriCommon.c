@@ -116,14 +116,14 @@ bool URI_FUNC(RangeEquals)(const URI_TYPE(TextRange) * a, const URI_TYPE(TextRan
         return a->first == b->first;
     }
 
-    const ptrdiff_t lenA = a->afterLast - a->first;
-    const ptrdiff_t lenB = b->afterLast - b->first;
+    const size_t lenA = a->afterLast - a->first;
+    const size_t lenB = b->afterLast - b->first;
 
     if (lenA != lenB) {
         return false;
     }
 
-    return URI_STRNCMP(a->first, b->first, (size_t)lenA) == 0;
+    return URI_STRNCMP(a->first, b->first, lenA) == 0;
 }
 
 UriBool URI_FUNC(CopyRange)(URI_TYPE(TextRange) * destRange,
