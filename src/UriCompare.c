@@ -76,8 +76,8 @@ UriBool URI_FUNC(EqualsUri)(const URI_TYPE(Uri) * a, const URI_TYPE(Uri) * b) {
         return URI_FALSE;
     }
 
-    /* absolutePath */
-    if ((a->scheme.first == NULL) && (a->absolutePath != b->absolutePath)) {
+    /* absolutePath -- not meaningful for URIs with a host set! */
+    if (!URI_FUNC(HasHost)(a) && (a->absolutePath != b->absolutePath)) {
         return URI_FALSE;
     }
 
