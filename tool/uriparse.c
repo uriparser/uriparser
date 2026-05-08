@@ -36,6 +36,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <uriparser/Uri.h>
@@ -55,10 +56,26 @@ WINSOCK_API_LINKAGE const char * WSAAPI inet_ntop(int af, const void * src, char
 #  include <netinet/in.h>
 #endif
 
-#define RANGE(x) (int)((x).afterLast - (x).first), ((x).first)
-
 void usage(void) {
     printf("Usage: uriparse URI [..]\n");
+}
+
+void dumpRange(const char * label, const UriTextRangeA * range) {
+    assert(label != NULL);
+    assert(range != NULL);
+    assert(range->first != NULL);
+
+    const int leftColumnMinWidthChars = 14;
+    const size_t labelLenChars = strlen(label);
+
+    const int gapLenChars =
+        (leftColumnMinWidthChars - /* the colon */ 1 > labelLenChars)
+            ? (int)(leftColumnMinWidthChars - labelLenChars - /* the colon */ 1)
+            : /* minimum gap */ 1;
+
+    fprintf(stdout, "%s:%*s", label, gapLenChars, "");
+    fwrite(range->first, range->afterLast - range->first, 1, stdout);
+    fputc('\n', stdout);
 }
 
 int main(int argc, char * argv[]) {
@@ -88,13 +105,13 @@ int main(int argc, char * argv[]) {
             retval = EXIT_FAILURE;
         } else {
             if (uri.scheme.first) {
-                printf("scheme:       %.*s\n", RANGE(uri.scheme));
+                dumpRange("scheme", &(uri.scheme));
             }
             if (uri.userInfo.first) {
-                printf("userInfo:     %.*s\n", RANGE(uri.userInfo));
+                dumpRange("userInfo", &(uri.userInfo));
             }
             if (uri.hostText.first) {
-                printf("hostText:     %.*s\n", RANGE(uri.hostText));
+                dumpRange("hostText", &(uri.hostText));
             }
             if (uri.hostData.ip4) {
                 inet_ntop(AF_INET, uri.hostData.ip4->data, ipstr, sizeof ipstr);
@@ -105,22 +122,22 @@ int main(int argc, char * argv[]) {
                 printf("hostData.ip6: %s\n", ipstr);
             }
             if (uri.hostData.ipFuture.first) {
-                printf("hostData.ipFuture: %.*s\n", RANGE(uri.hostData.ipFuture));
+                dumpRange("hostData.ipFuture", &(uri.hostData.ipFuture));
             }
             if (uri.portText.first) {
-                printf("portText:     %.*s\n", RANGE(uri.portText));
+                dumpRange("portText", &(uri.portText));
             }
             if (uri.pathHead) {
                 const UriPathSegmentA * p = uri.pathHead;
                 for (; p; p = p->next) {
-                    printf(" .. pathSeg:  %.*s\n", RANGE(p->text));
+                    dumpRange(" .. pathSeg", &(p->text));
                 }
             }
             if (uri.query.first) {
-                printf("query:        %.*s\n", RANGE(uri.query));
+                dumpRange("query", &(uri.query));
             }
             if (uri.fragment.first) {
-                printf("fragment:     %.*s\n", RANGE(uri.fragment));
+                dumpRange("fragment", &(uri.fragment));
             }
             const char * const absolutePathLabel = "absolutePath: ";
             printf("%s%s\n", absolutePathLabel,
