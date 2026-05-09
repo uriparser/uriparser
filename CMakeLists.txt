@@ -48,7 +48,7 @@ set(CMAKE_C_EXTENSIONS OFF)  # i.e. -std=c99 rather than default -std=gnu99
 
 # See https://verbump.de/ for what these numbers do
 set(URIPARSER_SO_CURRENT    3)
-set(URIPARSER_SO_REVISION   1)
+set(URIPARSER_SO_REVISION   2)
 set(URIPARSER_SO_AGE        2)
 
 include(CheckCCompilerFlag)

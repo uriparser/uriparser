@@ -19,6 +19,8 @@ XXXX-XX-XX -- 1.0.2
       (GitHub #303)
   * Improved: Make function `RangeEquals` use size_t` internally
       (GitHub #307)
+  * Soname: 3:2:2 — see https://verbump.de/ for what these numbers do
+      (liburiparser.so.1.2.2)
 
 2026-04-27 -- 1.0.1
 
