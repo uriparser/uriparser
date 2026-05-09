@@ -2,6 +2,26 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
+2026-05-09 -- 1.0.2
+
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: [CVE-2026-44927]
+      Stop truncating `ptrdiff_t` to `int`
+      Thanks for the report to Ilia Alshanetsky and Joshua W. Windle!
+      (GitHub #304)
+  * Fixed: [CVE-2026-44928]
+      Fix `EqualsUri` with regard to `.absolutePath`
+      Thanks for the report to Ilia Alshanetsky! (GitHub #305)
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: Fix OOM related memory leak in `CopyUriMm`
+      Thanks for the report to Ilia Alshanetsky! (GitHub #306)
+  * Improved: Simplify internal function `CompareRange` into `RangeEquals`
+      (GitHub #303)
+  * Improved: Make function `RangeEquals` use size_t` internally
+      (GitHub #307)
+  * Soname: 3:2:2 — see https://verbump.de/ for what these numbers do
+      (liburiparser.so.1.2.2)
+
 2026-04-27 -- 1.0.1
 
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
