@@ -70,7 +70,7 @@ static URI_INLINE int URI_FUNC(FilenameToUriString)(const URI_CHAR * filename,
                                                     URI_CHAR * uriString,
                                                     UriBool fromUnix) {
     const URI_CHAR * input = filename;
-    const URI_CHAR * lastSep = input - 1;
+    const URI_CHAR * afterLastSep = input;
     UriBool firstSegment = URI_TRUE;
     URI_CHAR * output = uriString;
     UriBool absolute;
@@ -106,20 +106,20 @@ static URI_INLINE int URI_FUNC(FilenameToUriString)(const URI_CHAR * filename,
         if ((input[0] == _UT('\0')) || (fromUnix && input[0] == _UT('/'))
             || (!fromUnix && input[0] == _UT('\\'))) {
             /* Copy text after last separator */
-            if (lastSep + 1 < input) {
+            if (afterLastSep < input) {
                 if (!fromUnix && absolute && (firstSegment == URI_TRUE)) {
                     /* Quick hack to not convert "C:" to "C%3A" */
-                    const size_t charsToCopy = input - (lastSep + 1);
+                    const size_t charsToCopy = input - afterLastSep;
 
                     // Detect and avoid integer overflow
                     if (charsToCopy > SIZE_MAX / sizeof(URI_CHAR)) {
                         return URI_ERROR_OUTPUT_TOO_LARGE;
                     }
 
-                    memcpy(output, lastSep + 1, charsToCopy * sizeof(URI_CHAR));
+                    memcpy(output, afterLastSep, charsToCopy * sizeof(URI_CHAR));
                     output += charsToCopy;
                 } else {
-                    output = URI_FUNC(EscapeEx)(lastSep + 1, input, output, URI_FALSE,
+                    output = URI_FUNC(EscapeEx)(afterLastSep, input, output, URI_FALSE,
                                                 URI_FALSE);
                 }
             }
@@ -133,12 +133,12 @@ static URI_INLINE int URI_FUNC(FilenameToUriString)(const URI_CHAR * filename,
             /* Copy separators unmodified */
             output[0] = _UT('/');
             output++;
-            lastSep = input;
+            afterLastSep = input + 1;
         } else if (!fromUnix && (input[0] == _UT('\\'))) {
             /* Convert backslashes to forward slashes */
             output[0] = _UT('/');
             output++;
-            lastSep = input;
+            afterLastSep = input + 1;
         }
         input++;
     }
