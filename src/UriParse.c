@@ -1951,47 +1951,53 @@ int URI_FUNC(FreeUriMembersMm)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 
     URI_CHECK_MEMORY_MANAGER(memory); /* may return */
 
-    if (uri->owner) {
-        /* Scheme */
-        if (uri->scheme.first != NULL) {
-            if (uri->scheme.first != uri->scheme.afterLast) {
-                memory->free(memory, (URI_CHAR *)uri->scheme.first);
-            }
-            uri->scheme.first = NULL;
-            uri->scheme.afterLast = NULL;
-        }
+    /* NOTE: The range pointers are reset to NULL regardless of .owner; only
+     *       the memory::free calls are gated by .owner.  A parse that stops
+     *       with an error funnels through here while .owner is URI_FALSE and
+     *       may have set .first of a range without .afterLast (e.g. a
+     *       tentative userInfo, see ParseOwnHostUserInfoNz), so leaving the
+     *       pointers untouched would keep a half-set range that a later
+     *       reuse (e.g. a uriSet* call followed by another free) frees as if
+     *       it were owned, freeing a pointer into the input. */
 
-        /* User info */
-        if (uri->userInfo.first != NULL) {
-            if (uri->userInfo.first != uri->userInfo.afterLast) {
-                memory->free(memory, (URI_CHAR *)uri->userInfo.first);
-            }
-            uri->userInfo.first = NULL;
-            uri->userInfo.afterLast = NULL;
-        }
+    /* Scheme */
+    if (uri->owner && (uri->scheme.first != NULL)
+        && (uri->scheme.first != uri->scheme.afterLast)) {
+        memory->free(memory, (URI_CHAR *)uri->scheme.first);
+    }
+    uri->scheme.first = NULL;
+    uri->scheme.afterLast = NULL;
 
-        /* Host data - IPvFuture (may affect host text) */
-        if (uri->hostData.ipFuture.first != NULL) {
-            /* NOTE: .hostData.ipFuture holds the very same range pointers
-             *       as .hostText; we must not free memory twice. */
-            uri->hostText.first = NULL;
-            uri->hostText.afterLast = NULL;
+    /* User info */
+    if (uri->owner && (uri->userInfo.first != NULL)
+        && (uri->userInfo.first != uri->userInfo.afterLast)) {
+        memory->free(memory, (URI_CHAR *)uri->userInfo.first);
+    }
+    uri->userInfo.first = NULL;
+    uri->userInfo.afterLast = NULL;
 
-            if (uri->hostData.ipFuture.first != uri->hostData.ipFuture.afterLast) {
-                memory->free(memory, (URI_CHAR *)uri->hostData.ipFuture.first);
-            }
-            uri->hostData.ipFuture.first = NULL;
-            uri->hostData.ipFuture.afterLast = NULL;
-        }
+    /* Host data - IPvFuture (may affect host text) */
+    if (uri->hostData.ipFuture.first != NULL) {
+        /* NOTE: .hostData.ipFuture holds the very same range pointers
+         *       as .hostText; we must not free memory twice. */
+        uri->hostText.first = NULL;
+        uri->hostText.afterLast = NULL;
 
-        /* Host text (after IPvFuture, see above) */
-        if (uri->hostText.first != NULL) {
-            if (uri->hostText.first != uri->hostText.afterLast) {
-                memory->free(memory, (URI_CHAR *)uri->hostText.first);
-            }
-            uri->hostText.first = NULL;
-            uri->hostText.afterLast = NULL;
+        if (uri->owner
+            && (uri->hostData.ipFuture.first != uri->hostData.ipFuture.afterLast)) {
+            memory->free(memory, (URI_CHAR *)uri->hostData.ipFuture.first);
         }
+        uri->hostData.ipFuture.first = NULL;
+        uri->hostData.ipFuture.afterLast = NULL;
+    }
+
+    /* Host text (after IPvFuture, see above) */
+    if (uri->hostText.first != NULL) {
+        if (uri->owner && (uri->hostText.first != uri->hostText.afterLast)) {
+            memory->free(memory, (URI_CHAR *)uri->hostText.first);
+        }
+        uri->hostText.first = NULL;
+        uri->hostText.afterLast = NULL;
     }
 
     /* Host data - IPv4 */
@@ -2007,36 +2013,31 @@ int URI_FUNC(FreeUriMembersMm)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
     }
 
     /* Port text */
-    if (uri->owner && (uri->portText.first != NULL)) {
-        if (uri->portText.first != uri->portText.afterLast) {
-            memory->free(memory, (URI_CHAR *)uri->portText.first);
-        }
-        uri->portText.first = NULL;
-        uri->portText.afterLast = NULL;
+    if (uri->owner && (uri->portText.first != NULL)
+        && (uri->portText.first != uri->portText.afterLast)) {
+        memory->free(memory, (URI_CHAR *)uri->portText.first);
     }
+    uri->portText.first = NULL;
+    uri->portText.afterLast = NULL;
 
     /* Path */
     URI_FUNC(FreeUriPath)(uri, memory);
 
-    if (uri->owner) {
-        /* Query */
-        if (uri->query.first != NULL) {
-            if (uri->query.first != uri->query.afterLast) {
-                memory->free(memory, (URI_CHAR *)uri->query.first);
-            }
-            uri->query.first = NULL;
-            uri->query.afterLast = NULL;
-        }
-
-        /* Fragment */
-        if (uri->fragment.first != NULL) {
-            if (uri->fragment.first != uri->fragment.afterLast) {
-                memory->free(memory, (URI_CHAR *)uri->fragment.first);
-            }
-            uri->fragment.first = NULL;
-            uri->fragment.afterLast = NULL;
-        }
+    /* Query */
+    if (uri->owner && (uri->query.first != NULL)
+        && (uri->query.first != uri->query.afterLast)) {
+        memory->free(memory, (URI_CHAR *)uri->query.first);
     }
+    uri->query.first = NULL;
+    uri->query.afterLast = NULL;
+
+    /* Fragment */
+    if (uri->owner && (uri->fragment.first != NULL)
+        && (uri->fragment.first != uri->fragment.afterLast)) {
+        memory->free(memory, (URI_CHAR *)uri->fragment.first);
+    }
+    uri->fragment.first = NULL;
+    uri->fragment.afterLast = NULL;
 
     return URI_SUCCESS;
 }
