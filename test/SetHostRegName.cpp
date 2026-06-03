@@ -27,7 +27,7 @@ namespace {
 static void testIsWellFormedHostRegName(const char * candidate, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed = uriIsWellFormedHostRegNameA(first, afterLast);
 
@@ -83,7 +83,7 @@ TEST(IsWellFormedHostRegName, AllowedCharacters) {
                                 "gGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
                                 "-._~"
                                 "!$&'()*+,;=",
-                                true);
+            true);
 }
 
 TEST(IsWellFormedHostRegName, ForbiddenCharacters) {
@@ -95,7 +95,7 @@ TEST(IsWellFormedHostRegName, PercentEncodingWellFormed) {
                                 "aa"
                                 "%"
                                 "AA",
-                                true);
+            true);
 }
 
 TEST(IsWellFormedHostRegName, PercentEncodingMalformedCutOff1) {
@@ -105,19 +105,19 @@ TEST(IsWellFormedHostRegName, PercentEncodingMalformedCutOff1) {
 TEST(IsWellFormedHostRegName, PercentEncodingMalformedCutOff2) {
     testIsWellFormedHostRegName("%"
                                 "a",
-                                false);
+            false);
 }
 
 TEST(IsWellFormedHostRegName, PercentEncodingMalformedForbiddenCharacter1) {
     testIsWellFormedHostRegName("%"
                                 "ga",
-                                false);
+            false);
 }
 
 TEST(IsWellFormedHostRegName, PercentEncodingMalformedForbiddenCharacter2) {
     testIsWellFormedHostRegName("%"
                                 "ag",
-                                false);
+            false);
 }
 
 TEST(SetHostRegName, NullUriOnly) {

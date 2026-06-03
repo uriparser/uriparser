@@ -31,7 +31,7 @@ namespace {
 static void testIsWellFormedFragment(const char * candidate, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed = uriIsWellFormedFragmentA(first, afterLast);
 
@@ -90,7 +90,7 @@ TEST(IsWellFormedFragment, AllowedCharacters) {
                              "!$&'()*+,;="
                              ":@"
                              "/?",
-                             true);
+            true);
 }
 
 TEST(IsWellFormedFragment, ForbiddenCharacters) {
@@ -102,7 +102,7 @@ TEST(IsWellFormedFragment, PercentEncodingWellFormed) {
                              "aa"
                              "%"
                              "AA",
-                             true);
+            true);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff1) {
@@ -112,19 +112,19 @@ TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff1) {
 TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff2) {
     testIsWellFormedFragment("%"
                              "a",
-                             false);
+            false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedForbiddenCharacter1) {
     testIsWellFormedFragment("%"
                              "ga",
-                             false);
+            false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedForbiddenCharacter2) {
     testIsWellFormedFragment("%"
                              "ag",
-                             false);
+            false);
 }
 
 TEST(SetFragment, NullUriOnly) {

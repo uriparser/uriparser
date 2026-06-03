@@ -45,10 +45,10 @@
 #  include <winsock2.h>
 #  include <ws2tcpip.h>
 #  if defined(__MINGW32__) \
-      && (!defined(__MINGW64_VERSION_MAJOR) || __MINGW64_VERSION_MAJOR < 3 \
-          || _WIN32_WINNT < _WIN32_WINNT_VISTA)
-WINSOCK_API_LINKAGE const char * WSAAPI inet_ntop(int af, const void * src, char * dst,
-                                                  size_t size);
+          && (!defined(__MINGW64_VERSION_MAJOR) || __MINGW64_VERSION_MAJOR < 3 \
+                  || _WIN32_WINNT < _WIN32_WINNT_VISTA)
+WINSOCK_API_LINKAGE const char * WSAAPI inet_ntop(
+        int af, const void * src, char * dst, size_t size);
 #  endif
 #else
 #  include <sys/socket.h>
@@ -69,9 +69,9 @@ void dumpRange(const char * label, const UriTextRangeA * range) {
     const size_t labelLenChars = strlen(label);
 
     const int gapLenChars =
-        (leftColumnMinWidthChars - /* the colon */ 1 > labelLenChars)
-            ? (int)(leftColumnMinWidthChars - labelLenChars - /* the colon */ 1)
-            : /* minimum gap */ 1;
+            (leftColumnMinWidthChars - /* the colon */ 1 > labelLenChars)
+                    ? (int)(leftColumnMinWidthChars - labelLenChars - /* the colon */ 1)
+                    : /* minimum gap */ 1;
 
     fprintf(stdout, "%s:%*s", label, gapLenChars, "");
     fwrite(range->first, range->afterLast - range->first, 1, stdout);
@@ -97,11 +97,11 @@ int main(int argc, char * argv[]) {
         if (uriParseUriA(&state, argv[i]) != URI_SUCCESS) {
             /* Failure */
             printf("Failure:      %s @ '%.18s' (#%lu)\n",
-                   (state.errorCode == URI_ERROR_SYNTAX) ? "syntax"
-                   : (state.errorCode == URI_ERROR_MALLOC)
-                       ? "not enough memory"
-                       : "liburiparser bug (please report)",
-                   state.errorPos, (long unsigned int)(state.errorPos - argv[i]));
+                    (state.errorCode == URI_ERROR_SYNTAX) ? "syntax"
+                    : (state.errorCode == URI_ERROR_MALLOC)
+                            ? "not enough memory"
+                            : "liburiparser bug (please report)",
+                    state.errorPos, (long unsigned int)(state.errorPos - argv[i]));
             retval = EXIT_FAILURE;
         } else {
             if (uri.scheme.first) {
@@ -141,10 +141,10 @@ int main(int argc, char * argv[]) {
             }
             const char * const absolutePathLabel = "absolutePath: ";
             printf("%s%s\n", absolutePathLabel,
-                   (uri.absolutePath == URI_TRUE) ? "true" : "false");
+                    (uri.absolutePath == URI_TRUE) ? "true" : "false");
             if (uri.hostText.first != NULL) {
                 printf("%*s%s\n", (int)strlen(absolutePathLabel), "",
-                       "(always false for URIs with host)");
+                        "(always false for URIs with host)");
             }
         }
         printf("\n");

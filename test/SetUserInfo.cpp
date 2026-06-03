@@ -31,7 +31,7 @@ namespace {
 static void testIsWellFormedUserInfo(const char * candidate, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed = uriIsWellFormedUserInfoA(first, afterLast);
 
@@ -88,7 +88,7 @@ TEST(IsWellFormedUserInfo, AllowedCharacters) {
                              "-._~"
                              "!$&'()*+,;="
                              ":",
-                             true);
+            true);
 }
 
 TEST(IsWellFormedUserInfo, ForbiddenCharacters) {
@@ -100,7 +100,7 @@ TEST(IsWellFormedUserInfo, PercentEncodingWellFormed) {
                              "aa"
                              "%"
                              "AA",
-                             true);
+            true);
 }
 
 TEST(IsWellFormedUserInfo, PercentEncodingMalformedCutOff1) {
@@ -110,19 +110,19 @@ TEST(IsWellFormedUserInfo, PercentEncodingMalformedCutOff1) {
 TEST(IsWellFormedUserInfo, PercentEncodingMalformedCutOff2) {
     testIsWellFormedUserInfo("%"
                              "a",
-                             false);
+            false);
 }
 
 TEST(IsWellFormedUserInfo, PercentEncodingMalformedForbiddenCharacter1) {
     testIsWellFormedUserInfo("%"
                              "ga",
-                             false);
+            false);
 }
 
 TEST(IsWellFormedUserInfo, PercentEncodingMalformedForbiddenCharacter2) {
     testIsWellFormedUserInfo("%"
                              "ag",
-                             false);
+            false);
 }
 
 TEST(SetUserInfo, NullUriOnly) {
@@ -231,8 +231,8 @@ TEST(SetUserInfo, UriWithoutHostNonNullRejected) {
     const char * const afterLast = first + strlen(first);
     EXPECT_TRUE(uri.hostText.first == NULL);  // self-test
 
-    EXPECT_EQ(uriSetUserInfoA(&uri, first, afterLast),
-              URI_ERROR_SETUSERINFO_HOST_NOT_SET);
+    EXPECT_EQ(
+            uriSetUserInfoA(&uri, first, afterLast), URI_ERROR_SETUSERINFO_HOST_NOT_SET);
 
     uriFreeUriMembersA(&uri);
 }

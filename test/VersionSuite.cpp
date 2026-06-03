@@ -27,9 +27,8 @@
 
 TEST(VersionSuite, EnsureVersionDefinesInSync) {
     char INSIDE_VERSION[256];
-    const int bytes_printed =
-        sprintf(INSIDE_VERSION, "%d.%d.%d%s", URI_VER_MAJOR, URI_VER_MINOR,
-                URI_VER_RELEASE, URI_VER_SUFFIX_ANSI);
+    const int bytes_printed = sprintf(INSIDE_VERSION, "%d.%d.%d%s", URI_VER_MAJOR,
+            URI_VER_MINOR, URI_VER_RELEASE, URI_VER_SUFFIX_ANSI);
     ASSERT_NE(bytes_printed, -1);
     EXPECT_STREQ(INSIDE_VERSION, PACKAGE_VERSION);
 }

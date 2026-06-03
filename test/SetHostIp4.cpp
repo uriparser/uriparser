@@ -27,7 +27,7 @@ namespace {
 static void testIsWellFormedHostIp4(const char * candidate, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed = uriIsWellFormedHostIp4A(first, afterLast);
 
@@ -58,7 +58,7 @@ static void assertUriEqual(const UriUriA * uri, const char * expected) {
 }
 
 static void assertUriHostIp4Equal(const UriUriA * uri, unsigned char o1, unsigned char o2,
-                                  unsigned char o3, unsigned char o4) {
+        unsigned char o3, unsigned char o4) {
     ASSERT_TRUE(uri->hostData.ip4 != NULL);
     EXPECT_EQ(uri->hostData.ip4->data[0], o1);
     EXPECT_EQ(uri->hostData.ip4->data[1], o2);

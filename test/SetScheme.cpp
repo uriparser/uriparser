@@ -31,7 +31,7 @@ namespace {
 static void testIsWellFormedScheme(const char * candidate, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed = uriIsWellFormedSchemeA(first, afterLast);
 
@@ -81,7 +81,7 @@ TEST(IsWellFormedScheme, AllowedCharacters) {
                            "gGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
                            "0123456789"
                            "+-.",
-                           true);
+            true);
 }
 
 TEST(IsWellFormedScheme, ForbiddenCharacters) {

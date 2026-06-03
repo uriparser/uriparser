@@ -27,10 +27,11 @@ namespace {
 static void testIsWellFormedHostIp6(const char * candidate, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed =
-        (uriIsWellFormedHostIp6A(first, afterLast) == URI_SUCCESS) ? URI_TRUE : URI_FALSE;
+            (uriIsWellFormedHostIp6A(first, afterLast) == URI_SUCCESS) ? URI_TRUE
+                                                                       : URI_FALSE;
 
     ASSERT_EQ(actualWellFormed, expectedWellFormed);
 }
@@ -116,7 +117,7 @@ TEST(IsWellFormedHostIp6, Lowercase) {
 TEST(IsWellFormedHostIp6, MaxLengthViolation) {
     testIsWellFormedHostIp6("aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa"
                             "X",
-                            false);
+            false);
 }
 
 TEST(IsWellFormedHostIp6, NineQuads) {

@@ -93,18 +93,18 @@ static void * uriDefaultMalloc(UriMemoryManager * URI_UNUSED(memory), size_t siz
     return malloc(size);
 }
 
-static void * uriDefaultCalloc(UriMemoryManager * URI_UNUSED(memory), size_t nmemb,
-                               size_t size) {
+static void * uriDefaultCalloc(
+        UriMemoryManager * URI_UNUSED(memory), size_t nmemb, size_t size) {
     return calloc(nmemb, size);
 }
 
-static void * uriDefaultRealloc(UriMemoryManager * URI_UNUSED(memory), void * ptr,
-                                size_t size) {
+static void * uriDefaultRealloc(
+        UriMemoryManager * URI_UNUSED(memory), void * ptr, size_t size) {
     return realloc(ptr, size);
 }
 
-static void * uriDefaultReallocarray(UriMemoryManager * URI_UNUSED(memory), void * ptr,
-                                     size_t nmemb, size_t size) {
+static void * uriDefaultReallocarray(
+        UriMemoryManager * URI_UNUSED(memory), void * ptr, size_t nmemb, size_t size) {
 #ifdef HAVE_REALLOCARRAY
     return reallocarray(ptr, nmemb, size);
 #else
@@ -122,9 +122,9 @@ static void uriDefaultFree(UriMemoryManager * URI_UNUSED(memory), void * ptr) {
 
 UriBool uriMemoryManagerIsComplete(const UriMemoryManager * memory) {
     return (memory && memory->malloc && memory->calloc && memory->realloc
-            && memory->reallocarray && memory->free)
-               ? URI_TRUE
-               : URI_FALSE;
+                   && memory->reallocarray && memory->free)
+                   ? URI_TRUE
+                   : URI_FALSE;
 }
 
 void * uriEmulateCalloc(UriMemoryManager * memory, size_t nmemb, size_t size) {
@@ -147,8 +147,8 @@ void * uriEmulateCalloc(UriMemoryManager * memory, size_t nmemb, size_t size) {
     return buffer;
 }
 
-void * uriEmulateReallocarray(UriMemoryManager * memory, void * ptr, size_t nmemb,
-                              size_t size) {
+void * uriEmulateReallocarray(
+        UriMemoryManager * memory, void * ptr, size_t nmemb, size_t size) {
     const size_t total_size = nmemb * size;
 
     if (memory == NULL) {
@@ -450,7 +450,7 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
             ptr[3] = 3.3L;
 
             long double * const ptrNew =
-                memory->realloc(memory, ptr, 8 * sizeof(long double));
+                    memory->realloc(memory, ptr, 8 * sizeof(long double));
             if (ptrNew != NULL) {
                 ptr = ptrNew;
                 ptr[4] = 4.4L;
@@ -472,6 +472,6 @@ int uriTestMemoryManager(UriMemoryManager * memory) {
 }
 
 /*extern*/ UriMemoryManager defaultMemoryManager = {
-    uriDefaultMalloc,       uriDefaultCalloc, uriDefaultRealloc,
-    uriDefaultReallocarray, uriDefaultFree,   NULL /* userData */
+        uriDefaultMalloc, uriDefaultCalloc, uriDefaultRealloc, uriDefaultReallocarray,
+        uriDefaultFree, NULL /* userData */
 };

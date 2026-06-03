@@ -38,8 +38,8 @@ namespace {
 static void * failingMalloc(UriMemoryManager * memory, size_t size);
 static void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size);
 static void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size);
-static void * failingReallocarray(UriMemoryManager * memory, void * ptr, size_t nmemb,
-                                  size_t size);
+static void * failingReallocarray(
+        UriMemoryManager * memory, void * ptr, size_t nmemb, size_t size);
 static void countingFree(UriMemoryManager * memory, void * ptr);
 
 class FailingMemoryManager {
@@ -52,8 +52,8 @@ private:
     friend void * failingMalloc(UriMemoryManager * memory, size_t size);
     friend void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size);
     friend void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size);
-    friend void * failingReallocarray(UriMemoryManager * memory, void * ptr, size_t nmemb,
-                                      size_t size);
+    friend void * failingReallocarray(
+            UriMemoryManager * memory, void * ptr, size_t nmemb, size_t size);
     friend void countingFree(UriMemoryManager * memory, void * ptr);
 
 public:
@@ -82,7 +82,7 @@ public:
 
 static void * failingMalloc(UriMemoryManager * memory, size_t size) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountAlloc++;
     if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
         errno = ENOMEM;
@@ -93,7 +93,7 @@ static void * failingMalloc(UriMemoryManager * memory, size_t size) {
 
 static void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountAlloc++;
     if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
         errno = ENOMEM;
@@ -104,7 +104,7 @@ static void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size
 
 static void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountAlloc++;
     if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
         errno = ENOMEM;
@@ -113,14 +113,14 @@ static void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size)
     return realloc(ptr, size);
 }
 
-static void * failingReallocarray(UriMemoryManager * memory, void * ptr, size_t nmemb,
-                                  size_t size) {
+static void * failingReallocarray(
+        UriMemoryManager * memory, void * ptr, size_t nmemb, size_t size) {
     return uriEmulateReallocarray(memory, ptr, nmemb, size);
 }
 
 static void countingFree(UriMemoryManager * memory, void * ptr) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountFree++;
     return free(ptr);
 }
@@ -178,12 +178,12 @@ TEST(MemoryManagerCompletionSuite, MallocAndFreeRequired) {
     memcpy(&backend, &defaultMemoryManager, sizeof(UriMemoryManager));
     backend.malloc = NULL;
     ASSERT_EQ(uriCompleteMemoryManager(&memory, &backend),
-              URI_ERROR_MEMORY_MANAGER_INCOMPLETE);
+            URI_ERROR_MEMORY_MANAGER_INCOMPLETE);
 
     memcpy(&backend, &defaultMemoryManager, sizeof(UriMemoryManager));
     backend.free = NULL;
     ASSERT_EQ(uriCompleteMemoryManager(&memory, &backend),
-              URI_ERROR_MEMORY_MANAGER_INCOMPLETE);
+            URI_ERROR_MEMORY_MANAGER_INCOMPLETE);
 }
 
 TEST(MemoryManagerTestingSuite, DefaultMemoryManager) {
@@ -206,21 +206,21 @@ TEST(MemoryManagerCompletionSuite, MallocAndFreeSufficient) {
 TEST(MemoryManagerTestingSuite, EmulateCalloc) {
     UriMemoryManager partialEmulationMemoryManager;
     memcpy(&partialEmulationMemoryManager, &defaultMemoryManager,
-           sizeof(UriMemoryManager));
+            sizeof(UriMemoryManager));
     partialEmulationMemoryManager.calloc = uriEmulateCalloc;
 
     ASSERT_EQ(uriTestMemoryManagerEx(&partialEmulationMemoryManager, URI_TRUE),
-              URI_SUCCESS);
+            URI_SUCCESS);
 }
 
 TEST(MemoryManagerTestingSuite, EmulateReallocarray) {
     UriMemoryManager partialEmulationMemoryManager;
     memcpy(&partialEmulationMemoryManager, &defaultMemoryManager,
-           sizeof(UriMemoryManager));
+            sizeof(UriMemoryManager));
     partialEmulationMemoryManager.reallocarray = uriEmulateReallocarray;
 
     ASSERT_EQ(uriTestMemoryManagerEx(&partialEmulationMemoryManager, URI_TRUE),
-              URI_SUCCESS);
+            URI_SUCCESS);
 }
 
 TEST(MemoryManagerTestingOverflowDetectionSuite, EmulateCalloc) {
@@ -235,20 +235,20 @@ TEST(MemoryManagerTestingOverflowDetectionSuite, EmulateReallocarray) {
     EXPECT_GT(2 * sizeof(size_t), sizeof(void *));
 
     errno = 0;
-    ASSERT_EQ(NULL, uriEmulateReallocarray(&defaultMemoryManager, NULL, (size_t)-1,
-                                           (size_t)-1));
+    ASSERT_EQ(NULL,
+            uriEmulateReallocarray(&defaultMemoryManager, NULL, (size_t)-1, (size_t)-1));
     ASSERT_EQ(errno, ENOMEM);
 }
 
 TEST(MemoryManagerTestingSuite, EmulateCallocAndReallocarray) {
     UriMemoryManager partialEmulationMemoryManager;
     memcpy(&partialEmulationMemoryManager, &defaultMemoryManager,
-           sizeof(UriMemoryManager));
+            sizeof(UriMemoryManager));
     partialEmulationMemoryManager.calloc = uriEmulateCalloc;
     partialEmulationMemoryManager.reallocarray = uriEmulateReallocarray;
 
     ASSERT_EQ(uriTestMemoryManagerEx(&partialEmulationMemoryManager, URI_TRUE),
-              URI_SUCCESS);
+            URI_SUCCESS);
 }
 
 TEST(FailingMemoryManagerSuite, AddBaseUriExMm) {
@@ -259,8 +259,8 @@ TEST(FailingMemoryManagerSuite, AddBaseUriExMm) {
     FailingMemoryManager failingMemoryManager;
 
     ASSERT_EQ(uriAddBaseUriExMmA(&absoluteDest, &relativeSource, &absoluteBase, options,
-                                 &failingMemoryManager),
-              URI_ERROR_MALLOC);
+                      &failingMemoryManager),
+            URI_ERROR_MALLOC);
 
     uriFreeUriMembersA(&relativeSource);
     uriFreeUriMembersA(&absoluteBase);
@@ -274,8 +274,8 @@ TEST(FailingMemoryManagerSuite, ComposeQueryMallocExMm) {
     FailingMemoryManager failingMemoryManager;
 
     ASSERT_EQ(uriComposeQueryMallocExMmA(&dest, queryList, spaceToPlus, normalizeBreaks,
-                                         &failingMemoryManager),
-              URI_ERROR_MALLOC);
+                      &failingMemoryManager),
+            URI_ERROR_MALLOC);
 
     uriFreeQueryListA(queryList);
 }
@@ -290,9 +290,8 @@ TEST(FailingMemoryManagerSuite, DissectQueryMallocExMm) {
     FailingMemoryManager failingMemoryManager;
 
     ASSERT_EQ(uriDissectQueryMallocExMmA(&queryList, &itemCount, first, afterLast,
-                                         plusToSpace, breakConversion,
-                                         &failingMemoryManager),
-              URI_ERROR_MALLOC);
+                      plusToSpace, breakConversion, &failingMemoryManager),
+            URI_ERROR_MALLOC);
 }
 
 TEST(FailingMemoryManagerSuite, FreeQueryListMm) {
@@ -323,7 +322,7 @@ TEST(FailingMemoryManagerSuite, IsWellFormedHostIp6Mm) {
     EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
 
     EXPECT_EQ(uriIsWellFormedHostIp6MmA(first, afterLast, &failingMemoryManager),
-              URI_ERROR_MALLOC);
+            URI_ERROR_MALLOC);
 
     EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
 }
@@ -335,7 +334,7 @@ TEST(FailingMemoryManagerSuite, IsWellFormedHostIpFutureMm) {
     EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
 
     EXPECT_EQ(uriIsWellFormedHostIpFutureMmA(first, afterLast, &failingMemoryManager),
-              URI_ERROR_MALLOC);
+            URI_ERROR_MALLOC);
 
     EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
 }
@@ -348,7 +347,7 @@ TEST(FailingMemoryManagerSuite, SetPortTextMm) {
     ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
 
     ASSERT_EQ(uriSetPortTextMmA(&uri, first, afterLast, &failingMemoryManager),
-              URI_ERROR_MALLOC);
+            URI_ERROR_MALLOC);
 
     ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
 
@@ -363,7 +362,7 @@ TEST(FailingMemoryManagerSuite, SetQueryMm) {
     ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
 
     ASSERT_EQ(uriSetQueryMmA(&uri, first, afterLast, &failingMemoryManager),
-              URI_ERROR_MALLOC);
+            URI_ERROR_MALLOC);
 
     ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
 
@@ -378,7 +377,7 @@ TEST(FailingMemoryManagerSuite, SetUserInfoMm) {
     ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 0U);
 
     ASSERT_EQ(uriSetUserInfoMmA(&uri, first, afterLast, &failingMemoryManager),
-              URI_ERROR_MALLOC);
+            URI_ERROR_MALLOC);
 
     ASSERT_EQ(failingMemoryManager.getCallCountAlloc(), 1U);
 
@@ -386,14 +385,14 @@ TEST(FailingMemoryManagerSuite, SetUserInfoMm) {
 }
 
 namespace {
-void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-    const char * uriString, unsigned int mask, unsigned int failAllocAfterTimes = 0,
-    unsigned int expectedCallCountFree = 0) {
+void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(const char * uriString,
+        unsigned int mask, unsigned int failAllocAfterTimes = 0,
+        unsigned int expectedCallCountFree = 0) {
     UriUriA uri = parse(uriString);
     FailingMemoryManager failingMemoryManager(failAllocAfterTimes);
 
-    ASSERT_EQ(uriNormalizeSyntaxExMmA(&uri, mask, &failingMemoryManager),
-              URI_ERROR_MALLOC);
+    ASSERT_EQ(
+            uriNormalizeSyntaxExMmA(&uri, mask, &failingMemoryManager), URI_ERROR_MALLOC);
 
     EXPECT_EQ(failingMemoryManager.getCallCountFree(), expectedCallCountFree);
 
@@ -402,13 +401,13 @@ void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
 }  // namespace
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmScheme) {
-    testNormalizeSyntaxWithFailingMallocCallsFreeTimes("hTTp://example.org/path",
-                                                       URI_NORMALIZE_SCHEME);
+    testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
+            "hTTp://example.org/path", URI_NORMALIZE_SCHEME);
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyUserInfo) {
-    testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//@:123",
-                                                       URI_NORMALIZE_USER_INFO);
+    testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
+            "//@:123", URI_NORMALIZE_USER_INFO);
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyHostRegname) {
@@ -424,23 +423,23 @@ TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyFragment) {
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextIp4) {  // issue #121
-    testNormalizeSyntaxWithFailingMallocCallsFreeTimes("//192.0.2.0:123" /* RFC 5737 */,
-                                                       URI_NORMALIZE_HOST, 1, 1);
+    testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
+            "//192.0.2.0:123" /* RFC 5737 */, URI_NORMALIZE_HOST, 1, 1);
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextIp6) {  // issue #121
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-        "//[2001:db8::]:123" /* RFC 3849 */, URI_NORMALIZE_HOST, 1, 1);
+            "//[2001:db8::]:123" /* RFC 3849 */, URI_NORMALIZE_HOST, 1, 1);
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextRegname) {  // issue #121
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-        "//host123.test:123" /* RFC 6761 */, URI_NORMALIZE_HOST, 1, 1);
+            "//host123.test:123" /* RFC 6761 */, URI_NORMALIZE_HOST, 1, 1);
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextFuture) {  // issue #121
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-        "//[v7.X]:123" /* arbitrary IPvFuture */, URI_NORMALIZE_HOST, 1, 1);
+            "//[v7.X]:123" /* arbitrary IPvFuture */, URI_NORMALIZE_HOST, 1, 1);
 }
 
 TEST(FailingMemoryManagerSuite, ParseSingleUriExMm) {
@@ -450,7 +449,7 @@ TEST(FailingMemoryManagerSuite, ParseSingleUriExMm) {
     FailingMemoryManager failingMemoryManager;
 
     ASSERT_EQ(uriParseSingleUriExMmA(&uri, first, afterLast, NULL, &failingMemoryManager),
-              URI_ERROR_MALLOC);
+            URI_ERROR_MALLOC);
 }
 
 TEST(FailingMemoryManagerSuite, RemoveBaseUriMm) {
@@ -461,8 +460,8 @@ TEST(FailingMemoryManagerSuite, RemoveBaseUriMm) {
     FailingMemoryManager failingMemoryManager;
 
     ASSERT_EQ(uriRemoveBaseUriMmA(&dest, &absoluteSource, &absoluteBase, domainRootMode,
-                                  &failingMemoryManager),
-              URI_ERROR_MALLOC);
+                      &failingMemoryManager),
+            URI_ERROR_MALLOC);
 
     uriFreeUriMembersA(&absoluteSource);
     uriFreeUriMembersA(&absoluteBase);

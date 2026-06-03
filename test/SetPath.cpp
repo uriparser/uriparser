@@ -28,11 +28,11 @@
 
 namespace {
 
-static void testIsWellFormedPath(const char * candidate, bool hasHost,
-                                 bool expectedWellFormed) {
+static void testIsWellFormedPath(
+        const char * candidate, bool hasHost, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed = uriIsWellFormedPathA(first, afterLast, hasHost);
 
@@ -115,7 +115,7 @@ TEST(IsWellFormedPath, AllowedCharacters) {
                              "-._~"
                              "!$&'()*+,;="
                              ":@",
-                             hasHost, true);
+                hasHost, true);
     }
 }
 
@@ -138,7 +138,7 @@ TEST(IsWellFormedPath, PercentEncodingWellFormed) {
                              "aa"
                              "%"
                              "AA",
-                             hasHost, true);
+                hasHost, true);
     }
 }
 
@@ -148,7 +148,7 @@ TEST(IsWellFormedPath, PercentEncodingMalformedCutOff1) {
         const UriBool hasHost = hasHostValues[i] ? URI_TRUE : URI_FALSE;
         testIsWellFormedPath("/"
                              "%",
-                             hasHost, false);
+                hasHost, false);
     }
 }
 
@@ -159,7 +159,7 @@ TEST(IsWellFormedPath, PercentEncodingMalformedCutOff2) {
         testIsWellFormedPath("/"
                              "%"
                              "a",
-                             hasHost, false);
+                hasHost, false);
     }
 }
 
@@ -170,7 +170,7 @@ TEST(IsWellFormedPath, PercentEncodingMalformedForbiddenCharacter1) {
         testIsWellFormedPath("/"
                              "%"
                              "ga",
-                             hasHost, false);
+                hasHost, false);
     }
 }
 
@@ -181,7 +181,7 @@ TEST(IsWellFormedPath, PercentEncodingMalformedForbiddenCharacter2) {
         testIsWellFormedPath("/"
                              "%"
                              "ag",
-                             hasHost, false);
+                hasHost, false);
     }
 }
 
