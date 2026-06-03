@@ -24,8 +24,8 @@
 
 namespace {
 
-static void testIsWellFormedHostIpFuture(const char * candidate,
-                                         bool expectedWellFormed) {
+static void testIsWellFormedHostIpFuture(
+        const char * candidate, bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
             (candidate == NULL) ? NULL : (candidate + strlen(candidate));

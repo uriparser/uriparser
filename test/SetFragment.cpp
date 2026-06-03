@@ -90,7 +90,7 @@ TEST(IsWellFormedFragment, AllowedCharacters) {
                              "!$&'()*+,;="
                              ":@"
                              "/?",
-                             true);
+            true);
 }
 
 TEST(IsWellFormedFragment, ForbiddenCharacters) {
@@ -102,7 +102,7 @@ TEST(IsWellFormedFragment, PercentEncodingWellFormed) {
                              "aa"
                              "%"
                              "AA",
-                             true);
+            true);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff1) {
@@ -112,19 +112,19 @@ TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff1) {
 TEST(IsWellFormedFragment, PercentEncodingMalformedCutOff2) {
     testIsWellFormedFragment("%"
                              "a",
-                             false);
+            false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedForbiddenCharacter1) {
     testIsWellFormedFragment("%"
                              "ga",
-                             false);
+            false);
 }
 
 TEST(IsWellFormedFragment, PercentEncodingMalformedForbiddenCharacter2) {
     testIsWellFormedFragment("%"
                              "ag",
-                             false);
+            false);
 }
 
 TEST(SetFragment, NullUriOnly) {

@@ -70,7 +70,7 @@ TEST(CopyUriSuite, ErrorIncompleteMemoryManager) {
 
     UriUriA destUri;
     ASSERT_EQ(URI_ERROR_MEMORY_MANAGER_INCOMPLETE,
-              uriCopyUriMmA(&destUri, &sourceUri, &memory));
+            uriCopyUriMmA(&destUri, &sourceUri, &memory));
 
     uriFreeUriMembersA(&sourceUri);
 }
@@ -127,18 +127,18 @@ TEST(CopyUriSuite, SuccessIpV4) {
 TEST(CopyUriSuite, SuccessIpV6) {
     UriUriA destUri;
     testCopyUri(&destUri,
-                "https://[2001:0db8:0001:0000:0000:0ab9:c0a8:0102]");  // RFC 3849
+            "https://[2001:0db8:0001:0000:0000:0ab9:c0a8:0102]");  // RFC 3849
 
     const unsigned char expected[16] = {0x20, 0x01, 0x0d, 0xb8, 0x00, 0x01, 0x00, 0x00,
-                                        0x00, 0x00, 0x0a, 0xb9, 0xc0, 0xa8, 0x01, 0x02};
+            0x00, 0x00, 0x0a, 0xb9, 0xc0, 0xa8, 0x01, 0x02};
     ASSERT_EQ(memcmp(expected, destUri.hostData.ip6->data, sizeof(expected)), 0);
 
     ASSERT_TRUE(destUri.hostData.ip4 == NULL);
     ASSERT_TRUE(destUri.hostData.ipFuture.first == NULL);
     ASSERT_TRUE(destUri.hostData.ipFuture.afterLast == NULL);
-    ASSERT_EQ(0,
-              strncmp(destUri.hostText.first, "2001:0db8:0001:0000:0000:0ab9:c0a8:0102",
-                      strlen("2001:0db8:0001:0000:0000:0ab9:c0a8:0102")));
+    ASSERT_EQ(
+            0, strncmp(destUri.hostText.first, "2001:0db8:0001:0000:0000:0ab9:c0a8:0102",
+                       strlen("2001:0db8:0001:0000:0000:0ab9:c0a8:0102")));
 
     uriFreeUriMembersA(&destUri);
 }

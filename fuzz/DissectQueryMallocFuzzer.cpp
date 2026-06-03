@@ -31,8 +31,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
     const URI_CHAR * query_end = query_start + query.size();
 
     // Break a query like "a=b&2=3" into key/value pairs.
-    int result = URI_FUNC(DissectQueryMalloc)(&query_list, &item_count, query_start,
-                                              query_end);
+    int result = URI_FUNC(DissectQueryMalloc)(
+            &query_list, &item_count, query_start, query_end);
 
     if (query_list == nullptr || result != URI_SUCCESS || item_count < 0) {
         return 0;

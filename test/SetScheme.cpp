@@ -81,7 +81,7 @@ TEST(IsWellFormedScheme, AllowedCharacters) {
                            "gGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
                            "0123456789"
                            "+-.",
-                           true);
+            true);
 }
 
 TEST(IsWellFormedScheme, ForbiddenCharacters) {

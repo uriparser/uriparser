@@ -71,11 +71,11 @@
 
 /* Full version strings */
 #  define URI_VER_ANSI \
-      URI_VER_ANSI_HELPER(URI_VER_MAJOR, URI_VER_MINOR, URI_VER_RELEASE, \
-                          URI_VER_SUFFIX_ANSI)
+      URI_VER_ANSI_HELPER( \
+              URI_VER_MAJOR, URI_VER_MINOR, URI_VER_RELEASE, URI_VER_SUFFIX_ANSI)
 #  define URI_VER_UNICODE \
-      URI_VER_UNICODE_HELPER(URI_VER_MAJOR, URI_VER_MINOR, URI_VER_RELEASE, \
-                             URI_VER_SUFFIX_UNICODE)
+      URI_VER_UNICODE_HELPER( \
+              URI_VER_MAJOR, URI_VER_MINOR, URI_VER_RELEASE, URI_VER_SUFFIX_UNICODE)
 
 /* Unused parameter macro */
 #  ifdef __GNUC__
@@ -200,8 +200,8 @@ typedef void * (*UriFuncRealloc)(struct UriMemoryManagerStruct *, void *, size_t
  *
  * @since 0.9.0
  */
-typedef void * (*UriFuncReallocarray)(struct UriMemoryManagerStruct *, void *, size_t,
-                                      size_t);
+typedef void * (*UriFuncReallocarray)(
+        struct UriMemoryManagerStruct *, void *, size_t, size_t);
 
 /**
  * Function signature that custom free(3) functions must conform to
@@ -307,8 +307,8 @@ typedef enum UriResolutionOptionsEnum {
  * @see UriMemoryManager
  * @since 0.9.0
  */
-URI_PUBLIC int uriCompleteMemoryManager(UriMemoryManager * memory,
-                                        UriMemoryManager * backend);
+URI_PUBLIC int uriCompleteMemoryManager(
+        UriMemoryManager * memory, UriMemoryManager * backend);
 
 /**
  * Offers emulation of calloc(3) based on memory-&gt;malloc and memset.
@@ -341,8 +341,8 @@ URI_PUBLIC void * uriEmulateCalloc(UriMemoryManager * memory, size_t nmemb, size
  * @see UriMemoryManager
  * @since 0.9.0
  */
-URI_PUBLIC void * uriEmulateReallocarray(UriMemoryManager * memory, void * ptr,
-                                         size_t nmemb, size_t size);
+URI_PUBLIC void * uriEmulateReallocarray(
+        UriMemoryManager * memory, void * ptr, size_t nmemb, size_t size);
 
 /**
  * Run multiple tests against a given memory manager.
@@ -396,7 +396,7 @@ URI_PUBLIC int uriTestMemoryManager(UriMemoryManager * memory);
  * @see uriTestMemoryManager
  * @since 1.0.0
  */
-URI_PUBLIC int uriTestMemoryManagerEx(UriMemoryManager * memory,
-                                      UriBool challengeAlignment);
+URI_PUBLIC int uriTestMemoryManagerEx(
+        UriMemoryManager * memory, UriBool challengeAlignment);
 
 #endif /* URI_BASE_H */

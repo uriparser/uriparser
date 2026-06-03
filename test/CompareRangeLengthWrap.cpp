@@ -70,9 +70,8 @@ TEST(UriSuite, TestRangeComparisonDoesNotWrapLengthChecksOn64Bit) {
     // content comparison after truncating the large length.
     memset(hugeBase, 'a', pageSize);
 
-    char * const shortBase =
-            static_cast<char *>(mmap(NULL, shortMapLen, PROT_READ | PROT_WRITE,
-                                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+    char * const shortBase = static_cast<char *>(mmap(NULL, shortMapLen,
+            PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
     ASSERT_NE(shortBase, MAP_FAILED);
     // Guard the following page so any over-read beyond shortLen faults.
     ASSERT_EQ(0, mprotect(shortBase + pageSize, pageSize, PROT_NONE));

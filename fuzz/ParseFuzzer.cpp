@@ -103,7 +103,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t * data, size_t size) {
 
     UriHolder uriHolder2;
     if (URI_FUNC(ParseSingleUri)(uriHolder2.get(), uri2.c_str(), nullptr)
-        != URI_SUCCESS) {
+            != URI_SUCCESS) {
         return 0;
     }
 

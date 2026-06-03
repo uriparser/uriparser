@@ -90,7 +90,7 @@ TEST(IsWellFormedQuery, AllowedCharacters) {
                           "!$&'()*+,;="
                           ":@"
                           "/?",
-                          true);
+            true);
 }
 
 TEST(IsWellFormedQuery, ForbiddenCharacters) {
@@ -103,7 +103,7 @@ TEST(IsWellFormedQuery, PercentEncodingWellFormed) {
                           "aa"
                           "%"
                           "AA",
-                          true);
+            true);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingMalformedCutOff1) {
@@ -113,19 +113,19 @@ TEST(IsWellFormedQuery, PercentEncodingMalformedCutOff1) {
 TEST(IsWellFormedQuery, PercentEncodingMalformedCutOff2) {
     testIsWellFormedQuery("%"
                           "a",
-                          false);
+            false);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingMalformedForbiddenCharacter1) {
     testIsWellFormedQuery("%"
                           "ga",
-                          false);
+            false);
 }
 
 TEST(IsWellFormedQuery, PercentEncodingMalformedForbiddenCharacter2) {
     testIsWellFormedQuery("%"
                           "ag",
-                          false);
+            false);
 }
 
 TEST(SetQuery, NullUriOnly) {

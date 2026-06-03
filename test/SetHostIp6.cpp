@@ -117,7 +117,7 @@ TEST(IsWellFormedHostIp6, Lowercase) {
 TEST(IsWellFormedHostIp6, MaxLengthViolation) {
     testIsWellFormedHostIp6("aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa"
                             "X",
-                            false);
+            false);
 }
 
 TEST(IsWellFormedHostIp6, NineQuads) {
