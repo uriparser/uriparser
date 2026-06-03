@@ -114,7 +114,7 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
         } break;
         case URI_HOST_TYPE_IPFUTURE: {
             const int res =
-                URI_FUNC(IsWellFormedHostIpFutureMm)(first, afterLast, memory);
+                    URI_FUNC(IsWellFormedHostIpFutureMm)(first, afterLast, memory);
             assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
                    || (res == URI_ERROR_MALLOC));
             if (res != URI_SUCCESS) {
@@ -171,7 +171,7 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
             }
 
             const UriBool success =
-                URI_FUNC(EnsureThatPathIsNotMistakenForHost)(uri, memory);
+                    URI_FUNC(EnsureThatPathIsNotMistakenForHost)(uri, memory);
             return (success == URI_TRUE) ? URI_SUCCESS : URI_ERROR_MALLOC;
         }
 
@@ -210,7 +210,7 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
         }
 
         const int res =
-            URI_FUNC(ParseIpFourAddress)(uri->hostData.ip4->data, first, afterLast);
+                URI_FUNC(ParseIpFourAddress)(uri->hostData.ip4->data, first, afterLast);
 #  if defined(NDEBUG)
         (void)res; /* i.e. mark as unused */
 #  else
@@ -223,8 +223,8 @@ int URI_FUNC(InternalSetHostMm)(URI_TYPE(Uri) * uri, UriHostType hostType,
             return URI_ERROR_MALLOC;
         }
 
-        const int res =
-            URI_FUNC(ParseIpSixAddressMm)(uri->hostData.ip6, first, afterLast, memory);
+        const int res = URI_FUNC(ParseIpSixAddressMm)(uri->hostData.ip6, first, afterLast,
+                                                      memory);
         assert((res == URI_SUCCESS)
                || (res == URI_ERROR_MALLOC)); /* because checked for
                                                  well-formedness earlier */

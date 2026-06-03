@@ -71,7 +71,7 @@ static URI_INLINE UriBool URI_FUNC(AppendSegment)(URI_TYPE(Uri) * uri,
                                                   UriMemoryManager * memory) {
     /* Create segment */
     URI_TYPE(PathSegment) * segment =
-        memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
+            memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
     if (segment == NULL) {
         return URI_FALSE; /* Raises malloc error */
     }
@@ -96,16 +96,16 @@ static URI_INLINE UriBool URI_FUNC(EqualsAuthority)(const URI_TYPE(Uri) * first,
     if (first->hostData.ip4 != NULL) {
         return ((second->hostData.ip4 != NULL)
                 && !memcmp(first->hostData.ip4->data, second->hostData.ip4->data, 4))
-                   ? URI_TRUE
-                   : URI_FALSE;
+                       ? URI_TRUE
+                       : URI_FALSE;
     }
 
     /* IPv6 */
     if (first->hostData.ip6 != NULL) {
         return ((second->hostData.ip6 != NULL)
                 && !memcmp(first->hostData.ip6->data, second->hostData.ip6->data, 16))
-                   ? URI_TRUE
-                   : URI_FALSE;
+                       ? URI_TRUE
+                       : URI_FALSE;
     }
 
     /* IPvFuture */
@@ -113,8 +113,8 @@ static URI_INLINE UriBool URI_FUNC(EqualsAuthority)(const URI_TYPE(Uri) * first,
         return ((second->hostData.ipFuture.first != NULL)
                 && URI_FUNC(RangeEquals)(&first->hostData.ipFuture,
                                          &second->hostData.ipFuture))
-                   ? URI_TRUE
-                   : URI_FALSE;
+                       ? URI_TRUE
+                       : URI_FALSE;
     }
 
     return URI_FUNC(RangeEquals)(&first->hostText, &second->hostText) ? URI_TRUE
@@ -253,12 +253,13 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
                             /* clang-format off */
     /* [22/50]          while (first(A.path) == first(Base.path)) do */
                             /* clang-format on */
-                            while (
-                                (sourceSeg != NULL) && (baseSeg != NULL)
-                                && URI_FUNC(RangeEquals)(&sourceSeg->text, &baseSeg->text)
-                                && !((sourceSeg->text.first == sourceSeg->text.afterLast)
-                                     && ((sourceSeg->next == NULL)
-                                         != (baseSeg->next == NULL)))) {
+                            while ((sourceSeg != NULL) && (baseSeg != NULL)
+                                   && URI_FUNC(RangeEquals)(&sourceSeg->text,
+                                                            &baseSeg->text)
+                                   && !((sourceSeg->text.first
+                                         == sourceSeg->text.afterLast)
+                                        && ((sourceSeg->next == NULL)
+                                            != (baseSeg->next == NULL)))) {
                                 /* clang-format off */
     /* [23/50]             A.path++; */
                                 /* clang-format on */
@@ -320,8 +321,8 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
     /* [34/50]                   T.path += "./"; */
                                         /* clang-format on */
                                         if (!URI_FUNC(AppendSegment)(
-                                                dest, URI_FUNC(ConstPwd),
-                                                URI_FUNC(ConstPwd) + 1, memory)) {
+                                                    dest, URI_FUNC(ConstPwd),
+                                                    URI_FUNC(ConstPwd) + 1, memory)) {
                                             return URI_ERROR_MALLOC;
                                         }
                                         /* clang-format off */
@@ -333,8 +334,8 @@ static int URI_FUNC(RemoveBaseUriImpl)(URI_TYPE(Uri) * dest,
     /* [36/50]                   T.path += "/."; */
                                         /* clang-format on */
                                         if (!URI_FUNC(AppendSegment)(
-                                                dest, URI_FUNC(ConstPwd),
-                                                URI_FUNC(ConstPwd) + 1, memory)) {
+                                                    dest, URI_FUNC(ConstPwd),
+                                                    URI_FUNC(ConstPwd) + 1, memory)) {
                                             return URI_ERROR_MALLOC;
                                         }
                                         /* clang-format off */

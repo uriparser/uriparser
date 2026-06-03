@@ -198,7 +198,7 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                     /* UserInfo */
                     if (uri->userInfo.first != NULL) {
                         const size_t charsToWrite =
-                            uri->userInfo.afterLast - uri->userInfo.first;
+                                uri->userInfo.afterLast - uri->userInfo.first;
                         if (dest != NULL) {
                             // Detect and avoid integer overflow
                             if (charsToWrite > (size_t)INT_MAX - written) {
@@ -251,7 +251,7 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                         for (; i < 4; i++) {
                             const unsigned char value = uri->hostData.ip4->data[i];
                             const int charsToWrite =
-                                (value > 99) ? 3 : ((value > 9) ? 2 : 1);
+                                    (value > 99) ? 3 : ((value > 9) ? 2 : 1);
                             if (dest != NULL) {
                                 if (written + charsToWrite <= maxChars) {
                                     URI_CHAR text[4];
@@ -316,10 +316,10 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                             if (dest != NULL) {
                                 if (written + 2 <= maxChars) {
                                     URI_CHAR text[3];
-                                    text[0] =
-                                        URI_FUNC(HexToLetterEx)(value / 16, URI_FALSE);
-                                    text[1] =
-                                        URI_FUNC(HexToLetterEx)(value % 16, URI_FALSE);
+                                    text[0] = URI_FUNC(HexToLetterEx)(value / 16,
+                                                                      URI_FALSE);
+                                    text[1] = URI_FUNC(HexToLetterEx)(value % 16,
+                                                                      URI_FALSE);
                                     text[2] = _UT('\0');
                                     memcpy(dest + written, text, 2 * sizeof(URI_CHAR));
                                     written += 2;
@@ -427,7 +427,7 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                     } else if (uri->hostText.first != NULL) {
                         /* Regname */
                         const size_t charsToWrite =
-                            uri->hostText.afterLast - uri->hostText.first;
+                                uri->hostText.afterLast - uri->hostText.first;
                         if (dest != NULL) {
                             // Detect and avoid integer overflow
                             if (charsToWrite > (size_t)INT_MAX - written) {
@@ -463,7 +463,7 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                     /* Port */
                     if (uri->portText.first != NULL) {
                         const size_t charsToWrite =
-                            uri->portText.afterLast - uri->portText.first;
+                                uri->portText.afterLast - uri->portText.first;
                         if (dest != NULL) {
                             /* Leading ':' */
                             if (written + 1 <= maxChars) {
@@ -540,7 +540,7 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                     URI_TYPE(PathSegment) * walker = uri->pathHead;
                     do {
                         const size_t charsToWrite =
-                            walker->text.afterLast - walker->text.first;
+                                walker->text.afterLast - walker->text.first;
                         if (dest != NULL) {
                             // Detect and avoid integer overflow
                             if (charsToWrite > (size_t)INT_MAX - written) {
@@ -678,7 +678,7 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
     /* [17/19]     append fragment to result; */
                     /* clang-format on */
                     const size_t charsToWrite =
-                        uri->fragment.afterLast - uri->fragment.first;
+                            uri->fragment.afterLast - uri->fragment.first;
                     if (dest != NULL) {
                         // Detect and avoid integer overflow
                         if (charsToWrite > (size_t)INT_MAX - written) {

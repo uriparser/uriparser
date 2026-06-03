@@ -123,8 +123,8 @@ static void uriDefaultFree(UriMemoryManager * URI_UNUSED(memory), void * ptr) {
 UriBool uriMemoryManagerIsComplete(const UriMemoryManager * memory) {
     return (memory && memory->malloc && memory->calloc && memory->realloc
             && memory->reallocarray && memory->free)
-               ? URI_TRUE
-               : URI_FALSE;
+                   ? URI_TRUE
+                   : URI_FALSE;
 }
 
 void * uriEmulateCalloc(UriMemoryManager * memory, size_t nmemb, size_t size) {
@@ -450,7 +450,7 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
             ptr[3] = 3.3L;
 
             long double * const ptrNew =
-                memory->realloc(memory, ptr, 8 * sizeof(long double));
+                    memory->realloc(memory, ptr, 8 * sizeof(long double));
             if (ptrNew != NULL) {
                 ptr = ptrNew;
                 ptr[4] = 4.4L;
@@ -472,6 +472,6 @@ int uriTestMemoryManager(UriMemoryManager * memory) {
 }
 
 /*extern*/ UriMemoryManager defaultMemoryManager = {
-    uriDefaultMalloc,       uriDefaultCalloc, uriDefaultRealloc,
-    uriDefaultReallocarray, uriDefaultFree,   NULL /* userData */
+        uriDefaultMalloc,       uriDefaultCalloc, uriDefaultRealloc,
+        uriDefaultReallocarray, uriDefaultFree,   NULL /* userData */
 };

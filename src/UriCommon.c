@@ -314,7 +314,7 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri, UriBool relative,
                                 /* Last segment -> insert "" segment to represent trailing
                                  * slash, update tail */
                                 URI_TYPE(PathSegment) * const segment = memory->calloc(
-                                    memory, 1, sizeof(URI_TYPE(PathSegment)));
+                                        memory, 1, sizeof(URI_TYPE(PathSegment)));
                                 if (segment == NULL) {
                                     if (pathOwned
                                         && (walker->text.first
@@ -539,7 +539,7 @@ UriBool URI_FUNC(CopyPath)(URI_TYPE(Uri) * dest, const URI_TYPE(Uri) * source,
         URI_TYPE(PathSegment) * destPrev = NULL;
         do {
             URI_TYPE(PathSegment) * cur =
-                memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
+                    memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
             if (cur == NULL) {
                 /* Fix broken list */
                 if (destPrev != NULL) {
@@ -647,7 +647,7 @@ static UriBool URI_FUNC(PrependNewDotSegment)(URI_TYPE(Uri) * uri,
     assert(memory != NULL);
 
     URI_TYPE(PathSegment) * const segment =
-        memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
+            memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
 
     if (segment == NULL) {
         return URI_FALSE; /* i.e. raise malloc error */

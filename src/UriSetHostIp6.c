@@ -113,7 +113,7 @@ int URI_FUNC(ParseIpSixAddressMm)(UriIp6 * output, const URI_CHAR * first,
     const size_t candidateLenChars = 3 + inputLenChars + 1;
     URI_TYPE(Uri) uri;
     const int res = URI_FUNC(ParseSingleUriExMm)(
-        &uri, candidate, candidate + candidateLenChars, NULL, memory);
+            &uri, candidate, candidate + candidateLenChars, NULL, memory);
 
     assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
            || (res == URI_ERROR_MALLOC));

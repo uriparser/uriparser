@@ -220,7 +220,7 @@ static int URI_FUNC(InternalSetPath)(URI_TYPE(Uri) * destUri, const URI_CHAR * f
     }
 
     URI_CHAR * const candidate =
-        memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
+            memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
 
     if (candidate == NULL) {
         return URI_ERROR_MALLOC;

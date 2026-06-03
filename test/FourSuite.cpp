@@ -134,7 +134,7 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper(";x", BASE_URI[0], "http://a/b/c/;x"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("g;x", BASE_URI[0], "http://a/b/c/g;x"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g;x?y#s", BASE_URI[0], "http://a/b/c/g;x?y#s"));
+            testAddOrRemoveBaseHelper("g;x?y#s", BASE_URI[0], "http://a/b/c/g;x?y#s"));
 
     // changed with RFC 2396bis
     ASSERT_TRUE(testAddOrRemoveBaseHelper("", BASE_URI[0], "http://a/b/c/d;p?q"));
@@ -165,23 +165,23 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("g/./h", BASE_URI[0], "http://a/b/c/g/h"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("g/../h", BASE_URI[0], "http://a/b/c/h"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g;x=1/./y", BASE_URI[0], "http://a/b/c/g;x=1/y"));
+            testAddOrRemoveBaseHelper("g;x=1/./y", BASE_URI[0], "http://a/b/c/g;x=1/y"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("g;x=1/../y", BASE_URI[0], "http://a/b/c/y"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g?y/./x", BASE_URI[0], "http://a/b/c/g?y/./x"));
+            testAddOrRemoveBaseHelper("g?y/./x", BASE_URI[0], "http://a/b/c/g?y/./x"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g?y/../x", BASE_URI[0], "http://a/b/c/g?y/../x"));
+            testAddOrRemoveBaseHelper("g?y/../x", BASE_URI[0], "http://a/b/c/g?y/../x"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g#s/./x", BASE_URI[0], "http://a/b/c/g#s/./x"));
+            testAddOrRemoveBaseHelper("g#s/./x", BASE_URI[0], "http://a/b/c/g#s/./x"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g#s/../x", BASE_URI[0], "http://a/b/c/g#s/../x"));
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("http:g", BASE_URI[0], "http:g"));  // http://a/b/c/g
+            testAddOrRemoveBaseHelper("g#s/../x", BASE_URI[0], "http://a/b/c/g#s/../x"));
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("http:g", BASE_URI[0],
+                                          "http:g"));  // http://a/b/c/g
     ASSERT_TRUE(testAddOrRemoveBaseHelper("http:", BASE_URI[0], "http:"));  // BASE_URI[0]
 
     // not sure where this one originated
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("/a/b/c/./../../g", BASE_URI[0], "http://a/a/g"));
+            testAddOrRemoveBaseHelper("/a/b/c/./../../g", BASE_URI[0], "http://a/a/g"));
 
     // http://gbiv.com/protocols/uri/test/rel_examples2.html
     // slashes in base URI's query args
@@ -196,14 +196,14 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("?y", BASE_URI[1], "http://a/b/c/d;p?y"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("g?y", BASE_URI[1], "http://a/b/c/g?y"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g?y/./x", BASE_URI[1], "http://a/b/c/g?y/./x"));
+            testAddOrRemoveBaseHelper("g?y/./x", BASE_URI[1], "http://a/b/c/g?y/./x"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g?y/../x", BASE_URI[1], "http://a/b/c/g?y/../x"));
+            testAddOrRemoveBaseHelper("g?y/../x", BASE_URI[1], "http://a/b/c/g?y/../x"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("g#s", BASE_URI[1], "http://a/b/c/g#s"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g#s/./x", BASE_URI[1], "http://a/b/c/g#s/./x"));
+            testAddOrRemoveBaseHelper("g#s/./x", BASE_URI[1], "http://a/b/c/g#s/./x"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g#s/../x", BASE_URI[1], "http://a/b/c/g#s/../x"));
+            testAddOrRemoveBaseHelper("g#s/../x", BASE_URI[1], "http://a/b/c/g#s/../x"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("./", BASE_URI[1], "http://a/b/c/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../", BASE_URI[1], "http://a/b/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../g", BASE_URI[1], "http://a/b/g"));
@@ -222,7 +222,7 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("g;x=1/./y", BASE_URI[2],
                                           "http://a/b/c/d;p=1/g;x=1/y"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("g;x=1/../y", BASE_URI[2], "http://a/b/c/d;p=1/y"));
+            testAddOrRemoveBaseHelper("g;x=1/../y", BASE_URI[2], "http://a/b/c/d;p=1/y"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("./", BASE_URI[2], "http://a/b/c/d;p=1/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../", BASE_URI[2], "http://a/b/c/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../g", BASE_URI[2], "http://a/b/c/g"));
@@ -246,14 +246,15 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../", BASE_URI[3], "fred:///s//a/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../g", BASE_URI[3], "fred:///s//a/g"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "../../", BASE_URI[3], "fred:///s//"));  // may change to fred:///s//a/../
+            "../../", BASE_URI[3], "fred:///s//"));  // may change to fred:///s//a/../
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "../../g", BASE_URI[3], "fred:///s//g"));  // may change to fred:///s//a/../g
+            "../../g", BASE_URI[3], "fred:///s//g"));  // may change to fred:///s//a/../g
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "../../../g", BASE_URI[3], "fred:///s/g"));  // may change to fred:///s//a/../../g
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("../../../../g", BASE_URI[3],
-                                  "fred:///g"));  // may change to fred:///s//a/../../../g
+            "../../../g", BASE_URI[3],
+            "fred:///s/g"));  // may change to fred:///s//a/../../g
+    ASSERT_TRUE(testAddOrRemoveBaseHelper(
+            "../../../../g", BASE_URI[3],
+            "fred:///g"));  // may change to fred:///s//a/../../../g
 
     // http://gbiv.com/protocols/uri/test/rel_examples5.html
     // double and triple slash, well-known scheme
@@ -272,14 +273,15 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../", BASE_URI[4], "http:///s//a/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../g", BASE_URI[4], "http:///s//a/g"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "../../", BASE_URI[4], "http:///s//"));  // may change to http:///s//a/../
+            "../../", BASE_URI[4], "http:///s//"));  // may change to http:///s//a/../
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "../../g", BASE_URI[4], "http:///s//g"));  // may change to http:///s//a/../g
+            "../../g", BASE_URI[4], "http:///s//g"));  // may change to http:///s//a/../g
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "../../../g", BASE_URI[4], "http:///s/g"));  // may change to http:///s//a/../../g
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("../../../../g", BASE_URI[4],
-                                  "http:///g"));  // may change to http:///s//a/../../../g
+            "../../../g", BASE_URI[4],
+            "http:///s/g"));  // may change to http:///s//a/../../g
+    ASSERT_TRUE(testAddOrRemoveBaseHelper(
+            "../../../../g", BASE_URI[4],
+            "http:///g"));  // may change to http:///s//a/../../../g
 
     // from Dan Connelly's tests in http://www.w3.org/2000/10/swap/uripath.py
     ASSERT_TRUE(testAddOrRemoveBaseHelper("bar:abc", "foo:xyz", "bar:abc"));
@@ -291,9 +293,9 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("q/r", "http://ex/x/y", "http://ex/x/q/r"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("q/r#s", "http://ex/x/y", "http://ex/x/q/r#s"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("q/r#s/t", "http://ex/x/y", "http://ex/x/q/r#s/t"));
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("ftp://ex/x/q/r", "http://ex/x/y", "ftp://ex/x/q/r"));
+            testAddOrRemoveBaseHelper("q/r#s/t", "http://ex/x/y", "http://ex/x/q/r#s/t"));
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("ftp://ex/x/q/r", "http://ex/x/y",
+                                          "ftp://ex/x/q/r"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("", "http://ex/x/y", "http://ex/x/y"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("", "http://ex/x/y/", "http://ex/x/y/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("", "http://ex/x/y/pdq", "http://ex/x/y/pdq"));
@@ -309,9 +311,9 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("q/r#s", "file:/ex/x/y", "file:/ex/x/q/r#s"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("q/r#", "file:/ex/x/y", "file:/ex/x/q/r#"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("q/r#s/t", "file:/ex/x/y", "file:/ex/x/q/r#s/t"));
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("ftp://ex/x/q/r", "file:/ex/x/y", "ftp://ex/x/q/r"));
+            testAddOrRemoveBaseHelper("q/r#s/t", "file:/ex/x/y", "file:/ex/x/q/r#s/t"));
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("ftp://ex/x/q/r", "file:/ex/x/y",
+                                          "ftp://ex/x/q/r"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("", "file:/ex/x/y", "file:/ex/x/y"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("", "file:/ex/x/y/", "file:/ex/x/y/"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("", "file:/ex/x/y/pdq", "file:/ex/x/y/pdq"));
@@ -320,17 +322,17 @@ TEST(FourSuite, AbsolutizeTestCases) {
                                           "file:/devel/WWW/2000/10/swap/test/reluri-1.n3",
                                           "file://meetings.example.com/cal#m1"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "file://meetings.example.com/cal#m1",
-        "file:/home/connolly/w3ccvs/WWW/2000/10/swap/test/reluri-1.n3",
-        "file://meetings.example.com/cal#m1"));
+            "file://meetings.example.com/cal#m1",
+            "file:/home/connolly/w3ccvs/WWW/2000/10/swap/test/reluri-1.n3",
+            "file://meetings.example.com/cal#m1"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("./#blort", "file:/some/dir/foo",
                                           "file:/some/dir/#blort"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("./#", "file:/some/dir/foo", "file:/some/dir/#"));
+            testAddOrRemoveBaseHelper("./#", "file:/some/dir/foo", "file:/some/dir/#"));
 
     // Ryan Lee
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("./", "http://example/x/abc.efg", "http://example/x/"));
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("./", "http://example/x/abc.efg",
+                                          "http://example/x/"));
 
     // Graham Klyne's tests
     // http://www.ninebynine.org/Software/HaskellUtils/Network/UriTest.xls
@@ -339,11 +341,11 @@ TEST(FourSuite, AbsolutizeTestCases) {
     // 32-49
     ASSERT_TRUE(testAddOrRemoveBaseHelper("./q:r", "http://ex/x/y", "http://ex/x/q:r"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("./p=q:r", "http://ex/x/y", "http://ex/x/p=q:r"));
+            testAddOrRemoveBaseHelper("./p=q:r", "http://ex/x/y", "http://ex/x/p=q:r"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("?pp/rr", "http://ex/x/y?pp/qq",
                                           "http://ex/x/y?pp/rr"));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("y/z", "http://ex/x/y?pp/qq", "http://ex/x/y/z"));
+            testAddOrRemoveBaseHelper("y/z", "http://ex/x/y?pp/qq", "http://ex/x/y/z"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("local/qual@domain.org#frag", "mailto:local",
                                           "mailto:local/qual@domain.org#frag"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("more/qual2@domain2.org#frag",
@@ -383,7 +385,7 @@ TEST(FourSuite, AbsolutizeTestCases) {
 
     // 70-77
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "local2@domain2", "mailto:local1@domain1?query1", "mailto:local2@domain2"));
+            "local2@domain2", "mailto:local1@domain1?query1", "mailto:local2@domain2"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("local2@domain2?query2",
                                           "mailto:local1@domain1",
                                           "mailto:local2@domain2?query2"));
@@ -412,11 +414,11 @@ TEST(FourSuite, AbsolutizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("b/c//d/e", "f://example.org/base/a",
                                           "f://example.org/base/b/c//d/e"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "m2@example.ord/c2@example.org", "mid:m@example.ord/c@example.org",
-        "mid:m@example.ord/m2@example.ord/c2@example.org"));
+            "m2@example.ord/c2@example.org", "mid:m@example.ord/c@example.org",
+            "mid:m@example.ord/m2@example.ord/c2@example.org"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper(
-        "mini1.xml", "file:///C:/DEV/Haskell/lib/HXmlToolbox-3.01/examples/",
-        "file:///C:/DEV/Haskell/lib/HXmlToolbox-3.01/examples/mini1.xml"));
+            "mini1.xml", "file:///C:/DEV/Haskell/lib/HXmlToolbox-3.01/examples/",
+            "file:///C:/DEV/Haskell/lib/HXmlToolbox-3.01/examples/mini1.xml"));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("../b/c", "foo:a/y/z", "foo:a/b/c"));
 }
 
@@ -427,11 +429,11 @@ TEST(FourSuite, RelativizeTestCases) {
     // to convert, base, expected
 
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://ex/a/d", "b/c", REMOVE_MODE));
+            testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://ex/a/d", "b/c", REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/b/b/c", "s://ex/a/d", "/b/b/c",
                                           REMOVE_MODE, DOMAIN_ROOT_MODE));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://ex/a/b/", "c", REMOVE_MODE));
+            testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://ex/a/b/", "c", REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://other.ex/a/b/", "s://ex/a/d",
                                           "//other.ex/a/b/", REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://other.ex/a/d",
@@ -443,7 +445,7 @@ TEST(FourSuite, RelativizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a", "s://ex/b/c/d", "/a", REMOVE_MODE,
                                           DOMAIN_ROOT_MODE));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/b/c/d", "s://ex/a", "b/c/d", REMOVE_MODE));
+            testAddOrRemoveBaseHelper("s://ex/b/c/d", "s://ex/a", "b/c/d", REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b/c?h", "s://ex/a/d?w", "b/c?h",
                                           REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b/c#h", "s://ex/a/d#w", "b/c#h",
@@ -457,8 +459,8 @@ TEST(FourSuite, RelativizeTestCases) {
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b", "s://ex/a/b", "", REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/", "s://ex/", "", REMOVE_MODE));
 
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://ex/a/d/c", "../b/c", REMOVE_MODE));
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b/c", "s://ex/a/d/c", "../b/c",
+                                          REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b/c/", "s://ex/a/d/c", "../b/c/",
                                           REMOVE_MODE));
     ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b/c/d", "s://ex/a/d/c/d",
@@ -469,14 +471,14 @@ TEST(FourSuite, RelativizeTestCases) {
                                           REMOVE_MODE));
 
     // Some tests to ensure that empty path segments don't cause problems.
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/b", "s://ex/a//b/c", "../../b",
+                                          REMOVE_MODE));
     ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/a/b", "s://ex/a//b/c", "../../b", REMOVE_MODE));
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/a///b", "s://ex/a/", ".///b", REMOVE_MODE));
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/a/", "s://ex/a///b", "../../", REMOVE_MODE));
-    ASSERT_TRUE(
-        testAddOrRemoveBaseHelper("s://ex/a//b/c", "s://ex/a/b", ".//b/c", REMOVE_MODE));
+            testAddOrRemoveBaseHelper("s://ex/a///b", "s://ex/a/", ".///b", REMOVE_MODE));
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a/", "s://ex/a///b", "../../",
+                                          REMOVE_MODE));
+    ASSERT_TRUE(testAddOrRemoveBaseHelper("s://ex/a//b/c", "s://ex/a/b", ".//b/c",
+                                          REMOVE_MODE));
 }
 
 namespace {
@@ -511,9 +513,9 @@ TEST(FourSuite, GoodUriReferences) {
     ASSERT_TRUE(testGoodUri("file:///foo/bar"));
     ASSERT_TRUE(testGoodUri("mailto:user@host?subject=blah"));
     ASSERT_TRUE(
-        testGoodUri("dav:"));  // empty opaque part / rel-path allowed by RFC 2396bis
-    ASSERT_TRUE(
-        testGoodUri("about:"));  // empty opaque part / rel-path allowed by RFC 2396bis
+            testGoodUri("dav:"));  // empty opaque part / rel-path allowed by RFC 2396bis
+    ASSERT_TRUE(testGoodUri(
+            "about:"));  // empty opaque part / rel-path allowed by RFC 2396bis
 
     // the following test cases are from a Perl script by David A. Wheeler
     // at http://www.dwheeler.com/secure-programs/url.pl
@@ -582,8 +584,8 @@ TEST(FourSuite, GoodUriReferences) {
     ASSERT_TRUE(testGoodUri("http://example.org"));
 
     // IPv6 literals (from RFC2732):
-    ASSERT_TRUE(
-        testGoodUri("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html"));
+    ASSERT_TRUE(testGoodUri(
+            "http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html"));
     ASSERT_TRUE(testGoodUri("http://[1080:0:0:0:8:800:200C:417A]/index.html"));
     ASSERT_TRUE(testGoodUri("http://[3ffe:2a00:100:7031::1]"));
     ASSERT_TRUE(testGoodUri("http://[1080::8:800:200C:417A]/foo"));
@@ -601,7 +603,7 @@ TEST(FourSuite, BadUriReferences) {
     ASSERT_TRUE(testBadUri("beepbeep\x07\x07", 8));
     ASSERT_TRUE(testBadUri("\n", 0));
     ASSERT_TRUE(testBadUri(
-        "::", 0));  // not OK, per Roy Fielding on the W3C uri list on 2004-04-01
+            "::", 0));  // not OK, per Roy Fielding on the W3C uri list on 2004-04-01
 
     // the following test cases are from a Perl script by David A. Wheeler
     // at http://www.dwheeler.com/secure-programs/url.pl
@@ -682,16 +684,16 @@ bool normalizeAndCompare(const char * uriText, const char * expectedNormalized) 
 
 TEST(FourSuite, CaseNormalizationTests) {
     ASSERT_TRUE(
-        normalizeAndCompare("HTTP://www.EXAMPLE.com/", "http://www.example.com/"));
-    ASSERT_TRUE(
-        normalizeAndCompare("example://A/b/c/%7bfoo%7d", "example://a/b/c/%7Bfoo%7D"));
+            normalizeAndCompare("HTTP://www.EXAMPLE.com/", "http://www.example.com/"));
+    ASSERT_TRUE(normalizeAndCompare("example://A/b/c/%7bfoo%7d",
+                                    "example://a/b/c/%7Bfoo%7D"));
 }
 
 TEST(FourSuite, PctEncNormalizationTests) {
     ASSERT_TRUE(
-        normalizeAndCompare("http://host/%7Euser/x/y/z", "http://host/~user/x/y/z"));
+            normalizeAndCompare("http://host/%7Euser/x/y/z", "http://host/~user/x/y/z"));
     ASSERT_TRUE(
-        normalizeAndCompare("http://host/%7euser/x/y/z", "http://host/~user/x/y/z"));
+            normalizeAndCompare("http://host/%7euser/x/y/z", "http://host/~user/x/y/z"));
 }
 
 TEST(FourSuite, PathSegmentNormalizationTests) {

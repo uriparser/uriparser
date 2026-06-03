@@ -32,7 +32,7 @@ static void testIsWellFormedPath(const char * candidate, bool hasHost,
                                  bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed = uriIsWellFormedPathA(first, afterLast, hasHost);
 

@@ -79,7 +79,7 @@ static URI_INLINE UriBool URI_FUNC(MergePath)(URI_TYPE(Uri) * absWork,
     /* Replace last segment ("" if trailing slash) with first of append chain */
     if (absWork->pathHead == NULL) {
         URI_TYPE(PathSegment) * const dup =
-            memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
+                memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
         if (dup == NULL) {
             return URI_FALSE; /* Raises malloc error */
         }
@@ -99,7 +99,7 @@ static URI_INLINE UriBool URI_FUNC(MergePath)(URI_TYPE(Uri) * absWork,
 
     for (;;) {
         URI_TYPE(PathSegment) * const dup =
-            memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
+                memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
         if (dup == NULL) {
             destPrev->next = NULL;
             absWork->pathTail = destPrev;
@@ -130,7 +130,7 @@ static int URI_FUNC(ResolveAbsolutePathFlag)(URI_TYPE(Uri) * absWork,
         /* Empty segment needed, instead? */
         if (absWork->pathHead == NULL) {
             URI_TYPE(PathSegment) * const segment =
-                memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
+                    memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
             if (segment == NULL) {
                 return URI_ERROR_MALLOC;
             }
@@ -179,7 +179,7 @@ static int URI_FUNC(AddBaseUriImpl)(URI_TYPE(Uri) * absDest,
     /* [00/32] if ((not strict) and (R.scheme == Base.scheme)) then */
                 /* clang-format on */
                 relSourceHasScheme =
-                    (relSource->scheme.first != NULL) ? URI_TRUE : URI_FALSE;
+                        (relSource->scheme.first != NULL) ? URI_TRUE : URI_FALSE;
                 if ((options & URI_RESOLVE_IDENTICAL_SCHEME_COMPAT)
                     && (absBase->scheme.first != NULL)
                     && (relSource->scheme.first != NULL)

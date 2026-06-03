@@ -194,7 +194,7 @@ static URI_INLINE UriBool URI_FUNC(ContainsUppercaseLetters)(const URI_CHAR * fi
 }
 
 static URI_INLINE UriBool URI_FUNC(ContainsUglyPercentEncoding)(
-    const URI_CHAR * first, const URI_CHAR * afterLast) {
+        const URI_CHAR * first, const URI_CHAR * afterLast) {
     if ((first != NULL) && (afterLast != NULL) && (afterLast > first)) {
         const URI_CHAR * i = first;
         for (; i + 2 < afterLast; i++) {
@@ -487,8 +487,8 @@ int URI_FUNC(NormalizeSyntaxMaskRequiredEx)(const URI_TYPE(Uri) * uri,
     UriMemoryManager * const memory = NULL; /* no use of memory manager */
 
 #  if defined(__GNUC__) \
-      && ((__GNUC__ > 4) \
-          || ((__GNUC__ == 4) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 2)))
+          && ((__GNUC__ > 4) \
+              || ((__GNUC__ == 4) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 2)))
     /* Slower code that fixes a warning, not sure if this is a smart idea */
     URI_TYPE(Uri) writeableClone;
 #  endif
@@ -498,8 +498,8 @@ int URI_FUNC(NormalizeSyntaxMaskRequiredEx)(const URI_TYPE(Uri) * uri,
     }
 
 #  if defined(__GNUC__) \
-      && ((__GNUC__ > 4) \
-          || ((__GNUC__ == 4) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 2)))
+          && ((__GNUC__ > 4) \
+              || ((__GNUC__ == 4) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 2)))
     /* Slower code that fixes a warning, not sure if this is a smart idea */
     memcpy(&writeableClone, uri, 1 * sizeof(URI_TYPE(Uri)));
     URI_FUNC(NormalizeSyntaxEngine)(&writeableClone, 0, outMask, memory);
@@ -613,10 +613,10 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
 
     /* Scheme, host */
     if (outMask != NULL) {
-        const UriBool normalizeScheme =
-            URI_FUNC(ContainsUppercaseLetters)(uri->scheme.first, uri->scheme.afterLast);
+        const UriBool normalizeScheme = URI_FUNC(ContainsUppercaseLetters)(
+                uri->scheme.first, uri->scheme.afterLast);
         const UriBool normalizeHostCase = URI_FUNC(ContainsUppercaseLetters)(
-            uri->hostText.first, uri->hostText.afterLast);
+                uri->hostText.first, uri->hostText.afterLast);
         if (normalizeScheme) {
             *outMask |= URI_NORMALIZE_SCHEME;
         }
@@ -625,7 +625,7 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
             *outMask |= URI_NORMALIZE_HOST;
         } else {
             const UriBool normalizeHostPrecent = URI_FUNC(ContainsUglyPercentEncoding)(
-                uri->hostText.first, uri->hostText.afterLast);
+                    uri->hostText.first, uri->hostText.afterLast);
             if (normalizeHostPrecent) {
                 *outMask |= URI_NORMALIZE_HOST;
             }
@@ -669,8 +669,9 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
                     URI_FUNC(FixPercentEncodingInplace)(uri->hostText.first,
                                                         &(uri->hostText.afterLast));
                 } else {
-                    if (!URI_FUNC(FixPercentEncodingMalloc)(
-                            &(uri->hostText.first), &(uri->hostText.afterLast), memory)) {
+                    if (!URI_FUNC(FixPercentEncodingMalloc)(&(uri->hostText.first),
+                                                            &(uri->hostText.afterLast),
+                                                            memory)) {
                         URI_FUNC(PreventLeakage)(uri, revertMask, memory);
                         return URI_ERROR_MALLOC;
                     }
@@ -710,7 +711,7 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
     /* User info */
     if (outMask != NULL) {
         const UriBool normalizeUserInfo = URI_FUNC(ContainsUglyPercentEncoding)(
-            uri->userInfo.first, uri->userInfo.afterLast);
+                uri->userInfo.first, uri->userInfo.afterLast);
         if (normalizeUserInfo) {
             *outMask |= URI_NORMALIZE_USER_INFO;
         }
@@ -721,7 +722,7 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
                                                     &(uri->userInfo.afterLast));
             } else {
                 if (!URI_FUNC(FixPercentEncodingMalloc)(
-                        &(uri->userInfo.first), &(uri->userInfo.afterLast), memory)) {
+                            &(uri->userInfo.first), &(uri->userInfo.afterLast), memory)) {
                     URI_FUNC(PreventLeakage)(uri, revertMask, memory);
                     return URI_ERROR_MALLOC;
                 }
@@ -748,8 +749,9 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
         }
     } else if (inMask & URI_NORMALIZE_PATH) {
         URI_TYPE(PathSegment) * walker;
-        const UriBool relative =
-            ((uri->scheme.first == NULL) && !uri->absolutePath) ? URI_TRUE : URI_FALSE;
+        const UriBool relative = ((uri->scheme.first == NULL) && !uri->absolutePath)
+                                         ? URI_TRUE
+                                         : URI_FALSE;
 
         /* Fix percent-encoding for each segment */
         walker = uri->pathHead;
@@ -762,7 +764,7 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
         } else {
             while (walker != NULL) {
                 if (!URI_FUNC(FixPercentEncodingMalloc)(
-                        &(walker->text.first), &(walker->text.afterLast), memory)) {
+                            &(walker->text.first), &(walker->text.afterLast), memory)) {
                     URI_FUNC(PreventLeakage)(uri, revertMask, memory);
                     return URI_ERROR_MALLOC;
                 }
@@ -773,9 +775,9 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
 
         /* 6.2.2.3 Path Segment Normalization */
         if (!URI_FUNC(RemoveDotSegmentsEx)(
-                uri, relative,
-                (uri->owner == URI_TRUE) || ((revertMask & URI_NORMALIZE_PATH) != 0),
-                memory)) {
+                    uri, relative,
+                    (uri->owner == URI_TRUE) || ((revertMask & URI_NORMALIZE_PATH) != 0),
+                    memory)) {
             URI_FUNC(PreventLeakage)(uri, revertMask, memory);
             return URI_ERROR_MALLOC;
         }
@@ -784,10 +786,10 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
 
     /* Query, fragment */
     if (outMask != NULL) {
-        const UriBool normalizeQuery =
-            URI_FUNC(ContainsUglyPercentEncoding)(uri->query.first, uri->query.afterLast);
+        const UriBool normalizeQuery = URI_FUNC(ContainsUglyPercentEncoding)(
+                uri->query.first, uri->query.afterLast);
         const UriBool normalizeFragment = URI_FUNC(ContainsUglyPercentEncoding)(
-            uri->fragment.first, uri->fragment.afterLast);
+                uri->fragment.first, uri->fragment.afterLast);
         if (normalizeQuery) {
             *outMask |= URI_NORMALIZE_QUERY;
         }
@@ -803,7 +805,7 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
                                                     &(uri->query.afterLast));
             } else {
                 if (!URI_FUNC(FixPercentEncodingMalloc)(
-                        &(uri->query.first), &(uri->query.afterLast), memory)) {
+                            &(uri->query.first), &(uri->query.afterLast), memory)) {
                     URI_FUNC(PreventLeakage)(uri, revertMask, memory);
                     return URI_ERROR_MALLOC;
                 }
@@ -818,7 +820,7 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
                                                     &(uri->fragment.afterLast));
             } else {
                 if (!URI_FUNC(FixPercentEncodingMalloc)(
-                        &(uri->fragment.first), &(uri->fragment.afterLast), memory)) {
+                            &(uri->fragment.first), &(uri->fragment.afterLast), memory)) {
                     URI_FUNC(PreventLeakage)(uri, revertMask, memory);
                     return URI_ERROR_MALLOC;
                 }

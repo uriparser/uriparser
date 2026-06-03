@@ -45,8 +45,8 @@
  */
 
 #if (defined(URI_PASS_ANSI) && !defined(URI_H_ANSI)) \
-    || (defined(URI_PASS_UNICODE) && !defined(URI_H_UNICODE)) \
-    || (!defined(URI_PASS_ANSI) && !defined(URI_PASS_UNICODE))
+        || (defined(URI_PASS_UNICODE) && !defined(URI_H_UNICODE)) \
+        || (!defined(URI_PASS_ANSI) && !defined(URI_PASS_UNICODE))
 /* What encodings are enabled? */
 #  include "UriDefsConfig.h"
 #  if (!defined(URI_PASS_ANSI) && !defined(URI_PASS_UNICODE))
@@ -63,8 +63,8 @@
 #    endif
 /* Only one pass for each encoding */
 #  elif (defined(URI_PASS_ANSI) && !defined(URI_H_ANSI) && defined(URI_ENABLE_ANSI)) \
-      || (defined(URI_PASS_UNICODE) && !defined(URI_H_UNICODE) \
-          && defined(URI_ENABLE_UNICODE))
+          || (defined(URI_PASS_UNICODE) && !defined(URI_H_UNICODE) \
+              && defined(URI_ENABLE_UNICODE))
 #    ifdef URI_PASS_ANSI
 #      define URI_H_ANSI 1
 #      include "UriDefsAnsi.h"
@@ -462,8 +462,8 @@ URI_PUBLIC URI_CHAR * URI_FUNC(Escape)(const URI_CHAR * in, URI_CHAR * out,
  * @since 0.5.0
  */
 URI_PUBLIC const URI_CHAR *
-    URI_FUNC(UnescapeInPlaceEx)(URI_CHAR * inout, UriBool plusToSpace,
-                                UriBreakConversion breakConversion);
+        URI_FUNC(UnescapeInPlaceEx)(URI_CHAR * inout, UriBool plusToSpace,
+                                    UriBreakConversion breakConversion);
 
 /**
  * Unescapes percent-encoded groups in a given string.
@@ -888,9 +888,9 @@ URI_PUBLIC int URI_FUNC(ComposeQueryCharsRequired)(const URI_TYPE(QueryList) * q
  * @since 0.7.0
  */
 URI_PUBLIC int
-    URI_FUNC(ComposeQueryCharsRequiredEx)(const URI_TYPE(QueryList) * queryList,
-                                          int * charsRequired, UriBool spaceToPlus,
-                                          UriBool normalizeBreaks);
+        URI_FUNC(ComposeQueryCharsRequiredEx)(const URI_TYPE(QueryList) * queryList,
+                                              int * charsRequired, UriBool spaceToPlus,
+                                              UriBool normalizeBreaks);
 
 /**
  * Converts a query list structure back to a query string.

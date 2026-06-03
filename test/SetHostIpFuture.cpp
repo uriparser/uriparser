@@ -28,11 +28,11 @@ static void testIsWellFormedHostIpFuture(const char * candidate,
                                          bool expectedWellFormed) {
     const char * const first = candidate;
     const char * const afterLast =
-        (candidate == NULL) ? NULL : (candidate + strlen(candidate));
+            (candidate == NULL) ? NULL : (candidate + strlen(candidate));
 
     const UriBool actualWellFormed =
-        (uriIsWellFormedHostIpFutureA(first, afterLast) == URI_SUCCESS) ? URI_TRUE
-                                                                        : URI_FALSE;
+            (uriIsWellFormedHostIpFutureA(first, afterLast) == URI_SUCCESS) ? URI_TRUE
+                                                                            : URI_FALSE;
 
     ASSERT_EQ(actualWellFormed, expectedWellFormed);
 }

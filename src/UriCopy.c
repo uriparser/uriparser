@@ -180,7 +180,7 @@ int URI_FUNC(CopyUriMm)(URI_TYPE(Uri) * destUri, const URI_TYPE(Uri) * sourceUri
 
         while (sourceWalker != NULL) {
             URI_TYPE(PathSegment) * destWalker =
-                memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
+                    memory->malloc(memory, sizeof(URI_TYPE(PathSegment)));
             if (destWalker == NULL) {
                 URI_FUNC(PreventLeakageAfterCopy)(destUri, revertMask, memory);
                 return URI_ERROR_MALLOC;

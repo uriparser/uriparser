@@ -319,21 +319,21 @@ TEST(UriSuite, TestUri) {
     stateW.uri = &uriW;
 
     // On/off for each
-    ASSERT_EQ(
-        0, uriParseUriA(&stateA, "//user:pass@[::1]:80/segment/index.html?query#frag"));
+    ASSERT_EQ(0, uriParseUriA(&stateA,
+                              "//user:pass@[::1]:80/segment/index.html?query#frag"));
     uriFreeUriMembersA(&uriA);
     ASSERT_EQ(0, uriParseUriA(&stateA, "http://[::1]:80/segment/index.html?query#frag"));
     uriFreeUriMembersA(&uriA);
-    ASSERT_EQ(
-        0, uriParseUriA(&stateA, "http://user:pass@[::1]/segment/index.html?query#frag"));
+    ASSERT_EQ(0, uriParseUriA(&stateA,
+                              "http://user:pass@[::1]/segment/index.html?query#frag"));
     uriFreeUriMembersA(&uriA);
     ASSERT_EQ(0, uriParseUriA(&stateA, "http://user:pass@[::1]:80?query#frag"));
     uriFreeUriMembersA(&uriA);
     ASSERT_EQ(0,
               uriParseUriA(&stateA, "http://user:pass@[::1]:80/segment/index.html#frag"));
     uriFreeUriMembersA(&uriA);
-    ASSERT_EQ(
-        0, uriParseUriA(&stateA, "http://user:pass@[::1]:80/segment/index.html?query"));
+    ASSERT_EQ(0, uriParseUriA(&stateA,
+                              "http://user:pass@[::1]:80/segment/index.html?query"));
     uriFreeUriMembersA(&uriA);
 
     // Schema, port, one segment
@@ -359,10 +359,8 @@ TEST(UriSuite, TestUri) {
     // Real life examples
     ASSERT_EQ(0, uriParseUriA(&stateA, "http://sourceforge.net/projects/uriparser/"));
     uriFreeUriMembersA(&uriA);
-    ASSERT_EQ(0,
-              uriParseUriA(
-                  &stateA,
-                  "http://sourceforge.net/project/platformdownload.php?group_id=182840"));
+    ASSERT_EQ(0, uriParseUriA(&stateA, "http://sourceforge.net/project/"
+                                       "platformdownload.php?group_id=182840"));
     uriFreeUriMembersA(&uriA);
     ASSERT_EQ(0, uriParseUriA(&stateA, "mailto:test@example.com"));
     uriFreeUriMembersA(&uriA);
@@ -937,24 +935,24 @@ TEST(UriSuite, TestEscaping) {
     ASSERT_TRUE(testEscapingHelper(L"g\x0d\x0a", L"g%0D%0A", SPACE_TO_PLUS, NORMALIZE));
     ASSERT_TRUE(testEscapingHelper(L"\x0d\x0ag", L"%0D%0Ag", SPACE_TO_PLUS, NORMALIZE));
     ASSERT_TRUE(
-        testEscapingHelper(L"\x0d\x0a", L"%0D%0A", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+            testEscapingHelper(L"\x0d\x0a", L"%0D%0A", SPACE_TO_PLUS, KEEP_UNMODIFIED));
     ASSERT_TRUE(
-        testEscapingHelper(L"g\x0d\x0a", L"g%0D%0A", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+            testEscapingHelper(L"g\x0d\x0a", L"g%0D%0A", SPACE_TO_PLUS, KEEP_UNMODIFIED));
     ASSERT_TRUE(
-        testEscapingHelper(L"\x0d\x0ag", L"%0D%0Ag", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+            testEscapingHelper(L"\x0d\x0ag", L"%0D%0Ag", SPACE_TO_PLUS, KEEP_UNMODIFIED));
 
     ASSERT_TRUE(
-        testEscapingHelper(L"\x0a\x0d", L"%0D%0A%0D%0A", SPACE_TO_PLUS, NORMALIZE));
+            testEscapingHelper(L"\x0a\x0d", L"%0D%0A%0D%0A", SPACE_TO_PLUS, NORMALIZE));
     ASSERT_TRUE(
-        testEscapingHelper(L"g\x0a\x0d", L"g%0D%0A%0D%0A", SPACE_TO_PLUS, NORMALIZE));
+            testEscapingHelper(L"g\x0a\x0d", L"g%0D%0A%0D%0A", SPACE_TO_PLUS, NORMALIZE));
     ASSERT_TRUE(
-        testEscapingHelper(L"\x0a\x0dg", L"%0D%0A%0D%0Ag", SPACE_TO_PLUS, NORMALIZE));
+            testEscapingHelper(L"\x0a\x0dg", L"%0D%0A%0D%0Ag", SPACE_TO_PLUS, NORMALIZE));
     ASSERT_TRUE(
-        testEscapingHelper(L"\x0a\x0d", L"%0A%0D", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+            testEscapingHelper(L"\x0a\x0d", L"%0A%0D", SPACE_TO_PLUS, KEEP_UNMODIFIED));
     ASSERT_TRUE(
-        testEscapingHelper(L"g\x0a\x0d", L"g%0A%0D", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+            testEscapingHelper(L"g\x0a\x0d", L"g%0A%0D", SPACE_TO_PLUS, KEEP_UNMODIFIED));
     ASSERT_TRUE(
-        testEscapingHelper(L"\x0a\x0dg", L"%0A%0Dg", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+            testEscapingHelper(L"\x0a\x0dg", L"%0A%0Dg", SPACE_TO_PLUS, KEEP_UNMODIFIED));
 }
 
 namespace {
@@ -964,9 +962,9 @@ bool testUnescapingHelper(const wchar_t * input, const wchar_t * output,
     wchar_t * working = new wchar_t[URI_STRLEN(input) + 1];
     wcscpy(working, input);
     const wchar_t * newTermZero = uriUnescapeInPlaceExW(
-        working, plusToSpace ? URI_TRUE : URI_FALSE, breakConversion);
+            working, plusToSpace ? URI_TRUE : URI_FALSE, breakConversion);
     const bool success =
-        ((newTermZero == working + wcslen(output)) && !wcscmp(working, output));
+            ((newTermZero == working + wcslen(output)) && !wcscmp(working, output));
     delete[] working;
     return success;
 }
@@ -996,60 +994,60 @@ TEST(UriSuite, TestUnescaping) {
 
     // Line break conversion
     ASSERT_TRUE(testUnescapingHelper(L"%0d", L"\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d", L"\x0d\x0a", PLUS_DONT_TOUCH, URI_BR_TO_WINDOWS));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d", L"\x0d\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_WINDOWS));
     ASSERT_TRUE(testUnescapingHelper(L"%0d", L"\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
     ASSERT_TRUE(
-        testUnescapingHelper(L"%0d", L"\x0d", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
+            testUnescapingHelper(L"%0d", L"\x0d", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
 
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0d", L"\x0a\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0d", L"\x0a\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_UNIX));
     ASSERT_TRUE(testUnescapingHelper(L"%0d%0d", L"\x0d\x0a\x0d\x0a", PLUS_DONT_TOUCH,
                                      URI_BR_TO_WINDOWS));
     ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0d", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0d", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
+            testUnescapingHelper(L"%0d%0d", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0d", L"\x0d\x0d", PLUS_DONT_TOUCH,
+                                     URI_BR_DONT_TOUCH));
 
     ASSERT_TRUE(testUnescapingHelper(L"%0a", L"\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0a", L"\x0d\x0a", PLUS_DONT_TOUCH, URI_BR_TO_WINDOWS));
+    ASSERT_TRUE(testUnescapingHelper(L"%0a", L"\x0d\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_WINDOWS));
     ASSERT_TRUE(testUnescapingHelper(L"%0a", L"\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
     ASSERT_TRUE(
-        testUnescapingHelper(L"%0a", L"\x0a", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
+            testUnescapingHelper(L"%0a", L"\x0a", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
 
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0a", L"\x0a\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
+    ASSERT_TRUE(testUnescapingHelper(L"%0a%0a", L"\x0a\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_UNIX));
     ASSERT_TRUE(testUnescapingHelper(L"%0a%0a", L"\x0d\x0a\x0d\x0a", PLUS_DONT_TOUCH,
                                      URI_BR_TO_WINDOWS));
     ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0a", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0a", L"\x0a\x0a", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
-
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0a", L"\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0a", L"\x0d\x0a", PLUS_DONT_TOUCH, URI_BR_TO_WINDOWS));
-    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a", L"\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0a", L"\x0d\x0a", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
-
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0a%0a", L"\x0a\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
-    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0a", L"\x0d\x0a\x0d\x0a", PLUS_DONT_TOUCH,
-                                     URI_BR_TO_WINDOWS));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0a%0a", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
-    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0a", L"\x0d\x0a\x0a", PLUS_DONT_TOUCH,
+            testUnescapingHelper(L"%0a%0a", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
+    ASSERT_TRUE(testUnescapingHelper(L"%0a%0a", L"\x0a\x0a", PLUS_DONT_TOUCH,
                                      URI_BR_DONT_TOUCH));
 
     ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0a%0d", L"\x0a\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
+            testUnescapingHelper(L"%0d%0a", L"\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a", L"\x0d\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_WINDOWS));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a", L"\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a", L"\x0d\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_DONT_TOUCH));
+
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0a", L"\x0a\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_UNIX));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0a", L"\x0d\x0a\x0d\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_WINDOWS));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0a", L"\x0d\x0d", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_MAC));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0a", L"\x0d\x0a\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_DONT_TOUCH));
+
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0d", L"\x0a\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_UNIX));
     ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0d", L"\x0d\x0a\x0d\x0a", PLUS_DONT_TOUCH,
                                      URI_BR_TO_WINDOWS));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0d%0a%0d", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
+    ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0d", L"\x0d\x0d", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_MAC));
     ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0d", L"\x0d\x0a\x0d", PLUS_DONT_TOUCH,
                                      URI_BR_DONT_TOUCH));
 
@@ -1062,21 +1060,21 @@ TEST(UriSuite, TestUnescaping) {
     ASSERT_TRUE(testUnescapingHelper(L"%0d%0a%0d%0a", L"\x0d\x0a\x0d\x0a",
                                      PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
 
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0d", L"\x0a\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
+    ASSERT_TRUE(testUnescapingHelper(L"%0a%0d", L"\x0a\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_UNIX));
     ASSERT_TRUE(testUnescapingHelper(L"%0a%0d", L"\x0d\x0a\x0d\x0a", PLUS_DONT_TOUCH,
                                      URI_BR_TO_WINDOWS));
     ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0d", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0d", L"\x0a\x0d", PLUS_DONT_TOUCH, URI_BR_DONT_TOUCH));
+            testUnescapingHelper(L"%0a%0d", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
+    ASSERT_TRUE(testUnescapingHelper(L"%0a%0d", L"\x0a\x0d", PLUS_DONT_TOUCH,
+                                     URI_BR_DONT_TOUCH));
 
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0d%0a", L"\x0a\x0a", PLUS_DONT_TOUCH, URI_BR_TO_UNIX));
+    ASSERT_TRUE(testUnescapingHelper(L"%0a%0d%0a", L"\x0a\x0a", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_UNIX));
     ASSERT_TRUE(testUnescapingHelper(L"%0a%0d%0a", L"\x0d\x0a\x0d\x0a", PLUS_DONT_TOUCH,
                                      URI_BR_TO_WINDOWS));
-    ASSERT_TRUE(
-        testUnescapingHelper(L"%0a%0d%0a", L"\x0d\x0d", PLUS_DONT_TOUCH, URI_BR_TO_MAC));
+    ASSERT_TRUE(testUnescapingHelper(L"%0a%0d%0a", L"\x0d\x0d", PLUS_DONT_TOUCH,
+                                     URI_BR_TO_MAC));
     ASSERT_TRUE(testUnescapingHelper(L"%0a%0d%0a", L"\x0a\x0d\x0a", PLUS_DONT_TOUCH,
                                      URI_BR_DONT_TOUCH));
 
@@ -1203,11 +1201,11 @@ TEST(UriSuite, TestAddBase) {
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"#s", L"http://a/b/c/d;p?q#s"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g#s", L"http://a/b/c/g#s"));
     ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g?y#s", L"http://a/b/c/g?y#s"));
+            testAddBaseHelper(L"http://a/b/c/d;p?q", L"g?y#s", L"http://a/b/c/g?y#s"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L";x", L"http://a/b/c/;x"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g;x", L"http://a/b/c/g;x"));
-    ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g;x?y#s", L"http://a/b/c/g;x?y#s"));
+    ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g;x?y#s",
+                                  L"http://a/b/c/g;x?y#s"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"", L"http://a/b/c/d;p?q"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L".", L"http://a/b/c/"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"./", L"http://a/b/c/"));
@@ -1221,7 +1219,7 @@ TEST(UriSuite, TestAddBase) {
     // 5.4.2. Abnormal Examples
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"../../../g", L"http://a/g"));
     ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"../../../../g", L"http://a/g"));
+            testAddBaseHelper(L"http://a/b/c/d;p?q", L"../../../../g", L"http://a/g"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"/./g", L"http://a/g"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"/../g", L"http://a/g"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g.", L"http://a/b/c/g."));
@@ -1232,28 +1230,28 @@ TEST(UriSuite, TestAddBase) {
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"./g/.", L"http://a/b/c/g/"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g/./h", L"http://a/b/c/g/h"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g/../h", L"http://a/b/c/h"));
+    ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g;x=1/./y",
+                                  L"http://a/b/c/g;x=1/y"));
     ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g;x=1/./y", L"http://a/b/c/g;x=1/y"));
-    ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g;x=1/../y", L"http://a/b/c/y"));
-    ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g?y/./x", L"http://a/b/c/g?y/./x"));
-    ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g?y/../x", L"http://a/b/c/g?y/../x"));
-    ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g#s/./x", L"http://a/b/c/g#s/./x"));
-    ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"g#s/../x", L"http://a/b/c/g#s/../x"));
+            testAddBaseHelper(L"http://a/b/c/d;p?q", L"g;x=1/../y", L"http://a/b/c/y"));
+    ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g?y/./x",
+                                  L"http://a/b/c/g?y/./x"));
+    ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g?y/../x",
+                                  L"http://a/b/c/g?y/../x"));
+    ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g#s/./x",
+                                  L"http://a/b/c/g#s/./x"));
+    ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"g#s/../x",
+                                  L"http://a/b/c/g#s/../x"));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"http:g", L"http:g"));
 
     // Backward compatibility (feature request #4, RFC3986 5.4.2)
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"http:g", L"http:g", false));
     ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"http:g", L"http://a/b/c/g", true));
+            testAddBaseHelper(L"http://a/b/c/d;p?q", L"http:g", L"http://a/b/c/g", true));
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"http:g?q#f",
                                   L"http://a/b/c/g?q#f", true));
-    ASSERT_TRUE(
-        testAddBaseHelper(L"http://a/b/c/d;p?q", L"other:g?q#f", L"other:g?q#f", true));
+    ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"other:g?q#f", L"other:g?q#f",
+                                  true));
 
     // Bug related to absolutePath flag set despite presence of host
     ASSERT_TRUE(testAddBaseHelper(L"http://a/b/c/d;p?q", L"/", L"http://a/"));
@@ -1500,12 +1498,12 @@ TEST(UriSuite, TestNormalizeSyntaxMaskRequired) {
     ASSERT_TRUE(testNormalizeMaskHelper(L"http://localhost/", URI_NORMALIZED));
     ASSERT_TRUE(testNormalizeMaskHelper(L"httP://localhost/", URI_NORMALIZE_SCHEME));
     ASSERT_TRUE(
-        testNormalizeMaskHelper(L"http://%0d@localhost/", URI_NORMALIZE_USER_INFO));
+            testNormalizeMaskHelper(L"http://%0d@localhost/", URI_NORMALIZE_USER_INFO));
     ASSERT_TRUE(testNormalizeMaskHelper(L"http://localhosT/", URI_NORMALIZE_HOST));
     ASSERT_TRUE(testNormalizeMaskHelper(L"http://localhost/./abc", URI_NORMALIZE_PATH));
     ASSERT_TRUE(testNormalizeMaskHelper(L"http://localhost/?AB%43", URI_NORMALIZE_QUERY));
     ASSERT_TRUE(
-        testNormalizeMaskHelper(L"http://localhost/#AB%43", URI_NORMALIZE_FRAGMENT));
+            testNormalizeMaskHelper(L"http://localhost/#AB%43", URI_NORMALIZE_FRAGMENT));
 }
 
 TEST(UriSuite, TestNormalizeSyntaxMaskRequiredPort) {
@@ -1575,7 +1573,7 @@ TEST(UriSuite, TestNormalizeSyntax) {
 
     // Testcase by Adrian Manrique
     ASSERT_TRUE(
-        testNormalizeSyntaxHelper(L"http://examp%4Ce.com/", L"http://example.com/"));
+            testNormalizeSyntaxHelper(L"http://examp%4Ce.com/", L"http://example.com/"));
 
     // Testcase by Adrian Manrique
     ASSERT_TRUE(testNormalizeSyntaxHelper(L"http://example.com/a/b/%2E%2E/",
@@ -1585,9 +1583,9 @@ TEST(UriSuite, TestNormalizeSyntax) {
     ASSERT_TRUE(testNormalizeSyntaxHelper(L"http://user:pass@SOMEHOST.COM:123",
                                           L"http://user:pass@somehost.com:123"));
 
-    ASSERT_TRUE(
-        testNormalizeSyntaxHelper(L"https://%e4%bd%a0%e5%a5%bd%e4%bd%a0%e5%a5%bd.com",
-                                  L"https://%E4%BD%A0%E5%A5%BD%E4%BD%A0%E5%A5%BD.com"));
+    ASSERT_TRUE(testNormalizeSyntaxHelper(
+            L"https://%e4%bd%a0%e5%a5%bd%e4%bd%a0%e5%a5%bd.com",
+            L"https://%E4%BD%A0%E5%A5%BD%E4%BD%A0%E5%A5%BD.com"));
 
     ASSERT_TRUE(testNormalizeSyntaxHelper(L"https://[2041:0000:140F::875B:131B]",
                                           L"https://[2041:0000:140f::875b:131b]"));
@@ -1669,10 +1667,10 @@ TEST(UriSuite, TestNormalizeSyntaxPath) {
 
     // .. and these are related
     EXPECT_TRUE(
-        testNormalizeSyntaxHelper(L"http://a/..", L"http://a/", URI_NORMALIZE_PATH));
+            testNormalizeSyntaxHelper(L"http://a/..", L"http://a/", URI_NORMALIZE_PATH));
     EXPECT_TRUE(testNormalizeSyntaxHelper(L"/..", L"/", URI_NORMALIZE_PATH));
-    EXPECT_TRUE(
-        testNormalizeSyntaxHelper(L"http://a/..///", L"http://a///", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"http://a/..///", L"http://a///",
+                                          URI_NORMALIZE_PATH));
     EXPECT_TRUE(testNormalizeSyntaxHelper(L"http://a/..///..", L"http://a//",
                                           URI_NORMALIZE_PATH));
     EXPECT_TRUE(testNormalizeSyntaxHelper(L"a/b/c/../../..", L"", URI_NORMALIZE_PATH));
@@ -1704,10 +1702,10 @@ TEST(UriSuite, TestNormalizeCrashBug20080224) {
 TEST(UriSuite, TestNormalizeBug262Fixed) {
     EXPECT_TRUE(testNormalizeSyntaxHelper(L"scheme:/.//foo/bar", L"scheme:/.//foo/bar",
                                           URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"/.//foo/bar", L"/.//foo/bar",
+                                          URI_NORMALIZE_PATH));
     EXPECT_TRUE(
-        testNormalizeSyntaxHelper(L"/.//foo/bar", L"/.//foo/bar", URI_NORMALIZE_PATH));
-    EXPECT_TRUE(
-        testNormalizeSyntaxHelper(L".//foo/bar", L".//foo/bar", URI_NORMALIZE_PATH));
+            testNormalizeSyntaxHelper(L".//foo/bar", L".//foo/bar", URI_NORMALIZE_PATH));
 }
 
 TEST(UriSuite, TestNormalizeBug262Unchanged) {
@@ -1716,7 +1714,7 @@ TEST(UriSuite, TestNormalizeBug262Unchanged) {
     EXPECT_TRUE(testNormalizeSyntaxHelper(L"scheme:/./foo/bar", L"scheme:/foo/bar",
                                           URI_NORMALIZE_PATH));
     EXPECT_TRUE(
-        testNormalizeSyntaxHelper(L"/./foo/bar", L"/foo/bar", URI_NORMALIZE_PATH));
+            testNormalizeSyntaxHelper(L"/./foo/bar", L"/foo/bar", URI_NORMALIZE_PATH));
     EXPECT_TRUE(testNormalizeSyntaxHelper(L"./foo/bar", L"foo/bar", URI_NORMALIZE_PATH));
 
     // 2x same as TestNormalizeBug262Fixed above
@@ -1997,7 +1995,7 @@ TEST(UriSuite, TestQueryCompositionMathCalc) {
     const int FACTOR = 6; /* due to escaping with normalizeBreaks */
     ASSERT_EQ((unsigned)charsRequired,
               FACTOR * strlen(first.key) + 1 + FACTOR * strlen(first.value) + 1
-                  + FACTOR * strlen(second.key) + 1 + FACTOR * strlen(second.value));
+                      + FACTOR * strlen(second.key) + 1 + FACTOR * strlen(second.value));
 }
 
 TEST(UriSuite, TestQueryCompositionMathWriteGoogleAutofuzz113244572) {
@@ -2474,7 +2472,7 @@ TEST(FreeUriMembersSuite, FreeUriMembersFreesHostTextFuture) {  // issue #121
 
 TEST(MakeOwnerSuite, MakeOwner) {
     const char * const uriString =
-        "scheme://user:pass@[v7.X]:55555/path/../path/?query#fragment";
+            "scheme://user:pass@[v7.X]:55555/path/../path/?query#fragment";
     UriUriA uri;
     char * uriFirst = strdup(uriString);
     const size_t uriLen = strlen(uriFirst);

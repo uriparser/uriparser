@@ -75,10 +75,13 @@ static int URI_FUNC(ComposeQueryEngine)(URI_CHAR * dest,
                                         int * charsRequired, UriBool spaceToPlus,
                                         UriBool normalizeBreaks);
 
-static UriBool URI_FUNC(AppendQueryItem)(
-    URI_TYPE(QueryList) * *prevNext, int * itemCount, const URI_CHAR * keyFirst,
-    const URI_CHAR * keyAfter, const URI_CHAR * valueFirst, const URI_CHAR * valueAfter,
-    UriBool plusToSpace, UriBreakConversion breakConversion, UriMemoryManager * memory);
+static UriBool URI_FUNC(AppendQueryItem)(URI_TYPE(QueryList) * *prevNext, int * itemCount,
+                                         const URI_CHAR * keyFirst,
+                                         const URI_CHAR * keyAfter,
+                                         const URI_CHAR * valueFirst,
+                                         const URI_CHAR * valueAfter, UriBool plusToSpace,
+                                         UriBreakConversion breakConversion,
+                                         UriMemoryManager * memory);
 
 int URI_FUNC(ComposeQueryCharsRequired)(const URI_TYPE(QueryList) * queryList,
                                         int * charsRequired) {

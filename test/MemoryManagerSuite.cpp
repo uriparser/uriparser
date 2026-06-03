@@ -82,7 +82,7 @@ public:
 
 static void * failingMalloc(UriMemoryManager * memory, size_t size) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountAlloc++;
     if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
         errno = ENOMEM;
@@ -93,7 +93,7 @@ static void * failingMalloc(UriMemoryManager * memory, size_t size) {
 
 static void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountAlloc++;
     if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
         errno = ENOMEM;
@@ -104,7 +104,7 @@ static void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size
 
 static void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountAlloc++;
     if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
         errno = ENOMEM;
@@ -120,7 +120,7 @@ static void * failingReallocarray(UriMemoryManager * memory, void * ptr, size_t 
 
 static void countingFree(UriMemoryManager * memory, void * ptr) {
     FailingMemoryManager * const fmm =
-        static_cast<FailingMemoryManager *>(memory->userData);
+            static_cast<FailingMemoryManager *>(memory->userData);
     fmm->callCountFree++;
     return free(ptr);
 }
@@ -387,8 +387,8 @@ TEST(FailingMemoryManagerSuite, SetUserInfoMm) {
 
 namespace {
 void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-    const char * uriString, unsigned int mask, unsigned int failAllocAfterTimes = 0,
-    unsigned int expectedCallCountFree = 0) {
+        const char * uriString, unsigned int mask, unsigned int failAllocAfterTimes = 0,
+        unsigned int expectedCallCountFree = 0) {
     UriUriA uri = parse(uriString);
     FailingMemoryManager failingMemoryManager(failAllocAfterTimes);
 
@@ -430,17 +430,17 @@ TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextIp4) {  // issue #121
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextIp6) {  // issue #121
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-        "//[2001:db8::]:123" /* RFC 3849 */, URI_NORMALIZE_HOST, 1, 1);
+            "//[2001:db8::]:123" /* RFC 3849 */, URI_NORMALIZE_HOST, 1, 1);
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextRegname) {  // issue #121
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-        "//host123.test:123" /* RFC 6761 */, URI_NORMALIZE_HOST, 1, 1);
+            "//host123.test:123" /* RFC 6761 */, URI_NORMALIZE_HOST, 1, 1);
 }
 
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmHostTextFuture) {  // issue #121
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
-        "//[v7.X]:123" /* arbitrary IPvFuture */, URI_NORMALIZE_HOST, 1, 1);
+            "//[v7.X]:123" /* arbitrary IPvFuture */, URI_NORMALIZE_HOST, 1, 1);
 }
 
 TEST(FailingMemoryManagerSuite, ParseSingleUriExMm) {

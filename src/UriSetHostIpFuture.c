@@ -109,7 +109,7 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
     }
 
     URI_CHAR * const candidate =
-        memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
+            memory->malloc(memory, (candidateLenChars + 1) * sizeof(URI_CHAR));
 
     if (candidate == NULL) {
         return URI_ERROR_MALLOC;
@@ -123,7 +123,7 @@ int URI_FUNC(IsWellFormedHostIpFutureMm)(const URI_CHAR * first,
     /* Parse as an RFC 3986 URI */
     URI_TYPE(Uri) uri;
     const int res = URI_FUNC(ParseSingleUriExMm)(
-        &uri, candidate, candidate + candidateLenChars, NULL, memory);
+            &uri, candidate, candidate + candidateLenChars, NULL, memory);
 
     assert((res == URI_SUCCESS) || (res == URI_ERROR_SYNTAX)
            || (res == URI_ERROR_MALLOC));
