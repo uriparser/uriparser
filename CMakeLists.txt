@@ -52,6 +52,7 @@ set(URIPARSER_SO_REVISION   2)
 set(URIPARSER_SO_AGE        2)
 
 include(CheckCCompilerFlag)
+include(CheckCSourceCompiles)
 include(CheckFunctionExists)
 include(CheckLibraryExists)
 include(CheckSymbolExists)
@@ -135,6 +136,43 @@ set(URIPARSER_EXTRA_COMPILE_FLAGS)
 check_c_compiler_flag("-fvisibility=hidden" URIPARSER_COMPILER_SUPPORTS_VISIBILITY)
 if(URIPARSER_COMPILER_SUPPORTS_VISIBILITY)
     set(URIPARSER_EXTRA_COMPILE_FLAGS "${URIPARSER_EXTRA_COMPILE_FLAGS} -fvisibility=hidden")
+endif()
+
+#
+# Environment checks
+#
+check_c_source_compiles("
+    #include <features.h>
+
+    #if ! defined(__GLIBC__)
+    # error libc is not glibc
+    #endif
+
+    int main(void) {
+        return 0;
+    }"
+    _URIPARSER_GLIBC_USED)
+
+# Reject glibc <2.29 as unsupported
+if(_URIPARSER_GLIBC_USED)
+    check_c_source_compiles("
+        #include <features.h>
+
+        #if ! __GLIBC_PREREQ(2, 29)
+        # error glibc too old to be supported
+        #endif
+
+        int main(void) {
+            return 0;
+        }"
+        _URIPARSER_GLIBC_SUPPORTED)
+
+    if(NOT _URIPARSER_GLIBC_SUPPORTED)
+        message(SEND_ERROR
+            "Use with glibc <2.29 is unsupported."
+            " "
+            "Please compile against a different C runtime library.")
+    endif()
 endif()
 
 #
