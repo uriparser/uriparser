@@ -302,7 +302,8 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
 
                                 // Detect and avoid integer overflow
                                 if (charsToWrite > INT_MAX - extra
-                                    || charsToWrite + extra > INT_MAX - *charsRequired) {
+                                        || charsToWrite + extra
+                                                   > INT_MAX - *charsRequired) {
                                     return URI_ERROR_TOSTRING_TOO_LONG;
                                 }
 
