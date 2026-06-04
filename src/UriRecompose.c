@@ -163,6 +163,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                             return URI_ERROR_TOSTRING_TOO_LONG;
                         }
                     } else {
+                        // Detect and avoid integer overflow
+                        if (1 > (size_t)INT_MAX - *charsRequired) {
+                            return URI_ERROR_TOSTRING_TOO_LONG;
+                        }
+
                         (*charsRequired) += 1;
                     }
                     /* clang-format off */
@@ -188,6 +193,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                             return URI_ERROR_TOSTRING_TOO_LONG;
                         }
                     } else {
+                        // Detect and avoid integer overflow
+                        if (2 > (size_t)INT_MAX - *charsRequired) {
+                            return URI_ERROR_TOSTRING_TOO_LONG;
+                        }
+
                         (*charsRequired) += 2;
                     }
                     /* clang-format off */
@@ -288,7 +298,15 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                     }
                                 }
                             } else {
-                                (*charsRequired) += charsToWrite + ((i == 3) ? 0 : 1);
+                                const int extra = (i == 3) ? 0 : 1;
+
+                                // Detect and avoid integer overflow
+                                if (charsToWrite > INT_MAX - extra
+                                    || charsToWrite + extra > INT_MAX - *charsRequired) {
+                                    return URI_ERROR_TOSTRING_TOO_LONG;
+                                }
+
+                                (*charsRequired) += charsToWrite + extra;
                             }
                         }
                     } else if (uri->hostData.ip6 != NULL) {
@@ -306,6 +324,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                 return URI_ERROR_TOSTRING_TOO_LONG;
                             }
                         } else {
+                            // Detect and avoid integer overflow
+                            if (1 > (size_t)INT_MAX - *charsRequired) {
+                                return URI_ERROR_TOSTRING_TOO_LONG;
+                            }
+
                             (*charsRequired) += 1;
                         }
 
@@ -329,6 +352,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                     return URI_ERROR_TOSTRING_TOO_LONG;
                                 }
                             } else {
+                                // Detect and avoid integer overflow
+                                if (2 > (size_t)INT_MAX - *charsRequired) {
+                                    return URI_ERROR_TOSTRING_TOO_LONG;
+                                }
+
                                 (*charsRequired) += 2;
                             }
                             if (((i & 1) == 1) && (i < 15)) {
@@ -345,6 +373,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                         return URI_ERROR_TOSTRING_TOO_LONG;
                                     }
                                 } else {
+                                    // Detect and avoid integer overflow
+                                    if (1 > (size_t)INT_MAX - *charsRequired) {
+                                        return URI_ERROR_TOSTRING_TOO_LONG;
+                                    }
+
                                     (*charsRequired) += 1;
                                 }
                             }
@@ -362,6 +395,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                 return URI_ERROR_TOSTRING_TOO_LONG;
                             }
                         } else {
+                            // Detect and avoid integer overflow
+                            if (1 > (size_t)INT_MAX - *charsRequired) {
+                                return URI_ERROR_TOSTRING_TOO_LONG;
+                            }
+
                             (*charsRequired) += 1;
                         }
                     } else if (uri->hostData.ipFuture.first != NULL) {
@@ -530,6 +568,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                             return URI_ERROR_TOSTRING_TOO_LONG;
                         }
                     } else {
+                        // Detect and avoid integer overflow
+                        if (1 > (size_t)INT_MAX - *charsRequired) {
+                            return URI_ERROR_TOSTRING_TOO_LONG;
+                        }
+
                         (*charsRequired) += 1;
                     }
                 }
@@ -585,6 +628,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                     return URI_ERROR_TOSTRING_TOO_LONG;
                                 }
                             } else {
+                                // Detect and avoid integer overflow
+                                if (1 > (size_t)INT_MAX - *charsRequired) {
+                                    return URI_ERROR_TOSTRING_TOO_LONG;
+                                }
+
                                 (*charsRequired) += 1;
                             }
                         }
@@ -611,6 +659,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                             return URI_ERROR_TOSTRING_TOO_LONG;
                         }
                     } else {
+                        // Detect and avoid integer overflow
+                        if (1 > (size_t)INT_MAX - *charsRequired) {
+                            return URI_ERROR_TOSTRING_TOO_LONG;
+                        }
+
                         (*charsRequired) += 1;
                     }
                     /* clang-format off */
@@ -670,6 +723,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                             return URI_ERROR_TOSTRING_TOO_LONG;
                         }
                     } else {
+                        // Detect and avoid integer overflow
+                        if (1 > (size_t)INT_MAX - *charsRequired) {
+                            return URI_ERROR_TOSTRING_TOO_LONG;
+                        }
+
                         (*charsRequired) += 1;
                     }
                     /* clang-format off */
