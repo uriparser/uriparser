@@ -212,14 +212,14 @@ int URI_FUNC(ComposeQueryEngine)(URI_CHAR * dest, const URI_TYPE(QueryList) * qu
 
             // Detect and avoid integer overflow
             if (ampersandLen > INT_MAX - keyRequiredChars
-                || ampersandLen + keyRequiredChars > INT_MAX - equalSignLen
-                || ampersandLen + keyRequiredChars + equalSignLen
-                       > INT_MAX - valueRequiredChars) {
+                    || ampersandLen + keyRequiredChars > INT_MAX - equalSignLen
+                    || ampersandLen + keyRequiredChars + equalSignLen
+                               > INT_MAX - valueRequiredChars) {
                 return URI_ERROR_OUTPUT_TOO_LARGE;
             }
 
             (*charsRequired) +=
-                ampersandLen + keyRequiredChars + equalSignLen + valueRequiredChars;
+                    ampersandLen + keyRequiredChars + equalSignLen + valueRequiredChars;
 
             if (firstItem == URI_TRUE) {
                 ampersandLen = 1;
