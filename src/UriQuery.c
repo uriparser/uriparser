@@ -208,8 +208,18 @@ int URI_FUNC(ComposeQueryEngine)(URI_CHAR * dest, const URI_TYPE(QueryList) * qu
         valueRequiredChars = worstCase * (int)valueLen;
 
         if (dest == NULL) {
-            (*charsRequired) += ampersandLen + keyRequiredChars
-                                + ((value == NULL) ? 0 : 1 + valueRequiredChars);
+            const int equalSignLen = (value == NULL) ? 0 : 1;
+
+            // Detect and avoid integer overflow
+            if (ampersandLen > INT_MAX - keyRequiredChars
+                || ampersandLen + keyRequiredChars > INT_MAX - equalSignLen
+                || ampersandLen + keyRequiredChars + equalSignLen
+                       > INT_MAX - valueRequiredChars) {
+                return URI_ERROR_OUTPUT_TOO_LARGE;
+            }
+
+            (*charsRequired) +=
+                ampersandLen + keyRequiredChars + equalSignLen + valueRequiredChars;
 
             if (firstItem == URI_TRUE) {
                 ampersandLen = 1;
