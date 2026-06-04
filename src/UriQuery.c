@@ -279,6 +279,12 @@ UriBool URI_FUNC(AppendQueryItem)(URI_TYPE(QueryList) * *prevNext, int * itemCou
         return URI_TRUE;
     }
 
+    // Detect integer overflow
+    // (since we will add 1 to it near the end of the function)
+    if (*itemCount == INT_MAX) {
+        return URI_FALSE; /* Raises malloc error */
+    }
+
     /* Append new empty item */
     *prevNext = memory->malloc(memory, 1 * sizeof(URI_TYPE(QueryList)));
     if (*prevNext == NULL) {
