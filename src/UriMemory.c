@@ -50,6 +50,11 @@
 #    define _DEFAULT_SOURCE 1
 #  endif
 
+// For glibc <2.29
+#  if !defined(_GNU_SOURCE)
+#    define _GNU_SOURCE 1
+#  endif
+
 // For NetBSD (stdlib.h revision 1.122 of 2020-05-26)
 #  if defined(__NetBSD__) && !defined(_OPENBSD_SOURCE)
 #    define _OPENBSD_SOURCE 1
