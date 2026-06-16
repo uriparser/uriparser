@@ -93,9 +93,9 @@ if(URIPARSER_BUILD_TESTS OR URIPARSER_BUILD_FUZZERS)
     enable_language(CXX)
 
     if(URIPARSER_BUILD_FUZZERS)
-        set(CMAKE_CXX_STANDARD 17)
+        set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ Standard to use")
     else()
-        set(CMAKE_CXX_STANDARD 11)
+        set(CMAKE_CXX_STANDARD 11 CACHE STRING "C++ Standard to use")
     endif()
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS OFF)  # i.e. -std=c++11 rather than default -std=gnu++11
