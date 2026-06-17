@@ -65,10 +65,10 @@ jobs:
     - name: Build dependency googletest
       run: |-
         set -x
-        curl -fsSL -o "release-${GTEST_VERSION}.zip" "https://github.com/google/googletest/archive/release-${GTEST_VERSION}.zip"
+        curl -fsSL -o "release-${GTEST_VERSION}.zip" "https://github.com/google/googletest/archive/refs/tags/v${GTEST_VERSION}.zip"
         unzip -q "release-${GTEST_VERSION}.zip"
 
-        cd "googletest-release-${GTEST_VERSION}"
+        cd "googletest-${GTEST_VERSION}"
         cmake \
           -G "${CMAKE_GENERATOR}" \
           -DCVF_VERSION="${GTEST_VERSION}" \
@@ -84,7 +84,7 @@ jobs:
         cmake_args=(
           -G "${CMAKE_GENERATOR}"
           # NOTE: GTEST_ROOT is relative to source CMakeLists.txt, not the build directory
-          -DGTEST_ROOT="googletest-release-${GTEST_VERSION}/googletest"
+          -DGTEST_ROOT="googletest-${GTEST_VERSION}/googletest"
           -DURIPARSER_BUILD_DOCS=OFF
           -DURIPARSER_BUILD_TESTS=ON
           -DURIPARSER_MSVC_STATIC_CRT=ON
