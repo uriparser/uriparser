@@ -24,24 +24,28 @@ jobs:
           - runs-on: windows-2022
             cmake_generator: Visual Studio 17 2022
             common_cmake_args: -A Win32
+            googletest_version: 1.12.0
             uriparser_sln: uriparser.sln
 
           # Visual Studio 2022, 64 bit
           - runs-on: windows-2022
             cmake_generator: Visual Studio 17 2022
             common_cmake_args: -A x64
+            googletest_version: 1.12.0
             uriparser_sln: uriparser.sln
 
           # Visual Studio 2026, 32 bit
           - runs-on: windows-2025-vs2026
             cmake_generator: Visual Studio 18 2026
             common_cmake_args: -A Win32
+            googletest_version: 1.12.0
             uriparser_sln: uriparser.slnx
 
           # Visual Studio 2026, 64 bit
           - runs-on: windows-2025-vs2026
             cmake_generator: Visual Studio 18 2026
             common_cmake_args: -A x64
+            googletest_version: 1.12.0
             uriparser_sln: uriparser.slnx
 
     runs-on: ${{ matrix.runs-on }}
@@ -51,7 +55,7 @@ jobs:
     env:
       CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
       COMMON_CMAKE_ARGS: ${{ matrix.common_cmake_args }}
-      GTEST_VERSION: 1.12.0
+      GTEST_VERSION: ${{ matrix.googletest_version }}
     steps:
 
     - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6.0.3
