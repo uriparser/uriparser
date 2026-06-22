@@ -24,24 +24,28 @@ jobs:
           - runs-on: windows-2022
             cmake_generator: Visual Studio 17 2022
             common_cmake_args: -A Win32
+            googletest_version: 1.12.0
             uriparser_sln: uriparser.sln
 
           # Visual Studio 2022, 64 bit
           - runs-on: windows-2022
             cmake_generator: Visual Studio 17 2022
             common_cmake_args: -A x64
+            googletest_version: 1.14.0  # matches Ubuntu 24.04
             uriparser_sln: uriparser.sln
 
           # Visual Studio 2026, 32 bit
           - runs-on: windows-2025-vs2026
             cmake_generator: Visual Studio 18 2026
             common_cmake_args: -A Win32
+            googletest_version: 1.16.0  # matches Debian trixie
             uriparser_sln: uriparser.slnx
 
           # Visual Studio 2026, 64 bit
           - runs-on: windows-2025-vs2026
             cmake_generator: Visual Studio 18 2026
             common_cmake_args: -A x64
+            googletest_version: 1.17.0  # latest upstream with C++17
             uriparser_sln: uriparser.slnx
 
     runs-on: ${{ matrix.runs-on }}
@@ -51,7 +55,7 @@ jobs:
     env:
       CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
       COMMON_CMAKE_ARGS: ${{ matrix.common_cmake_args }}
-      GTEST_VERSION: 1.12.0
+      GTEST_VERSION: ${{ matrix.googletest_version }}
     steps:
 
     - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
@@ -61,10 +65,19 @@ jobs:
     - name: Build dependency googletest
       run: |-
         set -x
-        curl -fsSL -o "release-${GTEST_VERSION}.zip" "https://github.com/google/googletest/archive/release-${GTEST_VERSION}.zip"
+        curl -fsSL -o "release-${GTEST_VERSION}.zip" "https://github.com/google/googletest/archive/refs/tags/v${GTEST_VERSION}.zip"
         unzip -q "release-${GTEST_VERSION}.zip"
 
-        cd "googletest-release-${GTEST_VERSION}"
+        cd "googletest-${GTEST_VERSION}"
+
+        # Workaround compilation issues with GoogleTest 1.17.0
+        # - https://github.com/google/googletest/issues/4731
+        # - https://github.com/google/googletest/pull/4877
+        if [[ ${GTEST_VERSION} = 1.17.0 ]] ; then
+          curl -fsSL -o build.patch https://github.com/google/googletest/commit/0b656495436f57212be8700794a3d5fb14000c5f.patch
+          patch -p 1 < build.patch
+        fi
+
         cmake \
           -G "${CMAKE_GENERATOR}" \
           -DCVF_VERSION="${GTEST_VERSION}" \
@@ -80,7 +93,7 @@ jobs:
         cmake_args=(
           -G "${CMAKE_GENERATOR}"
           # NOTE: GTEST_ROOT is relative to source CMakeLists.txt, not the build directory
-          -DGTEST_ROOT="googletest-release-${GTEST_VERSION}/googletest"
+          -DGTEST_ROOT="googletest-${GTEST_VERSION}/googletest"
           -DURIPARSER_BUILD_DOCS=OFF
           -DURIPARSER_BUILD_TESTS=ON
           -DURIPARSER_MSVC_STATIC_CRT=ON
