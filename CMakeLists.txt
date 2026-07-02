@@ -141,7 +141,10 @@ endif()
 # UriConfig.h
 #
 check_symbol_exists(wprintf wchar.h HAVE_WPRINTF)
-check_function_exists(reallocarray HAVE_REALLOCARRAY)  # no luck with CheckSymbolExists
+option(WITH_REALLOCARRAY "Try to detect reallocarray" ON)
+if (WITH_REALLOCARRAY)
+    check_function_exists(reallocarray HAVE_REALLOCARRAY)  # no luck with CheckSymbolExists
+endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/UriConfig.h.in UriConfig.h)
 
 #
