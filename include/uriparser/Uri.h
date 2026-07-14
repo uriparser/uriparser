@@ -468,8 +468,8 @@ URI_PUBLIC URI_CHAR * URI_FUNC(Escape)(const URI_CHAR * in, URI_CHAR * out,
  * @see uriUnescapeInPlaceExA
  * @since 1.0.3
  */
-URI_PUBLIC URI_CHAR * URI_FUNC(EscapeQueryRfc1866Ex)(const URI_CHAR * inFirst,
-        const URI_CHAR * inAfterLast, URI_CHAR * out);
+URI_PUBLIC URI_CHAR * URI_FUNC(EscapeQueryRfc1866Ex)(
+        const URI_CHAR * inFirst, const URI_CHAR * inAfterLast, URI_CHAR * out);
 
 /**
  * Percent-encodes the input string according to the
@@ -523,8 +523,8 @@ URI_PUBLIC URI_CHAR * URI_FUNC(EscapeQueryRfc1866)(const URI_CHAR * in, URI_CHAR
  * @see uriUnescapeInPlaceExA
  * @since 1.0.3
  */
-URI_PUBLIC URI_CHAR * URI_FUNC(EscapeQueryRfc3986Ex)(const URI_CHAR * inFirst,
-        const URI_CHAR * inAfterLast, URI_CHAR * out);
+URI_PUBLIC URI_CHAR * URI_FUNC(EscapeQueryRfc3986Ex)(
+        const URI_CHAR * inFirst, const URI_CHAR * inAfterLast, URI_CHAR * out);
 
 /**
  * Percent-encodes all characters from the input string that are not by the and

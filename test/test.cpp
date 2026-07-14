@@ -902,8 +902,7 @@ bool testEscapingHelper(const wchar_t * in, const wchar_t * expectedOut,
 
 bool testQueryRfc1866EscapingHelper(const wchar_t * in, const wchar_t * expectedOut) {
     wchar_t * const buffer = new wchar_t[6 * wcslen(in) + 1];
-    if (uriEscapeQueryRfc1866W(in, buffer)
-            != buffer + wcslen(expectedOut)) {
+    if (uriEscapeQueryRfc1866W(in, buffer) != buffer + wcslen(expectedOut)) {
         delete[] buffer;
         return false;
     }
@@ -915,8 +914,7 @@ bool testQueryRfc1866EscapingHelper(const wchar_t * in, const wchar_t * expected
 
 bool testQueryRfc3986EscapingHelper(const wchar_t * in, const wchar_t * expectedOut) {
     wchar_t * const buffer = new wchar_t[3 * wcslen(in) + 1];
-    if (uriEscapeQueryRfc3986W(in, buffer)
-            != buffer + wcslen(expectedOut)) {
+    if (uriEscapeQueryRfc3986W(in, buffer) != buffer + wcslen(expectedOut)) {
         delete[] buffer;
         return false;
     }
@@ -943,7 +941,8 @@ TEST(UriSuite, TestEscaping) {
     ASSERT_TRUE(testEscapingHelper(L"\xff", L"%FF"));
 
     // Reserved characters
-    ASSERT_TRUE(testEscapingHelper(L"?@/:", L"%3F%40%2F%3A", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+    ASSERT_TRUE(
+            testEscapingHelper(L"?@/:", L"%3F%40%2F%3A", SPACE_TO_PLUS, KEEP_UNMODIFIED));
 
     // Linebreak normalization
     ASSERT_TRUE(testEscapingHelper(L"\x0d", L"%0D%0A", SPACE_TO_PLUS, NORMALIZE));
@@ -1009,12 +1008,9 @@ TEST(UriSuite, TestRfc1866QueryEscaping) {
     ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"g\x0d\x0a", L"g%0D%0A"));
     ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0d\x0ag", L"%0D%0Ag"));
 
-    ASSERT_TRUE(
-            testQueryRfc1866EscapingHelper(L"\x0a\x0d", L"%0D%0A%0D%0A"));
-    ASSERT_TRUE(
-            testQueryRfc1866EscapingHelper(L"g\x0a\x0d", L"g%0D%0A%0D%0A"));
-    ASSERT_TRUE(
-            testQueryRfc1866EscapingHelper(L"\x0a\x0dg", L"%0D%0A%0D%0Ag"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0a\x0d", L"%0D%0A%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"g\x0a\x0d", L"g%0D%0A%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0a\x0dg", L"%0D%0A%0D%0Ag"));
 }
 
 TEST(UriSuite, TestRfc3986QueryEscaping) {
@@ -1038,19 +1034,13 @@ TEST(UriSuite, TestRfc3986QueryEscaping) {
     ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"g\x0a", L"g%0A"));
     ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0ag", L"%0Ag"));
 
-    ASSERT_TRUE(
-            testQueryRfc3986EscapingHelper(L"\x0d\x0a", L"%0D%0A"));
-    ASSERT_TRUE(
-            testQueryRfc3986EscapingHelper(L"g\x0d\x0a", L"g%0D%0A"));
-    ASSERT_TRUE(
-            testQueryRfc3986EscapingHelper(L"\x0d\x0ag", L"%0D%0Ag"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0d\x0a", L"%0D%0A"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"g\x0d\x0a", L"g%0D%0A"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0d\x0ag", L"%0D%0Ag"));
 
-    ASSERT_TRUE(
-            testQueryRfc3986EscapingHelper(L"\x0a\x0d", L"%0A%0D"));
-    ASSERT_TRUE(
-            testQueryRfc3986EscapingHelper(L"g\x0a\x0d", L"g%0A%0D"));
-    ASSERT_TRUE(
-            testQueryRfc3986EscapingHelper(L"\x0a\x0dg", L"%0A%0Dg"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0a\x0d", L"%0A%0D"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"g\x0a\x0d", L"g%0A%0D"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0a\x0dg", L"%0A%0Dg"));
 }
 
 namespace {

@@ -65,8 +65,9 @@
 #    include "UriSets.h"
 #  endif
 
-URI_CHAR * URI_FUNC(EscapeQueryEngine)(const URI_CHAR * inFirst, const URI_CHAR * inAfterLast,
-        URI_CHAR * out, UriBool spaceToPlus, UriBool encodeReserved, UriBool normalizeBreaks) {
+URI_CHAR * URI_FUNC(EscapeQueryEngine)(const URI_CHAR * inFirst,
+        const URI_CHAR * inAfterLast, URI_CHAR * out, UriBool spaceToPlus,
+        UriBool encodeReserved, UriBool normalizeBreaks) {
     const URI_CHAR * read = inFirst;
     URI_CHAR * write = out;
     UriBool prevWasCr = URI_FALSE;
@@ -196,28 +197,30 @@ URI_CHAR * URI_FUNC(Escape)(const URI_CHAR * in, URI_CHAR * out, UriBool spaceTo
 
 URI_CHAR * URI_FUNC(EscapeEx)(const URI_CHAR * inFirst, const URI_CHAR * inAfterLast,
         URI_CHAR * out, UriBool spaceToPlus, UriBool normalizeBreaks) {
-    return URI_FUNC(EscapeQueryEngine)(inFirst, inAfterLast, out,
-        spaceToPlus, /*encodeReserved*/URI_TRUE, normalizeBreaks);
+    return URI_FUNC(EscapeQueryEngine)(inFirst, inAfterLast, out, spaceToPlus,
+            /*encodeReserved*/ URI_TRUE, normalizeBreaks);
 }
 
 URI_CHAR * URI_FUNC(EscapeQueryRfc1866)(const URI_CHAR * in, URI_CHAR * out) {
     return URI_FUNC(EscapeQueryRfc1866Ex)(in, NULL, out);
 }
 
-URI_CHAR * URI_FUNC(EscapeQueryRfc1866Ex)(const URI_CHAR * inFirst, const URI_CHAR * inAfterLast,
-        URI_CHAR * out) {
+URI_CHAR * URI_FUNC(EscapeQueryRfc1866Ex)(
+        const URI_CHAR * inFirst, const URI_CHAR * inAfterLast, URI_CHAR * out) {
     return URI_FUNC(EscapeQueryEngine)(inFirst, inAfterLast, out,
-        /*spaceToPlus*/URI_TRUE, /*encodeReserved*/URI_TRUE, /*normalizeBreaks*/URI_TRUE);
+            /*spaceToPlus*/ URI_TRUE, /*encodeReserved*/ URI_TRUE,
+            /*normalizeBreaks*/ URI_TRUE);
 }
 
 URI_CHAR * URI_FUNC(EscapeQueryRfc3986)(const URI_CHAR * in, URI_CHAR * out) {
     return URI_FUNC(EscapeQueryRfc3986Ex)(in, NULL, out);
 }
 
-URI_CHAR * URI_FUNC(EscapeQueryRfc3986Ex)(const URI_CHAR * inFirst, const URI_CHAR * inAfterLast,
-        URI_CHAR * out) {
+URI_CHAR * URI_FUNC(EscapeQueryRfc3986Ex)(
+        const URI_CHAR * inFirst, const URI_CHAR * inAfterLast, URI_CHAR * out) {
     return URI_FUNC(EscapeQueryEngine)(inFirst, inAfterLast, out,
-        /*spaceToPlus*/URI_FALSE, /*encodeReserved*/URI_FALSE, /*normalizeBreaks*/URI_FALSE);
+            /*spaceToPlus*/ URI_FALSE, /*encodeReserved*/ URI_FALSE,
+            /*normalizeBreaks*/ URI_FALSE);
 }
 
 const URI_CHAR * URI_FUNC(UnescapeInPlace)(URI_CHAR * inout) {
