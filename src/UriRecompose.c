@@ -310,103 +310,11 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                 (*charsRequired) += charsToWrite + extra;
                             }
                         }
-                    } else if (uri->hostData.ip6 != NULL) {
-                        /* IPv6 */
-                        int i = 0;
-                        if (dest != NULL) {
-                            if (written + 1 <= maxChars) {
-                                memcpy(dest + written, _UT("["), 1 * sizeof(URI_CHAR));
-                                written += 1;
-                            } else {
-                                dest[0] = _UT('\0');
-                                if (charsWritten != NULL) {
-                                    *charsWritten = 0;
-                                }
-                                return URI_ERROR_TOSTRING_TOO_LONG;
-                            }
-                        } else {
-                            // Detect and avoid integer overflow
-                            if (1 > (size_t)INT_MAX - *charsRequired) {
-                                return URI_ERROR_TOSTRING_TOO_LONG;
-                            }
-
-                            (*charsRequired) += 1;
-                        }
-
-                        for (; i < 16; i++) {
-                            const unsigned char value = uri->hostData.ip6->data[i];
-                            if (dest != NULL) {
-                                if (written + 2 <= maxChars) {
-                                    URI_CHAR text[3];
-                                    text[0] = URI_FUNC(HexToLetterEx)(
-                                            value / 16, URI_FALSE);
-                                    text[1] = URI_FUNC(HexToLetterEx)(
-                                            value % 16, URI_FALSE);
-                                    text[2] = _UT('\0');
-                                    memcpy(dest + written, text, 2 * sizeof(URI_CHAR));
-                                    written += 2;
-                                } else {
-                                    dest[0] = _UT('\0');
-                                    if (charsWritten != NULL) {
-                                        *charsWritten = 0;
-                                    }
-                                    return URI_ERROR_TOSTRING_TOO_LONG;
-                                }
-                            } else {
-                                // Detect and avoid integer overflow
-                                if (2 > (size_t)INT_MAX - *charsRequired) {
-                                    return URI_ERROR_TOSTRING_TOO_LONG;
-                                }
-
-                                (*charsRequired) += 2;
-                            }
-                            if (((i & 1) == 1) && (i < 15)) {
-                                if (dest != NULL) {
-                                    if (written + 1 <= maxChars) {
-                                        memcpy(dest + written, _UT(":"),
-                                                1 * sizeof(URI_CHAR));
-                                        written += 1;
-                                    } else {
-                                        dest[0] = _UT('\0');
-                                        if (charsWritten != NULL) {
-                                            *charsWritten = 0;
-                                        }
-                                        return URI_ERROR_TOSTRING_TOO_LONG;
-                                    }
-                                } else {
-                                    // Detect and avoid integer overflow
-                                    if (1 > (size_t)INT_MAX - *charsRequired) {
-                                        return URI_ERROR_TOSTRING_TOO_LONG;
-                                    }
-
-                                    (*charsRequired) += 1;
-                                }
-                            }
-                        }
-
-                        if (dest != NULL) {
-                            if (written + 1 <= maxChars) {
-                                memcpy(dest + written, _UT("]"), 1 * sizeof(URI_CHAR));
-                                written += 1;
-                            } else {
-                                dest[0] = _UT('\0');
-                                if (charsWritten != NULL) {
-                                    *charsWritten = 0;
-                                }
-                                return URI_ERROR_TOSTRING_TOO_LONG;
-                            }
-                        } else {
-                            // Detect and avoid integer overflow
-                            if (1 > (size_t)INT_MAX - *charsRequired) {
-                                return URI_ERROR_TOSTRING_TOO_LONG;
-                            }
-
-                            (*charsRequired) += 1;
-                        }
-                    } else if (uri->hostData.ipFuture.first != NULL) {
+                    } else if (uri->hostData.ip6 != NULL
+                               || uri->hostData.ipFuture.first != NULL) {
                         /* IPvFuture */
-                        const size_t charsToWrite = uri->hostData.ipFuture.afterLast
-                                                    - uri->hostData.ipFuture.first;
+                        const size_t charsToWrite =
+                                uri->hostText.afterLast - uri->hostText.first;
                         if (dest != NULL) {
                             if (written + 1 <= maxChars) {
                                 memcpy(dest + written, _UT("["), 1 * sizeof(URI_CHAR));
@@ -430,7 +338,7 @@ static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest, const URI_TYPE(U
                                     return URI_ERROR_TOSTRING_TOO_LONG;
                                 }
 
-                                memcpy(dest + written, uri->hostData.ipFuture.first,
+                                memcpy(dest + written, uri->hostText.first,
                                         charsToWrite * sizeof(URI_CHAR));
                                 written += charsToWrite;
                             } else {

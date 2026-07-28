@@ -294,7 +294,7 @@ TEST(SetHostIp6, NonNullValueAppliedNonEmptyPriorNull) {
 
     EXPECT_EQ(uriSetHostIp6A(&uri, first, afterLast), URI_SUCCESS);
 
-    assertUriEqual(&uri, "scheme://[0000:0000:0000:0000:0000:0000:0000:0001]");
+    assertUriEqual(&uri, "scheme://[::1]");
 
     uriFreeUriMembersA(&uri);
 }
@@ -306,7 +306,9 @@ TEST(SetHostIp6, MutationTesting) {
 
     EXPECT_EQ(uriSetHostIp6A(&uri, first, afterLast), URI_SUCCESS);
 
-    assertUriEqual(&uri, "scheme://[0001:0023:0456:7890:0000:0000:052b:db00]");
+    assertUriEqual(&uri, "scheme://[1:23:456:7890::5.43.219.0]");
+    uriNormalizeSyntaxA(&uri);
+    assertUriEqual(&uri, "scheme://[1:23:456:7890::52b:db00]");
 
     uriFreeUriMembersA(&uri);
 }
@@ -318,7 +320,7 @@ TEST(SetHostIp6, NonNullValueAppliedNonEmptyPriorIp4) {
 
     EXPECT_EQ(uriSetHostIp6A(&uri, first, afterLast), URI_SUCCESS);
 
-    assertUriEqual(&uri, "//[0000:0000:0000:0000:0000:0000:0000:0001]");
+    assertUriEqual(&uri, "//[::1]");
 
     uriFreeUriMembersA(&uri);
 }
@@ -330,7 +332,7 @@ TEST(SetHostIp6, NonNullValueAppliedNonEmptyPriorIp6) {
 
     EXPECT_EQ(uriSetHostIp6A(&uri, first, afterLast), URI_SUCCESS);
 
-    assertUriEqual(&uri, "//[0000:0000:0000:0000:0000:0000:0000:0002]");
+    assertUriEqual(&uri, "//[::2]");
 
     uriFreeUriMembersA(&uri);
 }
@@ -342,7 +344,7 @@ TEST(SetHostIp6, NonNullValueAppliedNonEmptyPriorIpFuture) {
 
     EXPECT_EQ(uriSetHostIp6A(&uri, first, afterLast), URI_SUCCESS);
 
-    assertUriEqual(&uri, "//[0000:0000:0000:0000:0000:0000:0000:0001]");
+    assertUriEqual(&uri, "//[::1]");
 
     uriFreeUriMembersA(&uri);
 }
@@ -354,7 +356,7 @@ TEST(SetHostIp6, NonNullValueAppliedNonEmptyPriorRegName) {
 
     EXPECT_EQ(uriSetHostIp6A(&uri, first, afterLast), URI_SUCCESS);
 
-    assertUriEqual(&uri, "//[0000:0000:0000:0000:0000:0000:0000:0001]");
+    assertUriEqual(&uri, "//[::1]");
 
     uriFreeUriMembersA(&uri);
 }
