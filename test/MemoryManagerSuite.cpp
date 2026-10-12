@@ -405,6 +405,22 @@ TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmScheme) {
             "hTTp://example.org/path", URI_NORMALIZE_SCHEME);
 }
 
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmPathAmbiguity) {
+    for (unsigned int successfulAllocations = 0; successfulAllocations < 2;
+            successfulAllocations++) {
+        UriUriA uri = parse("scheme:..///foo/bar");
+        ASSERT_EQ(uriMakeOwnerA(&uri), URI_SUCCESS);
+        FailingMemoryManager failingMemoryManager(successfulAllocations);
+
+        // Fail allocation of either the dot segment or its owned text.
+        EXPECT_EQ(
+                uriNormalizeSyntaxExMmA(&uri, URI_NORMALIZE_PATH, &failingMemoryManager),
+                URI_ERROR_MALLOC);
+        EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), successfulAllocations + 1);
+        uriFreeUriMembersA(&uri);
+    }
+}
+
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmEmptyUserInfo) {
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
             "//@:123", URI_NORMALIZE_USER_INFO);
