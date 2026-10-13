@@ -190,6 +190,15 @@ TEST(MemoryManagerTestingSuite, DefaultMemoryManager) {
     ASSERT_EQ(uriTestMemoryManagerEx(&defaultMemoryManager, URI_TRUE), URI_SUCCESS);
 }
 
+TEST(MemoryManagerTestingSuite, ReallocFailureDoesNotLeak) {
+    FailingMemoryManager failingMemoryManager(/*failAllocAfterTimes=*/3);
+
+    ASSERT_EQ(uriTestMemoryManagerEx(&failingMemoryManager, URI_FALSE),
+            URI_ERROR_MEMORY_MANAGER_FAULTY);
+    EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 4U);
+    EXPECT_EQ(failingMemoryManager.getCallCountFree(), 3U);
+}
+
 TEST(MemoryManagerCompletionSuite, MallocAndFreeSufficient) {
     UriMemoryManager memory;
     UriMemoryManager backend;
