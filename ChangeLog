@@ -36,6 +36,8 @@ XXXX-XX-XX -- 1.0.3
       (GitHub #325)
   * Infrastructure: Document the current security policy for uriparser
       (GitHub #322, GitHub #349)
+  * Soname: 3:3:2 — see https://verbump.de/ for what these numbers do
+      (liburiparser.so.1.2.3)
 
 2026-05-09 -- 1.0.2
 
