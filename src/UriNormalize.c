@@ -823,6 +823,13 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
         uri->owner = URI_TRUE;
     }
 
+    /* Dot removal can expose leading slashes that reparse as an authority. */
+    if ((outMask == NULL) && (inMask & URI_NORMALIZE_PATH) && !URI_FUNC(HasHost)(uri)) {
+        if (!URI_FUNC(FixAmbiguity)(uri, memory)) {
+            return URI_ERROR_MALLOC;
+        }
+    }
+
     return URI_SUCCESS;
 }
 
