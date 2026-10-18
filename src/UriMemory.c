@@ -332,7 +332,7 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
     for (index = 0; index < mallocSize; index++) {
         buffer[index] = '\xF3';
     }
-    char * const reallocBuffer = memory->realloc(memory, buffer, reallocSize);
+    void * const reallocBuffer = memory->realloc(memory, buffer, reallocSize);
     if (reallocBuffer == NULL) {
         memory->free(memory, buffer);
         return URI_ERROR_MEMORY_MANAGER_FAULTY;
