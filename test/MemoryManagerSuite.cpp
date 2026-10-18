@@ -105,11 +105,16 @@ static void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size
 static void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size) {
     FailingMemoryManager * const fmm =
             static_cast<FailingMemoryManager *>(memory->userData);
-    fmm->callCountAlloc++;
-    if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
-        errno = ENOMEM;
-        return NULL;
-    }
+
+    if (size > 0 || ptr == NULL) {
+        fmm->callCountAlloc++;
+        if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
+            errno = ENOMEM;
+            return NULL;
+        }
+    } else
+        fmm->callCountFree++;
+
     return realloc(ptr, size);
 }
 
