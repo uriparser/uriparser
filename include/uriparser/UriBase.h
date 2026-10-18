@@ -251,15 +251,15 @@ typedef enum UriBreakConversionEnum {
 typedef enum UriNormalizationMaskEnum {
     URI_NORMALIZED = 0, /**< Do not normalize anything */
     URI_NORMALIZE_SCHEME = 1 << 0, /**< Normalize scheme (fix uppercase letters) */
-    URI_NORMALIZE_USER_INFO =
-            1 << 1, /**< Normalize user info (fix uppercase percent-encodings) */
+    URI_NORMALIZE_USER_INFO = 1
+            << 1, /**< Normalize user info (fix uppercase percent-encodings) */
     URI_NORMALIZE_HOST = 1 << 2, /**< Normalize host (fix uppercase letters) */
     URI_NORMALIZE_PATH = 1 << 3, /**< Normalize path (fix uppercase percent-encodings and
                                     redundant dot segments) */
-    URI_NORMALIZE_QUERY =
-            1 << 4, /**< Normalize query (fix uppercase percent-encodings) */
-    URI_NORMALIZE_FRAGMENT =
-            1 << 5, /**< Normalize fragment (fix uppercase percent-encodings) */
+    URI_NORMALIZE_QUERY = 1
+            << 4, /**< Normalize query (fix uppercase percent-encodings) */
+    URI_NORMALIZE_FRAGMENT = 1
+            << 5, /**< Normalize fragment (fix uppercase percent-encodings) */
     URI_NORMALIZE_PORT = 1 << 6 /**< Normalize port (drop leading zeros) @since 0.9.9 */
 } UriNormalizationMask; /**< @copydoc UriNormalizationMaskEnum */
 
@@ -268,8 +268,8 @@ typedef enum UriNormalizationMaskEnum {
  */
 typedef enum UriResolutionOptionsEnum {
     URI_RESOLVE_STRICTLY = 0, /**< Full RFC conformance */
-    URI_RESOLVE_IDENTICAL_SCHEME_COMPAT =
-            1 << 0 /**< Treat %URI to resolve with identical scheme as having no scheme */
+    URI_RESOLVE_IDENTICAL_SCHEME_COMPAT = 1
+            << 0 /**< Treat %URI to resolve with identical scheme as having no scheme */
 } UriResolutionOptions; /**< @copydoc UriResolutionOptionsEnum */
 
 /**

@@ -32,18 +32,18 @@ jobs:
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
-    - name: Install Clang 22
+    - name: Install Clang 23
       run: |-
         set -x
         source /etc/os-release
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo add-apt-repository "deb https://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-22 main"
+        sudo add-apt-repository "deb https://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-23 main"
         sudo apt-get update  # due to new repository
         sudo apt-get install --yes --no-install-recommends -V \
-            clang-22 \
-            libclang-rt-22-dev \
-            llvm-22
-        echo /usr/lib/llvm-22/bin >>"${GITHUB_PATH}"
+            clang-23 \
+            libclang-rt-23-dev \
+            llvm-23
+        echo /usr/lib/llvm-23/bin >>"${GITHUB_PATH}"
 
     - name: Build uriparser fuzzers
       run: |
@@ -56,8 +56,8 @@ jobs:
             -DURIPARSER_OSSFUZZ_BUILD=OFF
 
             # Tune compilation of fuzzers to use Clang with ASan and UBSan
-            -DCMAKE_C_COMPILER=clang-22
-            -DCMAKE_CXX_COMPILER=clang++-22
+            -DCMAKE_C_COMPILER=clang-23
+            -DCMAKE_CXX_COMPILER=clang++-23
             -DCMAKE_{C,CXX}_FLAGS='-Wall -Wextra -pedantic -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -fno-common'
             -DCMAKE_{EXE,MODULE,SHARED}_LINKER_FLAGS='-g -fsanitize=address,undefined'
             -DURIPARSER_WARNINGS_AS_ERRORS=ON
