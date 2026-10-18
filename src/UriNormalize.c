@@ -674,10 +674,15 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
     if (outMask != NULL) {
         /* Is there a port even? */
         if (uri->portText.first != NULL) {
-            /* Determine whether the port is already normalized, i.e. either "", "0" or no
-             * leading zeros */
+            /* Determine whether the port is already normalized, i.e. either "0" or no
+             * leading zeros. An empty port "" is normalized as per 3.2.3:
+             *
+             * > URI producers AND normalizers should omit the port component and its
+             * > ":" delimiter if port is empty [...].
+             */
             const size_t portLen = uri->portText.afterLast - uri->portText.first;
-            if ((portLen > 1) && (uri->portText.first[0] == _UT('0'))) {
+            if ((portLen == 0)
+                    || ((portLen > 1) && (uri->portText.first[0] == _UT('0')))) {
                 *outMask |= URI_NORMALIZE_PORT;
             }
         }
@@ -690,6 +695,14 @@ static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri,
             } else {
                 URI_FUNC(AdvancePastLeadingZeros)(
                         &(uri->portText.first), uri->portText.afterLast);
+            }
+
+            if (uri->portText.first == uri->portText.afterLast) {
+                if (uri->owner) {
+                    memory->free(memory, (URI_CHAR *)uri->portText.first);
+                }
+                uri->portText.first = NULL;
+                uri->portText.afterLast = NULL;
             }
         }
     }
