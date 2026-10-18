@@ -19,8 +19,8 @@ jobs:
           - name: Native Linux
             runs-on: ubuntu-24.04
             cmake_args: >-
-              -DCMAKE_C_COMPILER=clang-22
-              -DCMAKE_CXX_COMPILER=clang++-22
+              -DCMAKE_C_COMPILER=clang-23
+              -DCMAKE_CXX_COMPILER=clang++-23
             cflags: >-
               -fsanitize=address,undefined,leak
               -fno-sanitize-recover=all
@@ -53,7 +53,7 @@ jobs:
           set -x
           source /etc/os-release
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-22 main"
+          sudo add-apt-repository "deb http://apt.llvm.org/${UBUNTU_CODENAME}/ llvm-toolchain-${UBUNTU_CODENAME}-23 main"
 
       - name: Install build dependencies (Linux)
         if: "${{ runner.os == 'Linux' }}"
@@ -94,8 +94,8 @@ jobs:
         if: "${{ runner.os == 'Linux' && ! contains(matrix.cmake_args, 'mingw') }}"
         run: |-
           sudo apt-get install --yes --no-install-recommends -V \
-              clang-22 \
-              libclang-rt-22-dev
+              clang-23 \
+              libclang-rt-23-dev
 
       - name: Build, test and install
         run: |-
