@@ -2,6 +2,42 @@ NOTE: uriparser is looking for help with a few things:
       https://github.com/uriparser/uriparser/labels/help%20wanted
       If you can help, please get in touch.  Thanks!
 
+XXXX-XX-XX -- 1.0.3
+
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: [CVE-MAYBE]
+      Protect `ToStringEngine` from integer overflow (GitHub #311)
+      Thanks for the report to Joshua W. Windle!
+  * Fixed: [CVE-MAYBE]
+      Protect `AppendQueryItem` from item count integer overflow (#312)
+      Thanks for the report to Joshua W. Windle!
+  * Fixed: [CVE-2026-48841]
+      Protect `ComposeQueryEngine` from integer overflow (GitHub #313)
+      Thanks for the report to Joshua W. Windle!
+>>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  * Fixed: Fix undefined behavior in `FilenameToUriString` (GitHub #310)
+  * Fixed: Restore support for compilation with glibc <2.29
+      (GitHub #315, GitHub #316, GitHub #289, GitHub #320)
+  * Fixed: Fix support for GoogleTest >=1.17.0 (GitHub #325)
+  * Fixed: Mark `uriIsWellFormedHost*` functions as `URI_PUBLIC`
+      Thanks for the pull requests to Daniel Scherzer and Máté Kocsis!
+      (GitHub #328, GitHub #330)
+  * Fixed: CMake: Migrate check for `reallocarray` to `check_c_source_compiles`
+      to avoid false positives, e.g. with XCode and iOS (GitHub #331)
+  * Improved: Allow use of C++17 to future unit tests (GitHub #325)
+  * Improved: Fix multiline condition indentation (GitHub #317)
+  * Improved: Migrate `THANKS` file to UTF-8 (GitHub #332)
+  * Improved: Make `uriTestMemoryManager*` not leak memory on failure
+      Thanks for the pull request to Junki Lee! (GitHub #340)
+  * Improved: Extend memory manager tests (GitHub #350)
+  * Infrastructure: Upgrade from Clang 21 to 23
+      (GitHub #318, GitHub #319, GitHub #346)
+  * Infrastructure: Make CI cover compilation on macOS (GitHub #329)
+  * Infrastructure: Make CI cover (both less and) more recent GoogleTest
+      (GitHub #325)
+  * Infrastructure: Document the current security policy for uriparser
+      (GitHub #322, GitHub #349)
+
 2026-05-09 -- 1.0.2
 
 >>>>>>>>>>>>> SECURITY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
