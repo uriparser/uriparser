@@ -899,6 +899,30 @@ bool testEscapingHelper(const wchar_t * in, const wchar_t * expectedOut,
     delete[] buffer;
     return equal;
 }
+
+bool testQueryRfc1866EscapingHelper(const wchar_t * in, const wchar_t * expectedOut) {
+    wchar_t * const buffer = new wchar_t[6 * wcslen(in) + 1];
+    if (uriEscapeQueryRfc1866W(in, buffer) != buffer + wcslen(expectedOut)) {
+        delete[] buffer;
+        return false;
+    }
+
+    const bool equal = !wcscmp(buffer, expectedOut);
+    delete[] buffer;
+    return equal;
+}
+
+bool testQueryRfc3986EscapingHelper(const wchar_t * in, const wchar_t * expectedOut) {
+    wchar_t * const buffer = new wchar_t[3 * wcslen(in) + 1];
+    if (uriEscapeQueryRfc3986W(in, buffer) != buffer + wcslen(expectedOut)) {
+        delete[] buffer;
+        return false;
+    }
+
+    const bool equal = !wcscmp(buffer, expectedOut);
+    delete[] buffer;
+    return equal;
+}
 }  // namespace
 
 TEST(UriSuite, TestEscaping) {
@@ -915,6 +939,10 @@ TEST(UriSuite, TestEscaping) {
     ASSERT_TRUE(testEscapingHelper(L"\x00", L"\0"));
     ASSERT_TRUE(testEscapingHelper(L"\x01", L"%01"));
     ASSERT_TRUE(testEscapingHelper(L"\xff", L"%FF"));
+
+    // Reserved characters
+    ASSERT_TRUE(
+            testEscapingHelper(L"?@/:", L"%3F%40%2F%3A", SPACE_TO_PLUS, KEEP_UNMODIFIED));
 
     // Linebreak normalization
     ASSERT_TRUE(testEscapingHelper(L"\x0d", L"%0D%0A", SPACE_TO_PLUS, NORMALIZE));
@@ -953,6 +981,66 @@ TEST(UriSuite, TestEscaping) {
             testEscapingHelper(L"g\x0a\x0d", L"g%0A%0D", SPACE_TO_PLUS, KEEP_UNMODIFIED));
     ASSERT_TRUE(
             testEscapingHelper(L"\x0a\x0dg", L"%0A%0Dg", SPACE_TO_PLUS, KEEP_UNMODIFIED));
+}
+
+TEST(UriSuite, TestRfc1866QueryEscaping) {
+    // '+' to '%20'
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"abc def", L"abc+def"));
+
+    // Percent encoding
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x00", L"\0"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x01", L"%01"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\xff", L"%FF"));
+
+    // Reserved characters
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"?@/:", L"%3F%40%2F%3A"));
+
+    // Linebreak normalization
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0d", L"%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"g\x0d", L"g%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0dg", L"%0D%0Ag"));
+
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0a", L"%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"g\x0a", L"g%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0ag", L"%0D%0Ag"));
+
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0d\x0a", L"%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"g\x0d\x0a", L"g%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0d\x0ag", L"%0D%0Ag"));
+
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0a\x0d", L"%0D%0A%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"g\x0a\x0d", L"g%0D%0A%0D%0A"));
+    ASSERT_TRUE(testQueryRfc1866EscapingHelper(L"\x0a\x0dg", L"%0D%0A%0D%0Ag"));
+}
+
+TEST(UriSuite, TestRfc3986QueryEscaping) {
+    // '+' to '%20'
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"abc def", L"abc%20def"));
+
+    // Percent encoding
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x00", L"\0"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x01", L"%01"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\xff", L"%FF"));
+
+    // Reserved characters
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"?@/:", L"?@/:"));
+
+    // Linebreak normalization
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0d", L"%0D"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"g\x0d", L"g%0D"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0dg", L"%0Dg"));
+
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0a", L"%0A"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"g\x0a", L"g%0A"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0ag", L"%0Ag"));
+
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0d\x0a", L"%0D%0A"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"g\x0d\x0a", L"g%0D%0A"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0d\x0ag", L"%0D%0Ag"));
+
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0a\x0d", L"%0A%0D"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"g\x0a\x0d", L"g%0A%0D"));
+    ASSERT_TRUE(testQueryRfc3986EscapingHelper(L"\x0a\x0dg", L"%0A%0Dg"));
 }
 
 namespace {
