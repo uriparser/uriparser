@@ -316,6 +316,7 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
     }
     for (index = 0; index < callocTotalSize; index++) { /* all zeros? */
         if (buffer[index] != '\0') {
+            memory->free(memory, buffer);
             return URI_ERROR_MEMORY_MANAGER_FAULTY;
         }
     }
@@ -331,12 +332,15 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
     for (index = 0; index < mallocSize; index++) {
         buffer[index] = '\xF3';
     }
-    buffer = memory->realloc(memory, buffer, reallocSize);
-    if (buffer == NULL) {
+    char * const reallocBuffer = memory->realloc(memory, buffer, reallocSize);
+    if (reallocBuffer == NULL) {
+        memory->free(memory, buffer);
         return URI_ERROR_MEMORY_MANAGER_FAULTY;
     }
+    buffer = reallocBuffer;
     for (index = 0; index < mallocSize; index++) { /* previous content? */
         if (buffer[index] != '\xF3') {
+            memory->free(memory, buffer);
             return URI_ERROR_MEMORY_MANAGER_FAULTY;
         }
     }
@@ -377,12 +381,16 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
     for (index = 0; index < mallocSize; index++) {
         buffer[index] = '\xF7';
     }
-    buffer = memory->reallocarray(memory, buffer, reallocarrayNmemb, reallocarraySize);
-    if (buffer == NULL) {
+    char * const reallocarrayBuffer =
+            memory->reallocarray(memory, buffer, reallocarrayNmemb, reallocarraySize);
+    if (reallocarrayBuffer == NULL) {
+        memory->free(memory, buffer);
         return URI_ERROR_MEMORY_MANAGER_FAULTY;
     }
+    buffer = reallocarrayBuffer;
     for (index = 0; index < mallocSize; index++) { /* previous content? */
         if (buffer[index] != '\xF7') {
+            memory->free(memory, buffer);
             return URI_ERROR_MEMORY_MANAGER_FAULTY;
         }
     }
