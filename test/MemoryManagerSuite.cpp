@@ -49,6 +49,8 @@ private:
     unsigned int callCountAlloc;
     unsigned int callCountFree;
     unsigned int failAllocAfterTimes;
+    bool zeroingCalloc;
+    bool preservingRealloc;
 
     friend void * failingMalloc(UriMemoryManager * memory, size_t size);
     friend void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size);
@@ -58,7 +60,8 @@ private:
     friend void countingFree(UriMemoryManager * memory, void * ptr);
 
 public:
-    FailingMemoryManager(unsigned int failAllocAfterTimes = 0)
+    FailingMemoryManager(unsigned int failAllocAfterTimes = 0, bool zeroingCalloc = true,
+            bool preservingRealloc = true)
         : callCountAlloc(0), callCountFree(0), failAllocAfterTimes(failAllocAfterTimes) {
         this->memoryManager.malloc = failingMalloc;
         this->memoryManager.calloc = failingCalloc;
@@ -66,6 +69,8 @@ public:
         this->memoryManager.reallocarray = failingReallocarray;
         this->memoryManager.free = countingFree;
         this->memoryManager.userData = this;
+        this->zeroingCalloc = zeroingCalloc;
+        this->preservingRealloc = preservingRealloc;
     }
 
     UriMemoryManager * operator&() {
@@ -100,7 +105,11 @@ static void * failingCalloc(UriMemoryManager * memory, size_t nmemb, size_t size
         errno = ENOMEM;
         return NULL;
     }
-    return calloc(nmemb, size);
+    void * const ptr = calloc(nmemb, size);
+    if (!fmm->zeroingCalloc) {
+        memset(ptr, 'X', nmemb * size);
+    }
+    return ptr;
 }
 
 static void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size) {
@@ -112,6 +121,15 @@ static void * failingRealloc(UriMemoryManager * memory, void * ptr, size_t size)
         if (fmm->callCountAlloc > fmm->failAllocAfterTimes) {
             errno = ENOMEM;
             return NULL;
+        }
+
+        // The idea is to reserve the same size but to not carry over the original data
+        if (ptr != NULL && !fmm->preservingRealloc) {
+            free(ptr);
+            ptr = malloc(size);
+            if (ptr != NULL)
+                memset(ptr, 'X', size);
+            return ptr;
         }
     } else
         fmm->callCountFree++;
@@ -221,6 +239,47 @@ TEST(MemoryManagerTestingSuite, AllFailuresHandled) {  // relies on AddressSanit
 
             prevCountAlloc = failingMemoryManager.getCallCountAlloc();
         }
+    }
+}
+
+TEST(MemoryManagerTestingSuite, BadCallocAndReallocDetected) {
+    struct TestCase {
+        bool preservingRealloc;
+        bool zeroingCalloc;
+        int expectedError;
+    };
+
+    TestCase cases[] = {
+            {
+                    true,
+                    true,
+                    URI_SUCCESS,
+            },
+            {
+                    false,
+                    true,
+                    URI_ERROR_MEMORY_MANAGER_FAULTY,
+            },
+            {
+                    true,
+                    false,
+                    URI_ERROR_MEMORY_MANAGER_FAULTY,
+            },
+            {
+                    false,
+                    false,
+                    URI_ERROR_MEMORY_MANAGER_FAULTY,
+            },
+    };
+
+    for (size_t i = 0; i < sizeof(cases) / sizeof(TestCase); i++) {
+        const bool zeroingCalloc = cases[i].zeroingCalloc;
+        const bool preservingRealloc = cases[i].preservingRealloc;
+        const int expectedError = cases[i].expectedError;
+
+        FailingMemoryManager failingMemoryManager(20, zeroingCalloc, preservingRealloc);
+        EXPECT_EQ(
+                uriTestMemoryManagerEx(&failingMemoryManager, URI_FALSE), expectedError);
     }
 }
 
