@@ -24,6 +24,7 @@
 #include <cassert>
 #include <cerrno>
 #include <cstring>  // memcpy
+#include <limits.h>
 #include <gtest/gtest.h>
 
 #include <uriparser/Uri.h>
@@ -202,6 +203,25 @@ TEST(MemoryManagerTestingSuite, ReallocFailureDoesNotLeak) {
             URI_ERROR_MEMORY_MANAGER_FAULTY);
     EXPECT_EQ(failingMemoryManager.getCallCountAlloc(), 4U);
     EXPECT_EQ(failingMemoryManager.getCallCountFree(), 3U);
+}
+
+TEST(MemoryManagerTestingSuite, AllFailuresHandled) {  // relies on AddressSanitizer
+    unsigned prevCountAlloc = 0;
+    for (unsigned failAllocAfterTimes = 0; failAllocAfterTimes < UINT_MAX;
+            failAllocAfterTimes++) {
+        FailingMemoryManager failingMemoryManager(failAllocAfterTimes);
+        const int error = uriTestMemoryManagerEx(&failingMemoryManager, URI_TRUE);
+
+        EXPECT_LE(failingMemoryManager.getCallCountFree(),
+                failingMemoryManager.getCallCountAlloc());
+
+        if (error == URI_SUCCESS) {
+            if (failingMemoryManager.getCallCountAlloc() == prevCountAlloc)
+                break;
+
+            prevCountAlloc = failingMemoryManager.getCallCountAlloc();
+        }
+    }
 }
 
 TEST(MemoryManagerCompletionSuite, MallocAndFreeSufficient) {
