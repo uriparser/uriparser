@@ -381,7 +381,7 @@ int uriTestMemoryManagerEx(UriMemoryManager * memory, UriBool challengeAlignment
     for (index = 0; index < mallocSize; index++) {
         buffer[index] = '\xF7';
     }
-    char * const reallocarrayBuffer =
+    void * const reallocarrayBuffer =
             memory->reallocarray(memory, buffer, reallocarrayNmemb, reallocarraySize);
     if (reallocarrayBuffer == NULL) {
         memory->free(memory, buffer);
