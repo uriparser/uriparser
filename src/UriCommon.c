@@ -613,11 +613,13 @@ UriBool URI_FUNC(CopyAuthority)(
     return URI_TRUE;
 }
 
-UriBool URI_FUNC(FixAmbiguity)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
-    URI_TYPE(PathSegment) * segment;
+static UriBool URI_FUNC(PrependNewDotSegment)(
+        URI_TYPE(Uri) * uri, UriMemoryManager * memory);
 
-    if (/* Case 1: absolute path, empty first segment */
-            (uri->absolutePath && (uri->pathHead != NULL)
+UriBool URI_FUNC(FixAmbiguity)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
+
+    if (/* Case 1: absolute path, empty first segment followed by a slash */
+            (uri->absolutePath && (uri->pathHead != NULL) && (uri->pathHead->next != NULL)
                     && (uri->pathHead->text.afterLast == uri->pathHead->text.first))
 
             /* Case 2: relative path, empty first and second segment */
@@ -631,17 +633,7 @@ UriBool URI_FUNC(FixAmbiguity)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
         return URI_TRUE;
     }
 
-    segment = memory->malloc(memory, 1 * sizeof(URI_TYPE(PathSegment)));
-    if (segment == NULL) {
-        return URI_FALSE; /* Raises malloc error */
-    }
-
-    /* Insert "." segment in front */
-    segment->next = uri->pathHead;
-    segment->text.first = URI_FUNC(ConstPwd);
-    segment->text.afterLast = URI_FUNC(ConstPwd) + 1;
-    uri->pathHead = segment;
-    return URI_TRUE;
+    return URI_FUNC(PrependNewDotSegment)(uri, memory);
 }
 
 static UriBool URI_FUNC(PrependNewDotSegment)(
