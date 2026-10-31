@@ -65,7 +65,7 @@ jobs:
               doxygen \
               graphviz \
               lzip \
-              qhelpgenerator-qt5 \
+              qt6-documentation-tools \
               qtchooser
 
       - name: Install build dependencies (macOS)
