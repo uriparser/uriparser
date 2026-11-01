@@ -25,6 +25,7 @@
 #include <memory>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <cwchar>
 
 using namespace std;
@@ -2581,6 +2582,33 @@ TEST(UriSuite, NoStackOverflowIssue282) {
 
     uriFreeUriMembersA(&uri);
     delete[] uriString;
+}
+
+TEST(UriSuite, TestParseFailureLeavesUriReset) {
+    // A failed parse must not leave ranges pointing into the caller's text:
+    // "ab%zz" fails after the scheme characters, which used to leave
+    // scheme = [text, NULL) behind.
+    const char input[] = "ab%zz";
+    UriUriA uri;
+    const char * errorPos = NULL;
+    ASSERT_EQ(uriParseSingleUriExA(&uri, input, input + sizeof(input) - 1, &errorPos),
+              URI_ERROR_SYNTAX);
+    EXPECT_TRUE(uri.scheme.first == NULL);
+    EXPECT_TRUE(uri.scheme.afterLast == NULL);
+    EXPECT_EQ(uri.owner, URI_FALSE);
+}
+
+TEST(UriSuite, TestSetterAfterParseFailureDoesNotFreeText) {
+    // Reusing the struct after a failed parse: the setter makes the URI an
+    // owner, and uriFreeUriMembersA used to free a pointer into `text`.
+    char * const text = static_cast<char *>(malloc(5));
+    memcpy(text, "ab%zz", 5);
+    UriUriA uri;
+    ASSERT_EQ(uriParseSingleUriExA(&uri, text, text + 5, NULL), URI_ERROR_SYNTAX);
+    const char host[] = "host";
+    ASSERT_EQ(uriSetHostRegNameA(&uri, host, host + 4), URI_SUCCESS);
+    uriFreeUriMembersA(&uri);
+    free(text);
 }
 
 int main(int argc, char ** argv) {
