@@ -160,6 +160,9 @@ UriBool URI_FUNC(CopyRangeAsNeeded)(URI_TYPE(TextRange) * destRange,
     return URI_TRUE;
 }
 
+static UriBool URI_FUNC(FixPathNoSchemeEx)(
+        URI_TYPE(Uri) * uri, UriBool pathOwned, UriMemoryManager * memory);
+
 UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri, UriBool relative,
         UriBool pathOwned, UriMemoryManager * memory) {
     URI_TYPE(PathSegment) * walker;
@@ -451,6 +454,12 @@ UriBool URI_FUNC(RemoveDotSegmentsEx)(URI_TYPE(Uri) * uri, UriBool relative,
         }
     } while (walker != NULL);
 
+    /* Removing leading segments can turn e.g. "a/../b:c" into "b:c",
+     * which a consecutive reparse would take for a URI with scheme "b" */
+    if (relative) {
+        return URI_FUNC(FixPathNoSchemeEx)(uri, pathOwned, memory);
+    }
+
     return URI_TRUE;
 }
 
@@ -645,7 +654,7 @@ UriBool URI_FUNC(FixAmbiguity)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
 }
 
 static UriBool URI_FUNC(PrependNewDotSegment)(
-        URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
+        URI_TYPE(Uri) * uri, UriBool pathOwned, UriMemoryManager * memory) {
     assert(uri != NULL);
     assert(memory != NULL);
 
@@ -662,7 +671,7 @@ static UriBool URI_FUNC(PrependNewDotSegment)(
     dotRange.first = URI_FUNC(ConstPwd);
     dotRange.afterLast = URI_FUNC(ConstPwd) + 1;
 
-    if (uri->owner == URI_TRUE) {
+    if (pathOwned == URI_TRUE) {
         if (URI_FUNC(CopyRange)(&(segment->text), &dotRange, memory) == URI_FALSE) {
             memory->free(memory, segment);
             return URI_FALSE; /* i.e. raise malloc error */
@@ -694,6 +703,11 @@ static UriBool URI_FUNC(PrependNewDotSegment)(
  * Returns URI_FALSE to signal out-of-memory.
  */
 UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
+    return URI_FUNC(FixPathNoSchemeEx)(uri, uri->owner, memory);
+}
+
+static UriBool URI_FUNC(FixPathNoSchemeEx)(
+        URI_TYPE(Uri) * uri, UriBool pathOwned, UriMemoryManager * memory) {
     assert(uri != NULL);
     assert(memory != NULL);
 
@@ -721,7 +735,7 @@ UriBool URI_FUNC(FixPathNoScheme)(URI_TYPE(Uri) * uri, UriMemoryManager * memory
     }
 
     /* Insert "." segment in front */
-    return URI_FUNC(PrependNewDotSegment)(uri, memory);
+    return URI_FUNC(PrependNewDotSegment)(uri, pathOwned, memory);
 }
 
 /* When dropping a host from a URI without a scheme, an absolute path
@@ -751,7 +765,7 @@ UriBool URI_FUNC(EnsureThatPathIsNotMistakenForHost)(
     }
 
     /* Insert "." segment in front */
-    return URI_FUNC(PrependNewDotSegment)(uri, memory);
+    return URI_FUNC(PrependNewDotSegment)(uri, uri->owner, memory);
 }
 
 void URI_FUNC(FixEmptyTrailSegment)(URI_TYPE(Uri) * uri, UriMemoryManager * memory) {
