@@ -1724,6 +1724,53 @@ TEST(UriSuite, TestNormalizeBug262Unchanged) {
             L"./path1:/path2", L"./path1:/path2", URI_NORMALIZE_PATH));
 }
 
+TEST(UriSuite, TestNormalizeBug334) {
+    EXPECT_TRUE(testNormalizeSyntaxHelper(
+            L"scheme:..///foo/bar", L"scheme:.///foo/bar", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(
+            L"scheme:a/..///foo/bar", L"scheme:.///foo/bar", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(
+            L"scheme:/a/..//foo/bar", L"scheme:/.//foo/bar", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(
+            L"scheme:..///foo/bar?query#fragment", L"scheme:.///foo/bar?query#fragment"));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"scheme://host/a/..//foo/bar",
+            L"scheme://host//foo/bar", URI_NORMALIZE_PATH));
+}
+
+TEST(UriSuite, TestNormalizeBug334RootPaths) {
+    const char * const inputs[] = {"/a/..", "/a/../", "scheme:/a/..", "scheme:/a/../"};
+    const char * const expected[] = {"/", "/", "scheme:/", "scheme:/"};
+    for (unsigned int i = 0; i < 4; i++) {
+        UriUriA uri;
+        ASSERT_EQ(uriParseSingleUriA(&uri, inputs[i], NULL), URI_SUCCESS);
+        for (unsigned int pass = 0; pass < 2; pass++) {
+            ASSERT_EQ(uriNormalizeSyntaxA(&uri), URI_SUCCESS);
+            char buffer[32];
+            ASSERT_EQ(uriToStringA(buffer, &uri, sizeof(buffer), NULL), URI_SUCCESS);
+            EXPECT_STREQ(buffer, expected[i]);
+        }
+        uriFreeUriMembersA(&uri);
+    }
+}
+
+TEST(UriSuite, TestNormalizeBug334RoundTrip) {
+    UriUriA uri;
+    ASSERT_EQ(uriParseSingleUriA(&uri, "scheme:..///foo/bar?query#fragment", NULL),
+            URI_SUCCESS);
+    ASSERT_EQ(uriNormalizeSyntaxA(&uri), URI_SUCCESS);
+
+    char buffer[128];
+    ASSERT_EQ(uriToStringA(buffer, &uri, sizeof(buffer), NULL), URI_SUCCESS);
+    EXPECT_STREQ(buffer, "scheme:.///foo/bar?query#fragment");
+
+    UriUriA reparsed;
+    ASSERT_EQ(uriParseSingleUriA(&reparsed, buffer, NULL), URI_SUCCESS);
+    EXPECT_EQ(reparsed.hostText.first, nullptr);
+    EXPECT_TRUE(uriEqualsUriA(&uri, &reparsed));
+    uriFreeUriMembersA(&reparsed);
+    uriFreeUriMembersA(&uri);
+}
+
 namespace {
 void testFilenameUriConversionHelper(const wchar_t * filename, const wchar_t * uriString,
         bool forUnix, const wchar_t * expectedUriString = NULL) {
