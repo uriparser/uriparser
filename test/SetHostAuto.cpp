@@ -165,7 +165,7 @@ TEST(SetHostAuto, NonNullValueAppliedNonEmptyIp6) {
 
     EXPECT_EQ(uriSetHostAutoA(&uri, first, afterLast), URI_SUCCESS);
 
-    assertUriEqual(&uri, "scheme://[0000:0000:0000:0000:0000:0000:0000:0001]/path");
+    assertUriEqual(&uri, "scheme://[::1]/path");
 
     uriFreeUriMembersA(&uri);
 }
