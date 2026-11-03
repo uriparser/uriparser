@@ -1724,6 +1724,40 @@ TEST(UriSuite, TestNormalizeBug262Unchanged) {
             L"./path1:/path2", L"./path1:/path2", URI_NORMALIZE_PATH));
 }
 
+TEST(UriSuite, TestNormalizeBug352Fixed) {
+    // First path segment containing a colon after removing leading segments
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"a/../b:c", L"./b:c", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(
+            L"a/../javascript:alert(1)", L"./javascript:alert(1)", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"a/../https://evil.example/",
+            L"./https://evil.example/", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(
+            L"a/b/../../c:d/e", L"./c:d/e", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"a/./../b:c", L"./b:c", URI_NORMALIZE_PATH));
+
+    // Unaffected: colon not in the first segment, or traversal kept
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"a/../b/c:d", L"b/c:d", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"../b:c", L"../b:c", URI_NORMALIZE_PATH));
+    EXPECT_TRUE(testNormalizeSyntaxHelper(L"./b:c", L"./b:c", URI_NORMALIZE_PATH));
+}
+
+TEST(UriSuite, TestNormalizeBug352Reparse) {
+    const char * const input = "a/../https://evil.example/";
+    UriUriA uri;
+    ASSERT_EQ(uriParseSingleUriA(&uri, input, NULL), URI_SUCCESS);
+    ASSERT_EQ(uriNormalizeSyntaxA(&uri), URI_SUCCESS);
+
+    char text[64];
+    ASSERT_EQ(uriToStringA(text, &uri, sizeof(text), NULL), URI_SUCCESS);
+    EXPECT_STREQ(text, "./https://evil.example/");
+    uriFreeUriMembersA(&uri);
+
+    ASSERT_EQ(uriParseSingleUriA(&uri, text, NULL), URI_SUCCESS);
+    EXPECT_TRUE(uri.scheme.first == NULL);
+    EXPECT_TRUE(uri.hostText.first == NULL);
+    uriFreeUriMembersA(&uri);
+}
+
 namespace {
 void testFilenameUriConversionHelper(const wchar_t * filename, const wchar_t * uriString,
         bool forUnix, const wchar_t * expectedUriString = NULL) {

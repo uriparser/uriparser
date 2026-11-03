@@ -493,6 +493,14 @@ void testNormalizeSyntaxWithFailingMallocCallsFreeTimes(const char * uriString,
 }
 }  // namespace
 
+TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmPathNoScheme) {  // issue #352
+    // Allocations 1-3 copy the path segments; 4 and 5 are the prepended "." segment
+    testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
+            "a/../b:c", URI_NORMALIZE_PATH, 3, 6);
+    testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
+            "a/../b:c", URI_NORMALIZE_PATH, 4, 7);
+}
+
 TEST(FailingMemoryManagerSuite, NormalizeSyntaxExMmScheme) {
     testNormalizeSyntaxWithFailingMallocCallsFreeTimes(
             "hTTp://example.org/path", URI_NORMALIZE_SCHEME);
