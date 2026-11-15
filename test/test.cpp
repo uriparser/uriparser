@@ -1561,6 +1561,34 @@ bool testNormalizeSyntaxHelper(const wchar_t * uriText,
     equalAfter = equalAfter && (URI_TRUE == uriEqualsUriW(&testUri, &expectedUri));
 
     uriFreeUriMembersW(&testUri);
+
+    // Owned run
+    stateW.uri = &testUri;
+    res = uriParseUriW(&stateW, uriText);
+    if (res != 0) {
+        uriFreeUriMembersW(&testUri);
+        uriFreeUriMembersW(&expectedUri);
+        return false;
+    }
+
+    res = uriMakeOwnerW(&testUri);
+    if (res != 0) {
+        uriFreeUriMembersW(&testUri);
+        uriFreeUriMembersW(&expectedUri);
+        return false;
+    }
+
+    res = uriNormalizeSyntaxExW(&testUri, mask);
+    if (res != 0) {
+        uriFreeUriMembersW(&testUri);
+        uriFreeUriMembersW(&expectedUri);
+        return false;
+    }
+
+    equalAfter = equalAfter && (URI_TRUE == uriEqualsUriW(&testUri, &expectedUri));
+
+    uriFreeUriMembersW(&testUri);
+
     uriFreeUriMembersW(&expectedUri);
     return equalAfter;
 }
