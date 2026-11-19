@@ -1508,8 +1508,8 @@ TEST(UriSuite, TestNormalizeSyntaxMaskRequired) {
 TEST(UriSuite, TestNormalizeSyntaxMaskRequiredPort) {
     EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:443/", URI_NORMALIZED));
     EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:0/", URI_NORMALIZED));
-    EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:/", URI_NORMALIZED));
 
+    EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:/", URI_NORMALIZE_PORT));
     EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:0443/", URI_NORMALIZE_PORT));
     EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:00443/", URI_NORMALIZE_PORT));
     EXPECT_TRUE(testNormalizeMaskHelper(L"https://localhost:00/", URI_NORMALIZE_PORT));
@@ -1561,6 +1561,34 @@ bool testNormalizeSyntaxHelper(const wchar_t * uriText,
     equalAfter = equalAfter && (URI_TRUE == uriEqualsUriW(&testUri, &expectedUri));
 
     uriFreeUriMembersW(&testUri);
+
+    // Owned run
+    stateW.uri = &testUri;
+    res = uriParseUriW(&stateW, uriText);
+    if (res != 0) {
+        uriFreeUriMembersW(&testUri);
+        uriFreeUriMembersW(&expectedUri);
+        return false;
+    }
+
+    res = uriMakeOwnerW(&testUri);
+    if (res != 0) {
+        uriFreeUriMembersW(&testUri);
+        uriFreeUriMembersW(&expectedUri);
+        return false;
+    }
+
+    res = uriNormalizeSyntaxExW(&testUri, mask);
+    if (res != 0) {
+        uriFreeUriMembersW(&testUri);
+        uriFreeUriMembersW(&expectedUri);
+        return false;
+    }
+
+    equalAfter = equalAfter && (URI_TRUE == uriEqualsUriW(&testUri, &expectedUri));
+
+    uriFreeUriMembersW(&testUri);
+
     uriFreeUriMembersW(&expectedUri);
     return equalAfter;
 }
@@ -1635,12 +1663,12 @@ TEST(UriSuite, TestNormalizeSyntaxComponents) {
 }
 
 TEST(UriSuite, TestNormalizeSyntaxPort) {
-    // Empty port text unchanged
-    ASSERT_TRUE(testNormalizeSyntaxHelper(
-            L"scheme://host:/", L"scheme://host:/", URI_NORMALIZE_PORT));
     // Zero port unchanged
     ASSERT_TRUE(testNormalizeSyntaxHelper(
             L"scheme://host:0/", L"scheme://host:0/", URI_NORMALIZE_PORT));
+    // Empty port text removed
+    ASSERT_TRUE(testNormalizeSyntaxHelper(
+            L"scheme://host:/", L"scheme://host/", URI_NORMALIZE_PORT));
     // All-zeros port turned into single zero
     ASSERT_TRUE(testNormalizeSyntaxHelper(
             L"scheme://host:00/", L"scheme://host:0/", URI_NORMALIZE_PORT));
